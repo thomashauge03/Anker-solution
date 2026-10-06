@@ -21,9 +21,9 @@ export default async function Maskinside({ searchParams }: PageProps<'/maskiner'
           {maskiner.length} modeller · {kategorier.length} kategorier
         </p>
         <h1 className="tittel">Maskiner og utstyr</h1>
-        <p className="ingress">
+        <p className={`ingress ${styles.ingress}`}>
           Prisene gjelder per døgn. Leier du fire døgn eller mer, betaler du ukepris. Velg «Bedrift» for å se priser
-          eks. mva.
+          eks.&nbsp;mva.
         </p>
       </header>
       <Katalog

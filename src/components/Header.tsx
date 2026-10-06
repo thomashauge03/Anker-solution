@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { firma } from '@/data/firma'
 import { antallILista, useLeieliste } from '@/lib/leieliste'
 import { Logo } from './Logo'
@@ -20,6 +20,14 @@ export function Header() {
   const sti = usePathname()
   const antall = antallILista(useLeieliste())
   const [apen, settApen] = useState(false)
+  // Menyen legges rett under toppen, enten topplinja over er synlig eller ikke.
+  const [menyTopp, settMenyTopp] = useState(0)
+  const headerRef = useRef<HTMLElement>(null)
+
+  function vekslMeny() {
+    settMenyTopp(headerRef.current?.getBoundingClientRect().bottom ?? 0)
+    settApen((a) => !a)
+  }
 
   // Lukk menyen med Esc, og hold siden bak i ro mens den er åpen.
   useEffect(() => {
@@ -39,7 +47,7 @@ export function Header() {
   const erAktiv = (href: string) => !href.includes('#') && (sti === href || sti.startsWith(`${href}/`))
 
   return (
-    <header className={styles.header}>
+    <header className={styles.header} ref={headerRef}>
       <div className={`ramme ${styles.rad}`}>
         <Link href="/" className={styles.logo} aria-label="Anker Solutions, til forsiden" onClick={() => settApen(false)}>
           <Logo />
@@ -83,7 +91,7 @@ export function Header() {
             className={styles.menyknapp}
             aria-expanded={apen}
             aria-controls="mobilmeny"
-            onClick={() => settApen((a) => !a)}
+            onClick={vekslMeny}
           >
             <span className={styles.menystreker} data-apen={apen} aria-hidden="true" />
             <span className={styles.menytekst}>{apen ? 'Lukk' : 'Meny'}</span>
@@ -91,7 +99,7 @@ export function Header() {
         </div>
       </div>
 
-      <div id="mobilmeny" className={styles.mobilmeny} hidden={!apen}>
+      <div id="mobilmeny" className={styles.mobilmeny} hidden={!apen} style={{ top: menyTopp }}>
         <nav aria-label="Meny">
           <ul role="list" className={styles.mobillenker}>
             {[{ href: '/', tekst: 'Forside' }, ...lenker, { href: '/leieliste', tekst: 'Leieliste' }].map((l) => (

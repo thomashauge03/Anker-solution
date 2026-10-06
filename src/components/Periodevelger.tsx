@@ -88,13 +88,11 @@ export function Periodevelger({
       </div>
       {visDogn && (
         <p className={styles.dogn} aria-live="polite">
-          {dogn ? (
+          {dogn && (
             <>
               <span className="mono">{flertall(dogn, 'døgn', 'døgn')}</span>
               {fra === til && <span className="dempet"> · samme dag regnes som ett døgn</span>}
             </>
-          ) : (
-            <span className="dempet">Velg datoer for å se pris for perioden.</span>
           )}
         </p>
       )}

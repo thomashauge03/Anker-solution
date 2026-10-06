@@ -140,6 +140,7 @@
 .mobilmeny {
   position: fixed;
   inset: var(--header-hoyde) 0 0;
+  border-top: 1px solid var(--svart);
   overflow-y: auto;
   padding: 8px var(--marg) 40px;
   background: var(--svart);

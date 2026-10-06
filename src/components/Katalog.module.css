@@ -13,6 +13,12 @@
   top: calc(var(--header-hoyde) + 24px);
   display: grid;
   gap: 32px;
+  min-width: 0;
+}
+
+/* Uten denne vokser kategoriraden på mobil i stedet for å scrolle. */
+.side > * {
+  min-width: 0;
 }
 
 .sidetittel {
@@ -205,6 +211,9 @@
   }
   .verktoy {
     grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .sok {
+    grid-column: 1 / -1;
   }
   .sortering {
     grid-column: 1 / 2;

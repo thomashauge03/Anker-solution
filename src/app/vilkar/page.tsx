@@ -57,7 +57,8 @@ const avsnitt: Avsnitt[] = [
             tillegg.
           </li>
           <li>
-            Levering og henting innen {firma.levering.radiusKm} km koster {firma.levering.prisInklMva} kr inkl. mva.
+            Levering og henting innen {firma.levering.radiusKm}&nbsp;km koster {firma.levering.prisInklMva}&nbsp;kr
+            inkl.&nbsp;mva.
             Lenger unna avtales pris i forespørselen.
           </li>
           <li>

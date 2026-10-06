@@ -34,7 +34,7 @@
 }
 
 .heroTittel {
-  font-size: clamp(2.75rem, 4.6vw, 4.75rem);
+  font-size: clamp(2.75rem, 5.2vw, 5.25rem);
   line-height: 0.92;
   font-weight: 820;
   font-variation-settings: 'wdth' 114;

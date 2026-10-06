@@ -21,6 +21,10 @@
   white-space: nowrap;
 }
 
+.resten {
+  white-space: pre;
+}
+
 .prikk {
   width: 6px;
   height: 6px;
@@ -47,8 +51,10 @@
   .epost {
     display: none;
   }
-  .rad p:first-child {
-    overflow: hidden;
-    text-overflow: ellipsis;
+}
+
+@media (max-width: 420px) {
+  .resten {
+    display: none;
   }
 }

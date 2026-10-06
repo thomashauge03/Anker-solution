@@ -9,6 +9,10 @@
   font-size: 0.9375rem;
 }
 
+.dogn:empty {
+  display: none;
+}
+
 .kompakt {
   gap: 0;
 }

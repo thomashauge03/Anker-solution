@@ -422,7 +422,7 @@ export function Kasse({ vipps, kort, avbrutt }: Props) {
               />
               <span className={styles.valgTekst}>
                 <strong>Levering og henting</strong>
-                <span>Innen {firma.levering.radiusKm} km fra lageret. Lenger unna? Send forespørsel.</span>
+                <span>Innen {firma.levering.radiusKm}&nbsp;km fra lageret. Lenger unna? Send forespørsel.</span>
               </span>
               <span className={styles.valgPris}>{visPris(firma.levering.prisInklMva)}</span>
             </label>

@@ -69,6 +69,46 @@
   font-size: 0.8125rem;
 }
 
+.fakta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  border: 1px solid var(--svart);
+  border-top: 0;
+}
+
+.fakta > div {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  padding: 14px 18px 16px;
+}
+
+.fakta > div + div {
+  border-left: 1px solid var(--svart);
+}
+
+.fakta dd {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+@media (max-width: 480px) {
+  .fakta > div {
+    padding: 10px 10px 12px;
+  }
+  .fakta dt {
+    font-size: 0.625rem;
+  }
+  .fakta dd {
+    font-size: 0.8125rem;
+    line-height: 1.35;
+  }
+  .bilde svg {
+    padding: 2% 8% 2%;
+  }
+}
+
 .infokolonne {
   display: grid;
   gap: 28px;

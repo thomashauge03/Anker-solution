@@ -118,7 +118,7 @@ export function Bestillingsboks({ slug, navn, dognpris, ukepris, antall, kunFore
       )}
       {kreverLevering && !kunForesporsel && (
         <p className={styles.merknad}>
-          Leveres og hentes av oss innen {firma.levering.radiusKm} km for <Pris kr={firma.levering.prisInklMva} />.
+          Leveres og hentes av oss innen {firma.levering.radiusKm}&nbsp;km for <Pris kr={firma.levering.prisInklMva} />.
         </p>
       )}
 

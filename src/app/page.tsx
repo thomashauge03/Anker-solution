@@ -48,7 +48,7 @@ export default function Forside() {
           <div>
             <dt className="etikett">Levering</dt>
             <dd>
-              <Pris kr={firma.levering.prisInklMva} /> <MvaTekst /> innen {firma.levering.radiusKm} km. Lenger unna
+              <Pris kr={firma.levering.prisInklMva} /> <MvaTekst /> innen {firma.levering.radiusKm}&nbsp;km. Lenger unna
               etter avtale.
             </dd>
           </div>
@@ -91,7 +91,7 @@ export default function Forside() {
                 </li>
                 <li>
                   <span>
-                    Levering innen {firma.levering.radiusKm} km: <Pris kr={firma.levering.prisInklMva} /> <MvaTekst />.
+                    Levering innen {firma.levering.radiusKm}&nbsp;km: <Pris kr={firma.levering.prisInklMva} /> <MvaTekst />.
                     Eller hent selv hos oss.
                   </span>
                 </li>
@@ -166,7 +166,7 @@ export default function Forside() {
             <span className={styles.stegNr}>03</span>
             <h3 className="underoverskrift">Hent eller få det levert</h3>
             <p>
-              Hent på lageret i {adresseLinje}, eller få det levert innen {firma.levering.radiusKm} km.
+              Hent på lageret i {adresseLinje}, eller få det levert innen {firma.levering.radiusKm}&nbsp;km.
             </p>
           </li>
           <li>

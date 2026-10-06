@@ -6,11 +6,11 @@
   --hull: var(--hvit);
   position: relative;
   display: grid;
-  grid-template-columns: 64px minmax(0, 1fr) minmax(0, 0.9fr) 120px 140px 40px;
+  grid-template-columns: 64px minmax(0, 1.6fr) minmax(0, 0.8fr) 110px 120px 40px;
   grid-template-areas: 'nr navn kort antall fra pil';
   align-items: center;
   gap: 0 24px;
-  min-height: 112px;
+  min-height: 104px;
   padding: 20px 8px;
   text-decoration: none;
   overflow: hidden;
@@ -29,7 +29,7 @@
 
 .navn {
   grid-area: navn;
-  font-size: clamp(1.75rem, 3.6vw, 3.25rem);
+  font-size: clamp(1.75rem, 3.15vw, 2.875rem);
   line-height: 0.95;
   font-weight: 800;
   font-variation-settings: 'wdth' 116;

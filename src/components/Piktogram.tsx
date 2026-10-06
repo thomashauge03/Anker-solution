@@ -107,11 +107,17 @@ const figurer: Record<PiktogramId, ReactNode> = {
   ),
   stangsag: (
     <>
-      <path d="M26 61 95 19" {...strek} strokeWidth="3" />
-      <path d="M11 69l14-10 6 7-14 9z" />
-      <path d="M31 58l6-4" {...strek} strokeWidth="6" />
-      <path d="M91 17l7-4 4 6-7 4z" />
-      <path d="M98 13l14-8 2 3-14 9z" />
+      {/* Liggende: batteri og håndtak bak, teleskopstang, sagehode foran. */}
+      <rect x="6" y="54" width="15" height="16" rx="2" />
+      <path d="M8 59h11M8 63h11" stroke={H} strokeWidth="1.3" />
+      <path d="M21 58h14v8H25l-4-3z" />
+      <path d="M26 66c0 4 3 6 7 6" {...strek} strokeWidth="2.5" />
+      <rect x="35" y="60" width="26" height="4.5" />
+      <rect x="61" y="61" width="25" height="2.8" />
+      <rect x="42" y="57.5" width="11" height="9.5" rx="3" />
+      <rect x="84" y="55" width="11" height="14" rx="2" />
+      <path d="M95 58.5l17 1.5a3 3 0 0 1 0 6l-17 1.5z" />
+      <path d="M97 62.8h14" stroke={H} strokeWidth="1" strokeDasharray="1.6 1.6" />
     </>
   ),
   flishugger: (
@@ -258,11 +264,14 @@ const figurer: Record<PiktogramId, ReactNode> = {
       <path d="M21 54 5 62" {...strek} strokeWidth="3" />
       <circle cx="4" cy="62.5" r="2.6" />
       <circle cx="12" cy="68" r="3.6" />
-      <rect x="20" y="50" width="78" height="6" />
-      <path d="M98 50l15 22h-5L96 56z" />
-      <path d="M24 50v-6M94 50v-6" {...strek} strokeWidth="2.5" strokeLinecap="butt" />
-      <Hjul x={55} y={64} r={8} />
-      <Hjul x={73} y={64} r={8} />
+      {/* Frontgrind, plan og rampe bak */}
+      <path d="M19 34h5v14h-5z" />
+      <path d="M19 37h5M19 41h5" stroke={H} strokeWidth="1" />
+      <rect x="19" y="48" width="80" height="8" />
+      <path d="M24 51.5h70" stroke={H} strokeWidth="1.2" />
+      <path d="M97 48h4l13 24h-6L95 56z" />
+      <Hjul x={54} y={64} r={8} />
+      <Hjul x={72} y={64} r={8} />
     </>
   ),
 }

@@ -58,7 +58,7 @@ export default async function Kontaktside({ searchParams }: PageProps<'/kontakt'
           <div className={styles.blokk}>
             <p className="etikett">Levering</p>
             <p>
-              Innen {firma.levering.radiusKm} km: <Pris kr={firma.levering.prisInklMva} /> <MvaTekst />. Lenger unna
+              Innen {firma.levering.radiusKm}&nbsp;km: <Pris kr={firma.levering.prisInklMva} /> <MvaTekst />. Lenger unna
               avtaler vi pris i forespørselen.
             </p>
           </div>

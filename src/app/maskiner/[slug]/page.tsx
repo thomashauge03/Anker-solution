@@ -6,6 +6,7 @@ import { Maskinkort } from '@/components/Maskinkort'
 import kortStil from '@/components/Maskinkort.module.css'
 import { Piktogram } from '@/components/Piktogram'
 import { MvaTekst, Pris } from '@/components/Pris'
+import { firma } from '@/data/firma'
 import { finnKategori, finnMaskin, maskiner } from '@/data/maskiner'
 import { dognTilUkepris } from '@/lib/pris'
 import styles from './maskin.module.css'
@@ -63,6 +64,32 @@ export default async function Maskinside({ params }: PageProps<'/maskiner/[slug]
               {maskin.nokkeltall[0]} · {maskin.nokkeltall[1]}
             </figcaption>
           </figure>
+          <dl className={styles.fakta}>
+            <div>
+              <dt className="etikett">Henting</dt>
+              <dd>
+                {maskin.kreverLevering
+                  ? 'Leveres av oss'
+                  : `Fra kl. ${firma.apningstider[0].tid.split('–')[0]}, ${firma.adresse.gate}`}
+              </dd>
+            </div>
+            <div>
+              <dt className="etikett">Levering</dt>
+              <dd>
+                {maskin.kunForesporsel ? (
+                  'Pris etter avstand'
+                ) : (
+                  <>
+                    <Pris kr={firma.levering.prisInklMva} /> innen {firma.levering.radiusKm}&nbsp;km
+                  </>
+                )}
+              </dd>
+            </div>
+            <div>
+              <dt className="etikett">Til utleie</dt>
+              <dd>{maskin.antall} stk.</dd>
+            </div>
+          </dl>
         </div>
 
         <div className={styles.infokolonne}>
@@ -118,10 +145,6 @@ export default async function Maskinside({ params }: PageProps<'/maskiner/[slug]
                 <dd className="mono">{verdi}</dd>
               </div>
             ))}
-            <div>
-              <dt>Antall til utleie</dt>
-              <dd className="mono">{maskin.antall} stk.</dd>
-            </div>
           </dl>
         </section>
 

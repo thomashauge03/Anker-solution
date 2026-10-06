@@ -15,5 +15,6 @@ export function Pris({ kr, className }: { kr: number; className?: string }) {
 
 export function MvaTekst() {
   const type = useKundetype()
-  return <>{type === 'bedrift' ? 'eks. mva' : 'inkl. mva'}</>
+  // Hardt mellomrom, så «eks.» og «mva» aldri havner på hver sin linje.
+  return <>{type === 'bedrift' ? 'eks. mva' : 'inkl. mva'}</>
 }
