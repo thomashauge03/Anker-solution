@@ -1,51 +1,5 @@
 .logo {
-  display: inline-flex;
-  align-items: stretch;
-  gap: 10px;
-  white-space: nowrap;
-}
-
-.anker {
-  font-size: 1.4375rem;
-  line-height: 0.8;
-  font-weight: 850;
-  font-variation-settings: 'wdth' 125;
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
-  padding-top: 2px;
-}
-
-.solutions {
-  display: flex;
-  align-items: center;
-  padding-left: 10px;
-  border-left: 1px solid currentColor;
-  font-family: var(--mono);
-  font-size: 0.625rem;
-  font-weight: 500;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-}
-
-@media (max-width: 520px) {
-  .logo {
-    gap: 8px;
-  }
-  .anker {
-    font-size: 1.1875rem;
-  }
-  .solutions {
-    padding-left: 8px;
-    font-size: 0.5625rem;
-    letter-spacing: 0.2em;
-  }
-}
-
-.stor .anker {
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-}
-
-.stor .solutions {
-  font-size: 0.8125rem;
-  padding-left: 14px;
+  display: block;
+  height: auto;
+  overflow: visible;
 }

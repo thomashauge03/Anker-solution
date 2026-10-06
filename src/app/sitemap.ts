@@ -1,7 +1,8 @@
 import type { MetadataRoute } from 'next'
 import { maskiner } from '@/data/maskiner'
+import { nettstedBase } from '@/lib/miljo'
 
-const base = (process.env.NETTSTED_URL ?? 'http://localhost:5180').replace(/\/+$/, '')
+const base = nettstedBase() ?? 'http://localhost:5180'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

@@ -19,6 +19,19 @@
   padding-block: 8px;
 }
 
+/* Liggende logo: viewBox 3280 × 720. */
+.logoBilde {
+  width: 191px;
+  height: 42px;
+}
+
+@media (max-width: 520px) {
+  .logoBilde {
+    width: 141px;
+    height: 31px;
+  }
+}
+
 .nav {
   margin-left: clamp(16px, 3vw, 48px);
 }
@@ -32,7 +45,7 @@
   display: block;
   padding: 6px 0;
   font-size: 0.9375rem;
-  font-weight: 560;
+  font-weight: 400;
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: border-color var(--rask);
@@ -59,7 +72,7 @@
   height: 36px;
   border: 1px solid var(--svart);
   font-size: 0.875rem;
-  font-weight: 620;
+  font-weight: 500;
   text-decoration: none;
   transition:
     background-color var(--rask),
@@ -169,8 +182,7 @@
   justify-content: space-between;
   padding: 18px 0;
   font-size: 1.75rem;
-  font-weight: 750;
-  font-variation-settings: 'wdth' 112;
+  font-weight: 500;
   letter-spacing: -0.01em;
   text-decoration: none;
 }

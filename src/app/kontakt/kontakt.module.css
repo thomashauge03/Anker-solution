@@ -34,8 +34,7 @@
 
 .telefon {
   font-size: clamp(2rem, 3.4vw, 2.75rem);
-  font-weight: 800;
-  font-variation-settings: 'wdth' 114;
+  font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1;
   text-decoration: none;

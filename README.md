@@ -70,7 +70,7 @@ Se `.env.example`. Lokalt legges de i `.env.local`, på Vercel under
 | `VIPPS_CLIENT_ID`, `VIPPS_CLIENT_SECRET`, `VIPPS_SUBSCRIPTION_KEY`, `VIPPS_MSN`, `VIPPS_MILJO` | Vipps (ePayment API) |
 | `STRIPE_SECRET_KEY` | Kortbetaling (Stripe Checkout) |
 | `RESEND_API_KEY`, `VARSEL_FRA`, `VARSEL_TIL` | E-post |
-| `TESTMODUS=på` | Testmodus i produksjon, f.eks. for å vise siden før avtalene er klare |
+| `TESTMODUS=1` | Demo i produksjon: simulert betaling, e-post til loggen, «Demo»-bånd og ingen indeksering. Fjernes ved lansering. |
 
 Lag `ORDRE_NOKKEL` slik:
 

@@ -1,6 +1,8 @@
 /* Anker Solutions — designsystem.
-   Svart og hvitt, hårfine linjer og tall i monospace: et teknisk datablad
-   heller enn en mal. Ingen avrundede hjørner, ingen skygger, ingen
+   Svart og hvitt, hårfine linjer og én skrift: Hanken Grotesk, valgt fordi
+   den ligger nærmest skriften på nbim.no (NorgesBank, som ikke kan lisensieres).
+   Overskrifter i 500 med stram sperring, brødtekst i 400, ingresser i 300 —
+   samme rolige skala som der. Ingen avrundede hjørner, ingen skygger, ingen
    gradienter. Den eneste fargen er Vipps-knappen og feilmeldinger. */
 
 :root {
@@ -16,8 +18,9 @@
   --vipps: #ff5b24;
   --vipps-hover: #eb4d17;
 
-  --skrift: var(--font-archivo), 'Helvetica Neue', Arial, sans-serif;
-  --mono: var(--font-mono), ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --skrift: var(--font-hanken), 'Helvetica Neue', Arial, sans-serif;
+  /* Etiketter, koder og tall bruker samme skrift, med tabelltall. */
+  --mono: var(--skrift);
 
   --bredde: 1440px;
   --marg: clamp(16px, 3.2vw, 40px);
@@ -48,8 +51,9 @@ body {
   color: var(--svart);
   font-family: var(--skrift);
   font-size: 1.0625rem;
+  font-weight: 400;
   line-height: 1.55;
-  font-variation-settings: 'wdth' 100;
+  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -135,39 +139,36 @@ button {
 
 .display {
   font-size: clamp(3rem, 7.4vw, 7.25rem);
-  line-height: 0.9;
-  font-weight: 800;
-  font-variation-settings: 'wdth' 118;
-  letter-spacing: -0.025em;
+  line-height: 0.95;
+  font-weight: 500;
+  letter-spacing: -0.035em;
 }
 
 .tittel {
   font-size: clamp(2.375rem, 5vw, 4.5rem);
-  line-height: 0.95;
-  font-weight: 800;
-  font-variation-settings: 'wdth' 116;
-  letter-spacing: -0.02em;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: -0.03em;
 }
 
 .overskrift {
   font-size: clamp(1.75rem, 3vw, 2.75rem);
-  line-height: 1;
-  font-weight: 750;
-  font-variation-settings: 'wdth' 112;
-  letter-spacing: -0.015em;
+  line-height: 1.05;
+  font-weight: 500;
+  letter-spacing: -0.02em;
 }
 
 .underoverskrift {
   font-size: 1.375rem;
-  line-height: 1.15;
-  font-weight: 700;
-  font-variation-settings: 'wdth' 108;
-  letter-spacing: -0.005em;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .ingress {
-  font-size: clamp(1.125rem, 1.5vw, 1.3125rem);
-  line-height: 1.5;
+  font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+  font-weight: 300;
+  line-height: 1.45;
   max-width: 40ch;
 }
 
@@ -182,7 +183,7 @@ button {
 
 .mono {
   font-family: var(--mono);
-  font-feature-settings: 'zero' 0;
+  font-variant-numeric: tabular-nums;
 }
 
 .dempet {
@@ -213,7 +214,7 @@ button {
   padding: 12px 16px;
   background: var(--svart);
   color: var(--hvit);
-  font-weight: 600;
+  font-weight: 500;
   transform: translateY(-200%);
 }
 
@@ -267,8 +268,7 @@ button {
   background: var(--knapp-bg);
   color: var(--knapp-fg);
   font-size: 0.9375rem;
-  font-weight: 650;
-  font-variation-settings: 'wdth' 106;
+  font-weight: 500;
   letter-spacing: 0.01em;
   line-height: 1.2;
   text-decoration: none;
@@ -352,7 +352,7 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: none;
   border-bottom: 1px solid currentColor;
   padding-bottom: 2px;
@@ -452,7 +452,7 @@ select.inndata {
   color: var(--hvit);
   font-family: var(--mono);
   font-size: 0.6875rem;
-  font-weight: 600;
+  font-weight: 500;
   transform: translateY(2px);
 }
 

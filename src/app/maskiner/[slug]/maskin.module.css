@@ -151,8 +151,7 @@
 .priser dd {
   margin: 0;
   font-size: clamp(1.75rem, 2.6vw, 2.25rem);
-  font-weight: 800;
-  font-variation-settings: 'wdth' 112;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
   line-height: 1;
@@ -185,8 +184,7 @@
   margin-bottom: 4px;
   border-bottom: 1px solid var(--svart);
   font-size: 1.25rem;
-  font-weight: 750;
-  font-variation-settings: 'wdth' 110;
+  font-weight: 500;
 }
 
 .spesifikasjoner {
@@ -239,7 +237,7 @@
   background: transparent;
   font-family: var(--mono);
   font-size: 0.625rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 /* div.-prefikset vinner over .rutenett fra Maskinkort uansett lasterekkefølge. */

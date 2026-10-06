@@ -9,7 +9,7 @@ export function Footer() {
     <footer className={styles.footer}>
       <div className={`ramme ${styles.rutenett}`}>
         <div className={styles.merke}>
-          <Logo />
+          <Logo variant="hel" className={styles.logo} />
           <p className={styles.slagord}>
             Utleie av maskiner og verktøy til privatpersoner og bedrifter.
           </p>

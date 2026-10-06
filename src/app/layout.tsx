@@ -1,32 +1,27 @@
 import type { Metadata, Viewport } from 'next'
-import { Archivo, IBM_Plex_Mono } from 'next/font/google'
+import { Hanken_Grotesk } from 'next/font/google'
 import type { ReactNode } from 'react'
+import { Demobaand } from '@/components/Demobaand'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { Topplinje } from '@/components/Topplinje'
 import { firma } from '@/data/firma'
+import { erDemo, nettstedBase } from '@/lib/miljo'
 import './globals.css'
 
-// next/font laster ned skriftene ved bygging og serverer dem selv. Ingen
-// forespørsler går til Google fra besøkendes nettleser.
-const archivo = Archivo({
+// Hanken Grotesk er den fritt lisensierte skriften som ligger nærmest
+// NorgesBank-skriften på nbim.no. next/font laster den ned ved bygging og
+// serverer den selv, så ingen forespørsler går til Google fra nettleseren.
+const hanken = Hanken_Grotesk({
   subsets: ['latin'],
-  axes: ['wdth'],
-  variable: '--font-archivo',
+  variable: '--font-hanken',
   display: 'swap',
 })
-
-const mono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-mono',
-  display: 'swap',
-})
-
-const nettsted = process.env.NETTSTED_URL ?? 'http://localhost:5180'
 
 export const metadata: Metadata = {
-  metadataBase: new URL(nettsted),
+  metadataBase: new URL(nettstedBase() ?? 'http://localhost:5180'),
+  // En demo med plassholdere skal ikke dukke opp i søk under firmaets navn.
+  robots: erDemo ? { index: false, follow: false } : undefined,
   title: {
     default: `${firma.navn} — utleie av maskiner og verktøy`,
     template: `%s · ${firma.navn}`,
@@ -46,11 +41,12 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="nb" className={`${archivo.variable} ${mono.variable}`}>
+    <html lang="nb" className={hanken.variable}>
       <body>
         <a href="#innhold" className="hopp-til-innhold">
           Hopp til innholdet
         </a>
+        {erDemo && <Demobaand />}
         <Topplinje />
         <Header />
         <main id="innhold">{children}</main>

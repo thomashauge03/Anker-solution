@@ -1,0 +1,17 @@
+.baand {
+  background: repeating-linear-gradient(-45deg, var(--svart) 0 10px, #2a2a2a 10px 20px);
+  color: var(--hvit);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+.baand p {
+  padding-block: 9px;
+}
+
+.baand strong {
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}

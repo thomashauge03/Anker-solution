@@ -50,7 +50,7 @@ export function Header() {
     <header className={styles.header} ref={headerRef}>
       <div className={`ramme ${styles.rad}`}>
         <Link href="/" className={styles.logo} aria-label="Anker Solutions, til forsiden" onClick={() => settApen(false)}>
-          <Logo />
+          <Logo variant="liggende" dekorativ className={styles.logoBilde} />
         </Link>
 
         <nav aria-label="Hovedmeny" className={styles.nav}>

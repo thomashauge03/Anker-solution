@@ -39,6 +39,12 @@
   gap: 20px;
 }
 
+/* Hel logo: viewBox 1396 × 932. */
+.logo {
+  width: 200px;
+  height: 134px;
+}
+
 .slagord {
   max-width: 28ch;
   color: rgb(255 255 255 / 0.78);

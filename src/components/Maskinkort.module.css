@@ -44,8 +44,7 @@
 .navn {
   font-size: 1.1875rem;
   line-height: 1.15;
-  font-weight: 700;
-  font-variation-settings: 'wdth' 108;
+  font-weight: 500;
   letter-spacing: -0.005em;
 }
 
@@ -91,8 +90,7 @@
 
 .belop {
   font-size: 1.375rem;
-  font-weight: 750;
-  font-variation-settings: 'wdth' 110;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
   line-height: 1.1;

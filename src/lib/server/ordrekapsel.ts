@@ -21,7 +21,7 @@ export const KAPSEL_LEVETID_S = 60 * 60
 let midlertidigNokkel: Buffer | null = null
 
 function nokkel(): Buffer {
-  const satt = process.env.ORDRE_NOKKEL
+  const satt = process.env.ORDRE_NOKKEL?.trim()
   if (satt) {
     const n = Buffer.from(satt, 'base64')
     if (n.length !== 32) throw new Error('ORDRE_NOKKEL må være 32 byte i base64')

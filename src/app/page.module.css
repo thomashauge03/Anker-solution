@@ -36,8 +36,7 @@
 .heroTittel {
   font-size: clamp(2.75rem, 5.2vw, 5.25rem);
   line-height: 0.92;
-  font-weight: 820;
-  font-variation-settings: 'wdth' 114;
+  font-weight: 500;
   letter-spacing: -0.03em;
   margin-top: auto;
 }
@@ -160,8 +159,7 @@
 .veiTittel {
   font-size: clamp(2.125rem, 3.7vw, 3.5rem);
   line-height: 0.95;
-  font-weight: 800;
-  font-variation-settings: 'wdth' 114;
+  font-weight: 500;
   letter-spacing: -0.02em;
 }
 

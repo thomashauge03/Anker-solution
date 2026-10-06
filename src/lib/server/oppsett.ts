@@ -1,4 +1,5 @@
 import 'server-only'
+import { erPaa, nettstedBase } from '@/lib/miljo'
 
 // Leser miljøvariablene ett sted, så resten av koden slipper å vite navnene.
 
@@ -14,7 +15,7 @@ const env = process.env
  * betaling av, og kunden kan bare sende forespørsel.
  */
 export function erTestmodus(): boolean {
-  return env.NODE_ENV !== 'production' || env.TESTMODUS === 'på'
+  return env.NODE_ENV !== 'production' || erPaa(env.TESTMODUS)
 }
 
 const testmodus = erTestmodus
@@ -56,8 +57,8 @@ export function epostOppsett() {
  * Host-headeren i produksjon, siden den kan forfalskes.
  */
 export function nettstedUrl(foresporselUrl: string): string {
-  const satt = env.NETTSTED_URL ?? (env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${env.VERCEL_PROJECT_PRODUCTION_URL}` : '')
-  if (satt) return satt.replace(/\/+$/, '')
+  const satt = nettstedBase()
+  if (satt) return satt
   if (env.NODE_ENV === 'production') throw new Error('NETTSTED_URL mangler')
   return new URL(foresporselUrl).origin
 }
