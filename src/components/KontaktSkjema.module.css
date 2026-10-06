@@ -138,6 +138,15 @@
   font-size: 0.875rem;
 }
 
+@media (pointer: coarse) {
+  .kundetypeValg span {
+    height: 44px;
+  }
+  .gjelder button {
+    min-height: 44px;
+  }
+}
+
 @media (max-width: 560px) {
   .felter {
     grid-template-columns: minmax(0, 1fr);

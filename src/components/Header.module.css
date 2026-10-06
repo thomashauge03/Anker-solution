@@ -260,3 +260,16 @@
     display: none !important;
   }
 }
+
+@media (pointer: coarse) {
+  .leieliste,
+  .menyknapp {
+    height: 44px;
+  }
+  .menyknapp {
+    min-width: 44px;
+  }
+  .teller {
+    min-width: 40px;
+  }
+}

@@ -444,6 +444,20 @@
   margin-top: 8px;
 }
 
+@media (pointer: coarse) {
+  .linjeAntall {
+    grid-template-columns: 44px 44px 44px;
+    height: 44px;
+  }
+  .fjern {
+    min-height: 44px;
+    padding: 0 8px;
+  }
+  .kundetypeValg span {
+    height: 44px;
+  }
+}
+
 @media (max-width: 1080px) {
   .kasse {
     grid-template-columns: minmax(0, 1fr);

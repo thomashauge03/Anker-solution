@@ -53,6 +53,13 @@
   z-index: 1;
 }
 
+@media (pointer: coarse) {
+  .alternativ span {
+    height: 44px;
+    padding: 0 16px;
+  }
+}
+
 /* På svart bakgrunn (mobilmeny) */
 .mork {
   border-color: var(--hvit);

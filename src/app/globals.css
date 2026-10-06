@@ -549,6 +549,22 @@ select.inndata {
   background: var(--flate);
 }
 
+/* ---------- Berøringsskjerm ---------- */
+
+/* Trykkflater på minst 44 × 44 px der fingeren er pekeren. */
+@media (pointer: coarse) {
+  .knapp {
+    min-height: 52px;
+  }
+  .avkrysning {
+    grid-template-columns: 26px 1fr;
+  }
+  .avkrysning input {
+    width: 26px;
+    height: 26px;
+  }
+}
+
 /* ---------- Innlasting ---------- */
 
 @keyframes opp {

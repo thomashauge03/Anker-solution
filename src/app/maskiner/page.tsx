@@ -26,7 +26,10 @@ export default async function Maskinside({ searchParams }: PageProps<'/maskiner'
           eks.&nbsp;mva.
         </p>
       </header>
+      {/* Nøkkelen gjør at en lenke til et annet filter starter katalogen på
+          nytt, i stedet for å beholde det forrige. */}
       <Katalog
+        key={`${kategori ?? ''}|${sok}`}
         startKategori={kategorier.some((k) => k.id === kategori) ? kategori : null}
         startSok={sok}
       />
