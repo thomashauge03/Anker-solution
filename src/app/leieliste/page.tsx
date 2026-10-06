@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { connection } from 'next/server'
 import { Kasse } from '@/components/Kasse'
 import { kortModus, vippsModus } from '@/lib/server/oppsett'
 import styles from './leieliste.module.css'
@@ -8,8 +9,10 @@ export const metadata: Metadata = {
   robots: { index: false },
 }
 
-export default async function Leielisteside({ searchParams }: PageProps<'/leieliste'>) {
-  const { avbrutt } = await searchParams
+export default async function Leielisteside() {
+  // Lages ved hver forespørsel, så betalingsvalgene følger miljøet. Kassen
+  // leser selv steget og «avbrutt» fra adressen.
+  await connection()
   return (
     <div className={`ramme ${styles.side}`}>
       <header className="sidehode">
@@ -17,7 +20,7 @@ export default async function Leielisteside({ searchParams }: PageProps<'/leieli
         <h1 className="tittel">Leieliste</h1>
         <p className="ingress">Se over utstyret, velg periode, og betal eller send en forespørsel.</p>
       </header>
-      <Kasse vipps={vippsModus()} kort={kortModus()} avbrutt={avbrutt === '1'} />
+      <Kasse vipps={vippsModus()} kort={kortModus()} />
     </div>
   )
 }

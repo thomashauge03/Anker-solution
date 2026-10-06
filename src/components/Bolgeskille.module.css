@@ -1,0 +1,13 @@
+.skille {
+  color: var(--svart);
+}
+
+.skille svg {
+  display: block;
+  width: 100%;
+  height: clamp(40px, 4.4vw, 64px);
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+}

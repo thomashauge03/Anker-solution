@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
+import { Bolgeskille } from '@/components/Bolgeskille'
 import { Katalog } from '@/components/Katalog'
+import { Sidehode } from '@/components/Sidehode'
 import { kategorier, maskiner } from '@/data/maskiner'
 
 export const metadata: Metadata = {
@@ -15,13 +17,12 @@ export default async function Maskinside({ searchParams }: PageProps<'/maskiner'
 
   return (
     <>
-      <header className="ramme sidehode">
-        <p className="etikett">Utvalg</p>
-        <h1 className="tittel">Maskiner</h1>
+      <Sidehode etikett="Utvalg" tittel="Maskiner" form={11}>
         <p className="ingress">
           {maskiner.length} maskiner og verktøy. Pris per døgn — fra fire døgn betaler du ukepris.
         </p>
-      </header>
+      </Sidehode>
+      <Bolgeskille form={3} />
       {/* Nøkkelen gjør at en lenke til et annet filter starter katalogen på
           nytt, i stedet for å beholde det forrige. */}
       <Katalog

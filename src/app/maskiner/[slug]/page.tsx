@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Bestillingsboks } from '@/components/Bestillingsboks'
+import { Bolgeskille } from '@/components/Bolgeskille'
 import { Maskinkort } from '@/components/Maskinkort'
 import { Piktogram } from '@/components/Piktogram'
 import { MvaTekst, Pris } from '@/components/Pris'
@@ -125,6 +126,8 @@ export default async function Maskinside({ params }: PageProps<'/maskiner/[slug]
         </div>
       </div>
 
+      <Bolgeskille form={4} />
+
       <div className="ramme blokk">
         <p className="blokk-etikett">Detaljer</p>
         <div className={`blokk-innhold ${styles.detaljer}`}>
@@ -174,19 +177,22 @@ export default async function Maskinside({ params }: PageProps<'/maskiner/[slug]
       </div>
 
       {relaterte.length > 0 && (
-        <section className="ramme blokk" aria-labelledby="passer-med">
-          <p className="blokk-etikett">Mer utstyr</p>
-          <div className="blokk-innhold">
-            <h2 id="passer-med" className="overskrift">
-              Passer sammen med
-            </h2>
-            <div className={styles.relaterte}>
-              {relaterte.map((m) => (
-                <Maskinkort key={m.slug} maskin={m} radPaMobil />
-              ))}
+        <>
+          <Bolgeskille form={5} />
+          <section className="ramme blokk" aria-labelledby="passer-med">
+            <p className="blokk-etikett">Mer utstyr</p>
+            <div className="blokk-innhold">
+              <h2 id="passer-med" className="overskrift">
+                Passer sammen med
+              </h2>
+              <div className={styles.relaterte}>
+                {relaterte.map((m) => (
+                  <Maskinkort key={m.slug} maskin={m} radPaMobil />
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </>
       )}
     </>
   )

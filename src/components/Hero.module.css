@@ -1,21 +1,35 @@
 .hero {
-  display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
-  gap: 48px clamp(40px, 7vw, 120px);
-  align-items: end;
-  padding-top: clamp(48px, 8vw, 120px);
-  padding-bottom: clamp(56px, 8vw, 120px);
+  padding-bottom: clamp(40px, 5vw, 72px);
+}
+
+/* Full bredde, så bølgestrekene går helt ut til kanten. */
+.topp {
+  position: relative;
+  overflow: hidden;
+}
+
+.innhold {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  /* svh: høyden står stille når adresselinjen på mobil glir inn og ut. */
+  min-height: clamp(520px, 72vh, 780px);
+  min-height: clamp(520px, 72svh, 780px);
+  padding-block: clamp(48px, 7vw, 104px);
 }
 
 .tekst {
   display: grid;
-  gap: 24px;
+  gap: 28px;
   justify-items: start;
+  max-width: 960px;
   animation: opp 700ms cubic-bezier(0.2, 0.7, 0, 1) both;
 }
 
+/* «Lei maskiner / og utstyr» på to jevne linjer i alle bredder. */
 .tittel {
-  max-width: 16ch;
+  text-wrap: balance;
 }
 
 .knapper {
@@ -23,57 +37,64 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 16px 28px;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
-/* Fire fakta i et 2 × 2-rutenett med hårfine skiller. */
+/* Fire fakta på én rad, med svart strek over og hårfine skiller. */
 .fakta {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   margin: 0;
   border-top: 1px solid var(--svart);
-  animation: opp 700ms cubic-bezier(0.2, 0.7, 0, 1) both;
-  animation-delay: 120ms;
 }
 
 .fakta > div {
   display: grid;
   align-content: start;
-  gap: 6px;
-  padding: 20px 20px 24px 0;
-  border-bottom: 1px solid var(--linje);
+  gap: 8px;
+  padding: 24px 24px 4px 0;
 }
 
-.fakta > div:nth-child(even) {
-  padding-left: 20px;
-  padding-right: 0;
+.fakta > div + div {
+  padding-left: 24px;
   border-left: 1px solid var(--linje);
 }
 
 .fakta dt {
-  font-size: clamp(1.375rem, 2vw, 1.75rem);
-  font-weight: 500;
+  font-family: var(--overskrift-skrift);
+  font-size: clamp(1.5rem, 2.3vw, 2.25rem);
+  font-weight: 800;
+  font-stretch: 112%;
   letter-spacing: -0.02em;
-  line-height: 1.1;
+  line-height: 1;
 }
 
 .fakta dd {
   margin: 0;
-  font-size: 0.875rem;
+  max-width: 28ch;
+  font-size: 0.9375rem;
   color: var(--dempet);
 }
 
-@media (max-width: 960px) {
-  .hero {
-    grid-template-columns: minmax(0, 1fr);
+@media (max-width: 860px) {
+  .innhold {
+    min-height: 0;
+    padding-bottom: 8px;
   }
-}
-
-@media (max-width: 420px) {
+  .fakta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .fakta > div {
-    padding-right: 12px;
+    padding: 20px 12px 20px 0;
+  }
+  .fakta > div:nth-child(odd) {
+    padding-left: 0;
+    border-left: 0;
   }
   .fakta > div:nth-child(even) {
-    padding-left: 12px;
+    padding-left: 16px;
+  }
+  .fakta > div:nth-child(n + 3) {
+    border-top: 1px solid var(--linje);
   }
 }

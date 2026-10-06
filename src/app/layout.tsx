@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Hanken_Grotesk } from 'next/font/google'
+import { Archivo, Hanken_Grotesk } from 'next/font/google'
 import type { ReactNode } from 'react'
 import { Demobaand } from '@/components/Demobaand'
 import { Footer } from '@/components/Footer'
@@ -14,6 +14,15 @@ import './globals.css'
 const hanken = Hanken_Grotesk({
   subsets: ['latin'],
   variable: '--font-hanken',
+  display: 'swap',
+})
+
+// Archivo i bred, tung utgave gir blokkete overskrifter. Breddeaksen må
+// lastes eksplisitt; ellers følger bare vekten med.
+const archivo = Archivo({
+  subsets: ['latin'],
+  variable: '--font-archivo',
+  axes: ['wdth'],
   display: 'swap',
 })
 
@@ -40,7 +49,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="nb" className={hanken.variable}>
+    <html lang="nb" className={`${hanken.variable} ${archivo.variable}`}>
       <body>
         <a href="#innhold" className="hopp-til-innhold">
           Hopp til innholdet

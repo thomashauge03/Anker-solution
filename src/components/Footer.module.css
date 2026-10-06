@@ -17,13 +17,20 @@
   outline-color: var(--hvit);
 }
 
+/* Samme bølgestreker som mellom seksjonene, i hvitt. */
+.footer .bolge {
+  padding-top: clamp(28px, 3vw, 44px);
+  color: var(--hvit);
+  opacity: 0.85;
+}
+
 .rutenett {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
   gap: 48px 64px;
-  padding-block: clamp(56px, 7vw, 96px);
+  padding-block: clamp(40px, 5vw, 72px) clamp(56px, 7vw, 96px);
 }
 
 /* Hel logo: viewBox 1396 × 932. */

@@ -1,0 +1,82 @@
+/* Dekker hele toppen bak teksten på stor skjerm. */
+.bolger {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Strekene blekner mot venstre, så teksten står fritt. */
+.flate {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 34%, rgba(0, 0, 0, 0.35) 50%, #000 72%);
+  mask-image: linear-gradient(90deg, transparent 0%, transparent 34%, rgba(0, 0, 0, 0.35) 50%, #000 72%);
+  animation: frem 1400ms ease-out both;
+}
+
+.flate canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.pause {
+  position: absolute;
+  right: max(var(--marg), calc((100% - var(--bredde)) / 2 + var(--marg)));
+  bottom: 24px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--linje);
+  border-radius: 50%;
+  background: var(--hvit);
+  color: var(--svart);
+  pointer-events: auto;
+  transition: border-color 200ms;
+}
+
+.pause:hover {
+  border-color: var(--svart);
+}
+
+@keyframes frem {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Middels bredde: teksten tar en større del, så strekene starter lenger ute. */
+@media (max-width: 1200px) {
+  .flate {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 46%, rgba(0, 0, 0, 0.35) 60%, #000 80%);
+    mask-image: linear-gradient(90deg, transparent 0%, transparent 46%, rgba(0, 0, 0, 0.35) 60%, #000 80%);
+  }
+}
+
+/* På smal skjerm ligger båndet under teksten i stedet for bak den. */
+@media (max-width: 860px) {
+  .bolger {
+    position: relative;
+    inset: auto;
+    height: 200px;
+  }
+  .flate {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .pause {
+    bottom: 8px;
+  }
+}
+
+@media (pointer: coarse) {
+  .pause {
+    width: 44px;
+    height: 44px;
+  }
+}

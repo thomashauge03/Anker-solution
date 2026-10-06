@@ -1,4 +1,5 @@
 .katalog {
+  padding-top: clamp(24px, 3vw, 40px);
   padding-bottom: clamp(64px, 9vw, 128px);
 }
 

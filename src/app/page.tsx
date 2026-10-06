@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Bolgeskille } from '@/components/Bolgeskille'
 import { Hero } from '@/components/Hero'
 import { Kategoriindeks } from '@/components/Kategoriindeks'
 import { Maskinkort } from '@/components/Maskinkort'
@@ -13,8 +14,8 @@ const steg = [
     tekst: 'Pris per døgn. Leier du fire døgn eller mer, betaler du ukepris.',
   },
   {
-    tittel: 'Betal eller send forespørsel',
-    tekst: 'Betal med Vipps eller kort, eller send en forespørsel om store maskiner, fører og levering.',
+    tittel: 'Gå gjennom kassen',
+    tekst: 'Ett steg om gangen. Betal med Vipps eller kort, eller send en forespørsel om store maskiner og fører.',
   },
   {
     tittel: 'Hent eller få det levert',
@@ -29,6 +30,7 @@ export default function Forside() {
   return (
     <>
       <Hero />
+      <Bolgeskille form={1} />
 
       <section className="ramme blokk" aria-labelledby="utvalget">
         <p className="blokk-etikett">Utvalg</p>
@@ -45,23 +47,27 @@ export default function Forside() {
         </div>
       </section>
 
-      <section id="slik-leier-du" className="ramme blokk" aria-labelledby="slik-tittel">
-        <p className="blokk-etikett">Slik leier du</p>
-        <div className="blokk-innhold">
-          <h2 id="slik-tittel" className="overskrift">
-            Fra bestilling til henting
-          </h2>
-          <ol role="list" className={styles.steg}>
-            {steg.map((s, i) => (
-              <li key={s.tittel}>
-                <span className={styles.stegNr}>{String(i + 1).padStart(2, '0')}</span>
-                <h3 className={styles.stegTittel}>{s.tittel}</h3>
-                <p className={styles.stegTekst}>{s.tekst}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
+      <div className="mork">
+        <section id="slik-leier-du" className="ramme blokk" aria-labelledby="slik-tittel">
+          <p className="blokk-etikett">Slik leier du</p>
+          <div className="blokk-innhold">
+            <h2 id="slik-tittel" className="overskrift">
+              Fra bestilling til henting
+            </h2>
+            <ol role="list" className={styles.steg}>
+              {steg.map((s, i) => (
+                <li key={s.tittel}>
+                  <span className={styles.stegNr} aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <h3 className={styles.stegTittel}>{s.tittel}</h3>
+                  <p className={styles.stegTekst}>{s.tekst}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      </div>
 
       <section className="ramme blokk" aria-labelledby="ofte-leid">
         <p className="blokk-etikett">Populært</p>
@@ -82,6 +88,8 @@ export default function Forside() {
         </div>
       </section>
 
+      <Bolgeskille form={2} />
+
       <section className="ramme blokk" aria-labelledby="kontakt-tittel">
         <p className="blokk-etikett">Kontakt</p>
         <div className={`blokk-innhold ${styles.kontakt}`}>
@@ -95,7 +103,7 @@ export default function Forside() {
           </div>
           <div className={styles.kontaktKnapper}>
             <Link href="/kontakt" className="knapp">
-              Send forespørsel <Pil />
+              Spør oss <Pil />
             </Link>
             <a href={`tel:${firma.telefon}`} className="knapp knapp--omriss">
               Ring {firma.telefonVisning}

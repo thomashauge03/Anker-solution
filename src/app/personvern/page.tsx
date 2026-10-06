@@ -138,7 +138,8 @@ export default function Personvernside() {
   return (
     <Dokument
       etikett="Personvern"
-      tittel="Personvernerklæring"
+      // Myk bindestrek: ordet deles som «Personvern-/erklæring» på smal skjerm.
+      tittel={'Personvern­erklæring'}
       ingress={<p>Vi samler inn så lite som mulig, og bare det vi trenger for å leie ut utstyr til deg.</p>}
       oppdatert="6. oktober 2026"
       merknad={

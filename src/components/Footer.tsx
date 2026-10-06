@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { adresseLinje, firma } from '@/data/firma'
+import { Bolgeskille } from './Bolgeskille'
 import { Logo } from './Logo'
 import styles from './Footer.module.css'
 
@@ -8,6 +9,7 @@ export function Footer() {
   const aapne = firma.apningstider.filter((a) => a.tid !== 'Stengt')
   return (
     <footer className={styles.footer}>
+      <Bolgeskille form={9} className={styles.bolge} />
       <div className={`ramme ${styles.rutenett}`}>
         <Logo variant="hel" className={styles.logo} />
 

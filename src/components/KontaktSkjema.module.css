@@ -1,8 +1,6 @@
 .skjema {
   display: grid;
   gap: 24px;
-  padding-top: 24px;
-  border-top: 1px solid var(--svart);
 }
 
 .toppfeil {

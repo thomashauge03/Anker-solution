@@ -1,0 +1,38 @@
+.topp {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Båndet fyller høyre del ut til kanten og blekner inn mot teksten. */
+.felt {
+  position: absolute;
+  top: 12%;
+  bottom: 6%;
+  right: 0;
+  width: 58%;
+  color: var(--svart);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.5) 22%, #000 48%);
+  mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.5) 22%, #000 48%);
+  pointer-events: none;
+}
+
+.hode {
+  position: relative;
+}
+
+.tekst {
+  display: grid;
+  gap: 20px;
+  justify-items: start;
+  max-width: 640px;
+}
+
+.smal {
+  max-width: 860px;
+}
+
+@media (max-width: 860px) {
+  .felt {
+    display: none;
+  }
+}

@@ -1,113 +1,76 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
-import { adresseLinje, firma } from '@/data/firma'
-import { finnMaskin, type Maskin } from '@/data/maskiner'
-import { formaterPeriode } from '@/lib/dato'
-import { formaterMobil, kroner, kronerFraOre } from '@/lib/format'
-import { leieliste, useErKlient, useLeieliste, type Leieliste } from '@/lib/leieliste'
+import { useSearchParams } from 'next/navigation'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { firma } from '@/data/firma'
+import { finnMaskin } from '@/data/maskiner'
+import { kroner } from '@/lib/format'
+import { leieliste, useErKlient, useLeieliste } from '@/lib/leieliste'
 import { beregnBestilling, eksMvaOre } from '@/lib/pris'
+import { starterForAngrefrist } from '@/lib/regler'
+import { Betalingsvalg, Oversikt, Totalboks } from './kasse/Bekreftelse'
+import { ForesporselSendt } from './kasse/ForesporselSendt'
+import { Fremdrift } from './kasse/Fremdrift'
+import { Kundeopplysninger } from './kasse/Kundeopplysninger'
+import { Leveringsvalg } from './kasse/Leveringsvalg'
+import { Sammendrag, Sumlinje } from './kasse/Sammendrag'
 import {
-  erGyldigOrgnr,
-  erGyldigTelefon,
-  normaliserTelefon,
-  serUtSomEpost,
-  starterForAngrefrist,
-} from '@/lib/regler'
+  feilISteg,
+  feltId,
+  feltrekkefolge,
+  forsteUferdige,
+  harFeil,
+  lesSteg,
+  sjekk,
+  stegForFelt,
+  stegliste,
+  stegnr,
+  type Adresse,
+  type Feil,
+  type Kunde,
+  type Levering,
+  type Rad,
+  type StegId,
+  type Vei,
+} from './kasse/steg'
+import { Utstyrsliste } from './kasse/Utstyrsliste'
 import { Periodevelger } from './Periodevelger'
 import { Pil } from './Pil'
-import { Piktogram } from './Piktogram'
-import { Honningkrukke, Tekstfelt, Tekstomraade } from './Skjemafelt'
+import { Honningkrukke } from './Skjemafelt'
 import styles from './Kasse.module.css'
 
 type Modus = 'ekte' | 'test' | 'av'
-type Vei = 'betaling' | 'foresporsel'
-type Feil = Record<string, string>
 
-type Props = { vipps: Modus; kort: Modus; avbrutt: boolean }
+type Props = { vipps: Modus; kort: Modus }
 
-type Kunde = { navn: string; telefon: string; epost: string; firma: string; orgnr: string }
-type Adresse = { adresse: string; postnr: string; sted: string }
+/** Steget som vises, steget adressen ba om, og det lengste kunden har kommet. */
+type Visning = { onsket: StegId; vist: StegId; lengst: number }
 
-/** Rask sjekk i nettleseren. Serveren sjekker alt på nytt. */
-function sjekk(
-  vei: Vei,
-  liste: Leieliste,
-  kunde: Kunde,
-  levering: 'henting' | 'levering',
-  adresse: Adresse,
-  godtar: boolean,
-  angreKreves: boolean,
-  angreAnmodning: boolean,
-  melding: string,
-): Feil {
-  const f: Feil = {}
-  if (vei === 'betaling' || liste.fra || liste.til) {
-    if (!liste.fra) f.fra = 'Velg dato for henting.'
-    if (!liste.til) f.til = 'Velg dato for retur.'
-  }
-  if (levering === 'levering') {
-    if (adresse.adresse.trim().length < 3) f['levering.adresse'] = 'Skriv leveringsadressen.'
-    if (!/^\d{4}$/.test(adresse.postnr.trim())) f['levering.postnr'] = 'Postnummer har fire siffer.'
-    if (adresse.sted.trim().length < 2) f['levering.sted'] = 'Skriv poststed.'
-  }
-  if (kunde.navn.trim().length < 2) f['kunde.navn'] = 'Skriv fullt navn.'
-  if (!erGyldigTelefon(normaliserTelefon(kunde.telefon))) f['kunde.telefon'] = 'Skriv et norsk telefonnummer med åtte siffer.'
-  if (vei === 'betaling' && !serUtSomEpost(kunde.epost)) f['kunde.epost'] = 'Skriv e-postadressen kvitteringen skal til.'
-  if (vei === 'foresporsel' && kunde.epost.trim() && !serUtSomEpost(kunde.epost)) f['kunde.epost'] = 'Skriv en gyldig e-postadresse.'
-  if (liste.kundetype === 'bedrift') {
-    if (kunde.firma.trim().length < 2) f['kunde.firma'] = 'Skriv firmanavnet.'
-    if (!erGyldigOrgnr(kunde.orgnr)) f['kunde.orgnr'] = 'Org.nr. har ni siffer. Sjekk at det er riktig.'
-  }
-  if (vei === 'betaling') {
-    if (!godtar) f.godtarVilkar = 'Du må godta leievilkårene.'
-    if (angreKreves && !angreAnmodning) f.startForAngrefrist = 'Kryss av for at leien kan starte før angrefristen er ute.'
-  }
-  if (vei === 'foresporsel' && liste.linjer.length === 0 && melding.trim().length < 10) {
-    f.melding = 'Fortell kort hva du trenger.'
-  }
-  return f
+const MANGLER = 'Noen felt mangler eller er feil. De er merket under.'
+
+/** Fokus på feltet med feil. Feil uten felt gir fokus på meldingen øverst. */
+function fokuserFelt(felt: string | undefined, reserve: HTMLElement | null) {
+  const el =
+    (felt === 'fra' || felt === 'til'
+      ? document.querySelector<HTMLInputElement>(`[aria-describedby$="-${felt}-feil"]`)
+      : document.getElementById((felt && feltId[felt]) || '')) ?? reserve
+  el?.focus()
+  el?.scrollIntoView({ block: 'center', behavior: 'smooth' })
 }
 
-// Rekkefølgen feltene står i på siden, så fokus havner på den første feilen.
-const feltrekkefolge = [
-  'fra',
-  'til',
-  'levering',
-  'levering.adresse',
-  'levering.postnr',
-  'levering.sted',
-  'kunde.navn',
-  'kunde.telefon',
-  'kunde.epost',
-  'kunde.firma',
-  'kunde.orgnr',
-  'melding',
-  'godtarVilkar',
-  'startForAngrefrist',
-]
-
-const feltId: Record<string, string> = {
-  'levering.adresse': 'kasse-adresse',
-  'levering.postnr': 'kasse-postnr',
-  'levering.sted': 'kasse-sted',
-  'kunde.navn': 'kasse-navn',
-  'kunde.telefon': 'kasse-telefon',
-  'kunde.epost': 'kasse-epost',
-  'kunde.firma': 'kasse-firma',
-  'kunde.orgnr': 'kasse-orgnr',
-  melding: 'kasse-melding',
-  godtarVilkar: 'kasse-vilkar',
-  startForAngrefrist: 'kasse-angrerett',
-  levering: 'kasse-levering-henting',
-}
-
-export function Kasse({ vipps, kort, avbrutt }: Props) {
+/**
+ * Kassen, ett steg om gangen: utstyr, periode, levering, opplysninger og
+ * bekreftelse. Steget står i adressen (?steg=…), så nettleserens tilbake-
+ * og fremknapp flytter mellom stegene. Personopplysninger ligger bare i
+ * minnet her og lagres ikke i nettleseren.
+ */
+export function Kasse({ vipps, kort }: Props) {
   const liste = useLeieliste()
   const klar = useErKlient()
+  const sok = useSearchParams()
   const [vei, settVei] = useState<Vei>('betaling')
-  const [levering, settLevering] = useState<'henting' | 'levering'>('henting')
+  const [levering, settLevering] = useState<Levering>('henting')
   const [adresse, settAdresse] = useState<Adresse>({ adresse: '', postnr: '', sted: '' })
   const [kunde, settKunde] = useState<Kunde>({ navn: '', telefon: '', epost: '', firma: '', orgnr: '' })
   const [melding, settMelding] = useState('')
@@ -115,30 +78,63 @@ export function Kasse({ vipps, kort, avbrutt }: Props) {
   const [angreAnmodning, settAngreAnmodning] = useState(false)
   const [nettside, settNettside] = useState('')
   const [feil, settFeil] = useState<Feil>({})
-  const [toppfeil, settToppfeil] = useState<string | null>(null)
+  const [toppfeil, settToppfeil] = useState<{ steg: StegId; tekst: string } | null>(null)
   const [sender, settSender] = useState<false | 'vipps' | 'kort' | 'foresporsel'>(false)
   const [sendt, settSendt] = useState<{ referanse: string; test: boolean; telefon: string } | null>(null)
+  const [visning, settVisning] = useState<Visning | null>(null)
   const start = useRef(0)
-  const toppRef = useRef<HTMLDivElement>(null)
-  const kundetypeId = useId()
+  const kasseRef = useRef<HTMLFormElement>(null)
+  const overskriftRef = useRef<HTMLHeadingElement>(null)
+  const meldingerRef = useRef<HTMLDivElement>(null)
+  /** Feltet som skal ha fokus når neste steg er tegnet. Null gir overskriften. */
+  const fokusEtterBytte = useRef<string | null>(null)
+  const forrigeSteg = useRef<StegId | null>(null)
 
+  // Utfyllingstiden måles fra kassen vises første gang, ikke per steg.
   useEffect(() => {
     start.current = Date.now()
   }, [])
 
-  const rader = liste.linjer
+  // Også nettleserens tilbake- og fremknapp skal vise steget fra toppen,
+  // ikke der kunden forlot det. Valget gjelder historikkinnslaget og arves
+  // av stegene etter, så andre sider beholder vanlig oppførsel. Står det
+  // allerede på «manual», er kunden kommet tilbake til kassen fra en annen
+  // side, og da har nettleseren ikke rullet noe sted.
+  useEffect(() => {
+    const historikk = window.history
+    if (historikk.scrollRestoration === 'manual') window.scrollTo({ top: 0, behavior: 'instant' })
+    historikk.scrollRestoration = 'manual'
+    return () => {
+      historikk.scrollRestoration = 'auto'
+    }
+  }, [])
+
+  // Kommer kunden tilbake fra betalingen med tilbakeknappen, kan siden
+  // vises fra nettleserens hurtigbuffer. Da må knappene virke igjen.
+  useEffect(() => {
+    const vedVisning = (e: PageTransitionEvent) => {
+      if (e.persisted) settSender(false)
+    }
+    window.addEventListener('pageshow', vedVisning)
+    return () => window.removeEventListener('pageshow', vedVisning)
+  }, [])
+
+  const rader: Rad[] = liste.linjer
     .map((linje) => ({ linje, maskin: finnMaskin(linje.slug) }))
-    .filter((r): r is { linje: typeof r.linje; maskin: Maskin } => r.maskin !== undefined)
+    .filter((r): r is Rad => r.maskin !== undefined)
 
   const etterAvtale = rader.filter((r) => r.maskin.kunForesporsel)
   const maaLeveres = rader.filter((r) => r.maskin.kreverLevering)
   const betalingApen = vipps !== 'av' || kort !== 'av'
   const kanBetale = etterAvtale.length === 0 && betalingApen && rader.length > 0
   const valgtVei: Vei = kanBetale ? vei : 'foresporsel'
-  const valgtLevering = maaLeveres.length > 0 ? 'levering' : levering
+  const valgtLevering: Levering = maaLeveres.length > 0 ? 'levering' : levering
   const bedrift = liste.kundetype === 'bedrift'
   const angreKreves = !bedrift && valgtVei === 'betaling' && !!liste.fra && starterForAngrefrist(liste.fra)
   const testmodus = (vipps === 'test' || kort === 'test') && valgtVei === 'betaling'
+  // Kan det bare bli en forespørsel, står meldingen sammen med
+  // opplysningene. Ellers dukker den opp når kunden velger forespørsel.
+  const meldingPaa: StegId = kanBetale ? 'bekreft' : 'opplysninger'
 
   const beregning =
     liste.fra && liste.til && rader.length > 0
@@ -156,30 +152,113 @@ export function Kasse({ vipps, kort, avbrutt }: Props) {
 
   const visPris = (kr: number) => kroner(bedrift ? eksMvaOre(kr) / 100 : kr)
 
-  function visFeil(nye: Feil, melding: string) {
-    settFeil(nye)
-    settToppfeil(melding)
+  const alleFeil = sjekk(valgtVei, liste, kunde, valgtLevering, adresse, godtar, angreKreves, angreAnmodning, melding)
+
+  // Etter en avbrutt betaling skal kunden tilbake til bekreftelsen.
+  const avbrutt = sok.get('avbrutt') === '1'
+  const onsket: StegId = lesSteg(sok.get('steg')) ?? (avbrutt ? 'bekreft' : 'utstyr')
+  const aktiv = klar && !sendt && rader.length > 0
+
+  // Et steg vises ikke før stegene foran er i orden. Det sjekkes bare når
+  // adressen endrer seg, så ingen kastes ut av steget de står på.
+  let vist: StegId = onsket
+  let lengst = stegnr(onsket)
+  if (aktiv) {
+    if (visning?.onsket === onsket) {
+      vist = visning.vist
+      lengst = visning.lengst
+    } else {
+      vist = forsteUferdige(alleFeil, onsket, meldingPaa)
+      lengst = Math.max(visning?.lengst ?? 0, stegnr(vist))
+      settVisning({ onsket, vist, lengst })
+    }
+  }
+
+  // Måtte kunden stoppe på et tidligere steg, rettes adressen etter det.
+  useEffect(() => {
+    if (!aktiv || vist === onsket) return
+    const parametre = new URLSearchParams(window.location.search)
+    parametre.set('steg', vist)
+    window.history.replaceState(null, '', `?${parametre}`)
+  }, [aktiv, vist, onsket])
+
+  // Nytt steg: opp til toppen av kassen, og fokus på overskriften så
+  // skjermlesere sier hvor kunden er. Første visning flytter ikke fokus.
+  useEffect(() => {
+    if (!aktiv) return
+    const forrige = forrigeSteg.current
+    forrigeSteg.current = vist
+    if (forrige === null || forrige === vist) return
+    const felt = fokusEtterBytte.current
+    fokusEtterBytte.current = null
+    if (felt) {
+      fokuserFelt(felt, meldingerRef.current)
+      return
+    }
+    const kasse = kasseRef.current
+    const luft = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0
+    if (kasse && kasse.getBoundingClientRect().top < luft) {
+      kasse.scrollIntoView({ block: 'start', behavior: 'instant' })
+    }
+    overskriftRef.current?.focus({ preventScroll: true })
+  }, [aktiv, vist])
+
+  /** Nytt steg i adressen. Next sørger for at useSearchParams følger med. */
+  function naviger(til: StegId, fokusFelt: string | null = null) {
+    fokusEtterBytte.current = fokusFelt
+    // Et dobbeltklikk skal ikke gi to like innslag i historikken.
+    if (new URLSearchParams(window.location.search).get('steg') === til) return
+    window.history.pushState(null, '', `?steg=${til}`)
+  }
+
+  function visFeil(nye: Feil, tekst: string) {
     const forste = feltrekkefolge.find((k) => nye[k]) ?? Object.keys(nye)[0]
-    requestAnimationFrame(() => {
-      const el =
-        (forste === 'fra' || forste === 'til'
-          ? document.querySelector<HTMLInputElement>(`[aria-describedby$="-${forste}-feil"]`)
-          : document.getElementById(feltId[forste] ?? '')) ?? toppRef.current
-      el?.focus()
-      el?.scrollIntoView({ block: 'center', behavior: 'smooth' })
-    })
+    // Feilen kan høre til et tidligere steg, f.eks. når serveren svarer.
+    const maal = (forste ? stegForFelt(forste, meldingPaa) : null) ?? vist
+    settFeil(nye)
+    settToppfeil({ steg: maal, tekst })
+    if (maal !== vist) {
+      naviger(maal, forste)
+      return
+    }
+    requestAnimationFrame(() => fokuserFelt(forste, meldingerRef.current))
+  }
+
+  /** Bakover går alltid. Fremover må stegene imellom være i orden. */
+  function gaaTil(maal: StegId) {
+    if (sender) return
+    const fra = stegnr(vist)
+    const til = stegnr(maal)
+    if (til === fra) return
+    if (til > fra) {
+      for (const s of stegliste.slice(fra, til)) {
+        const egne = feilISteg(alleFeil, s.id, meldingPaa)
+        if (harFeil(egne)) {
+          visFeil(egne, MANGLER)
+          return
+        }
+      }
+      settFeil({})
+    }
+    settToppfeil(null)
+    naviger(maal)
   }
 
   async function send(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    // Før siste steg er «Neste» eneste sendeknapp, også ved Enter i et felt.
+    if (vist !== 'bekreft') {
+      gaaTil(stegliste[stegnr(vist) + 1].id)
+      return
+    }
     if (sender) return
     const knapp = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null
     const metode = knapp?.value === 'vipps' || knapp?.value === 'kort' ? knapp.value : null
     const nyVei: Vei = metode ? 'betaling' : 'foresporsel'
 
     const lokale = sjekk(nyVei, liste, kunde, valgtLevering, adresse, godtar, angreKreves, angreAnmodning, melding)
-    if (Object.keys(lokale).length > 0) {
-      visFeil(lokale, 'Noen felt mangler eller er feil. De er merket under.')
+    if (harFeil(lokale)) {
+      visFeil(lokale, MANGLER)
       return
     }
 
@@ -284,515 +363,196 @@ export function Kasse({ vipps, kort, avbrutt }: Props) {
   const settKundefelt = (felt: keyof Kunde) => (verdi: string) => settKunde((k) => ({ ...k, [felt]: verdi }))
   const settAdressefelt = (felt: keyof Adresse) => (verdi: string) => settAdresse((a) => ({ ...a, [felt]: verdi }))
 
+  const nr = stegnr(vist)
+  const steg = stegliste[nr]
+  const forrige = nr > 0 ? stegliste[nr - 1] : null
+  const neste = nr < stegliste.length - 1 ? stegliste[nr + 1] : null
+
   return (
     <form
+      ref={kasseRef}
       className={styles.kasse}
       onSubmit={send}
       noValidate
       aria-busy={sender ? true : undefined}
       onKeyDown={(e) => {
-        // Enter i et tekstfelt skal ikke starte en betaling ved et uhell.
+        // Enter i et felt på siste steg skal ikke starte en betaling ved et
+        // uhell. På stegene før betyr Enter «Neste».
         const mal = e.target as HTMLElement
-        if (e.key === 'Enter' && mal.tagName === 'INPUT') e.preventDefault()
+        if (e.key === 'Enter' && mal.tagName === 'INPUT' && vist === 'bekreft') e.preventDefault()
       }}
     >
       <Honningkrukke verdi={nettside} endre={settNettside} />
 
-      <div className={styles.skjema}>
-        <div ref={toppRef} tabIndex={-1} className={styles.meldinger}>
-          {avbrutt && !toppfeil && (
-            <p className={styles.info} role="status">
-              Betalingen ble avbrutt, og ingenting er trukket. Leielisten ligger her fortsatt.
-            </p>
-          )}
-          {toppfeil && (
-            <p className={styles.toppfeil} role="alert">
-              {toppfeil}
-            </p>
-          )}
-        </div>
+      <div className={styles.kolonne}>
+        <Fremdrift naa={vist} lengst={lengst} gaaTil={gaaTil} />
 
-        {/* 1 Utstyr */}
-        <section className={styles.steg} aria-labelledby="steg-utstyr">
-          <h2 id="steg-utstyr" className={styles.stegtittel}>
-            <span>01</span> Utstyr
-          </h2>
-          <ul role="list" className={styles.linjer}>
-            {rader.map(({ linje, maskin }) => {
-              const linjesum = beregning?.linjer.find((l) => l.slug === maskin.slug)?.sum
-              return (
-                <li key={maskin.slug} className={styles.linje}>
-                  <div className={styles.linjeBilde}>
-                    <Piktogram id={maskin.piktogram} skala={maskin.skala} />
-                  </div>
-                  <div className={styles.linjeTekst}>
-                    <p className="etikett dempet">{maskin.kode}</p>
-                    <Link href={`/maskiner/${maskin.slug}`} className={styles.linjeNavn}>
-                      {maskin.navn}
-                    </Link>
-                    {maskin.kunForesporsel && <p className={styles.linjeMerknad}>Leies ut etter avtale</p>}
-                    {maskin.kreverLevering && !maskin.kunForesporsel && (
-                      <p className={styles.linjeMerknad}>Må leveres av oss</p>
-                    )}
-                  </div>
-                  <div className={styles.linjeAntall} role="group" aria-label={`Antall ${maskin.navn}`}>
-                    <button
-                      type="button"
-                      onClick={() => leieliste.settAntall(maskin.slug, linje.antall - 1)}
-                      disabled={linje.antall <= 1}
-                      aria-label="Færre"
-                    >
-                      −
-                    </button>
-                    <output aria-live="polite">{linje.antall}</output>
-                    <button
-                      type="button"
-                      onClick={() => leieliste.settAntall(maskin.slug, linje.antall + 1)}
-                      disabled={linje.antall >= maskin.antall}
-                      aria-label="Flere"
-                    >
-                      +
-                    </button>
-                  </div>
-                  <p className={styles.linjeSum}>
-                    {linjesum !== undefined ? (
-                      visPris(linjesum)
-                    ) : (
-                      <span className="dempet">{visPris(maskin.dognpris)} / døgn</span>
-                    )}
-                  </p>
-                  <button
-                    type="button"
-                    className={styles.fjern}
-                    onClick={() => leieliste.fjern(maskin.slug)}
-                    aria-label={`Fjern ${maskin.navn}`}
-                  >
-                    Fjern
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
-          <Link href="/maskiner" className={`pil-lenke ${styles.merUtstyr}`}>
-            Legg til mer utstyr <Pil />
-          </Link>
-        </section>
-
-        {/* 2 Periode */}
-        <section className={styles.steg} aria-labelledby="steg-periode">
-          <h2 id="steg-periode" className={styles.stegtittel}>
-            <span>02</span> Leieperiode
-          </h2>
-          <Periodevelger feil={{ fra: feil.fra, til: feil.til }} visDogn />
-          <p className="hjelpetekst">
-            Alt i listen leies for samme periode. Trenger du ulike datoer, skriv det i en forespørsel.
-          </p>
-        </section>
-
-        {/* 3 Levering */}
-        <section className={styles.steg} aria-labelledby="steg-levering">
-          <h2 id="steg-levering" className={styles.stegtittel}>
-            <span>03</span> Henting eller levering
-          </h2>
-          <fieldset className={styles.valgkort} aria-describedby={feil.levering ? 'kasse-levering-feil' : undefined}>
-            <legend className="skjult">Henting eller levering</legend>
-            <label className={styles.valg} data-av={maaLeveres.length > 0 || undefined}>
-              <input
-                id="kasse-levering-henting"
-                type="radio"
-                name="levering"
-                value="henting"
-                checked={valgtLevering === 'henting'}
-                onChange={() => settLevering('henting')}
-                disabled={maaLeveres.length > 0}
-              />
-              <span className={styles.valgTekst}>
-                <strong>Jeg henter selv</strong>
-                <span>{adresseLinje}</span>
+        <section key={vist} className={styles.steg} aria-labelledby="kasse-steg-tittel">
+          <div className={styles.stegHode}>
+            <h2
+              id="kasse-steg-tittel"
+              ref={overskriftRef}
+              tabIndex={-1}
+              className={`overskrift ${styles.stegtittel}`}
+            >
+              <span className="skjult">
+                Steg {nr + 1} av {stegliste.length}:{' '}
               </span>
-              <span className={styles.valgPris}>0,-</span>
-            </label>
-            <label className={styles.valg}>
-              <input
-                type="radio"
-                name="levering"
-                value="levering"
-                checked={valgtLevering === 'levering'}
-                onChange={() => settLevering('levering')}
-              />
-              <span className={styles.valgTekst}>
-                <strong>Levering og henting</strong>
-                <span>Innen {firma.levering.radiusKm}&nbsp;km fra lageret. Lenger unna? Send forespørsel.</span>
-              </span>
-              <span className={styles.valgPris}>{visPris(firma.levering.prisInklMva)}</span>
-            </label>
-          </fieldset>
-          {maaLeveres.length > 0 && (
-            <p className="hjelpetekst">
-              {maaLeveres.map((r) => r.maskin.navn).join(', ')} er for tung for vanlig henger, og må leveres av oss.
-            </p>
-          )}
-          {feil.levering && (
-            <p id="kasse-levering-feil" className="feilmelding">
-              {feil.levering}
-            </p>
-          )}
-          {valgtLevering === 'levering' && (
-            <div className={styles.adresse}>
-              <Tekstfelt
-                id="kasse-adresse"
-                etikett="Leveringsadresse"
-                verdi={adresse.adresse}
-                endre={settAdressefelt('adresse')}
-                feil={feil['levering.adresse']}
-                autoComplete="street-address"
-                className={styles.helBredde}
-              />
-              <Tekstfelt
-                id="kasse-postnr"
-                etikett="Postnummer"
-                verdi={adresse.postnr}
-                endre={settAdressefelt('postnr')}
-                feil={feil['levering.postnr']}
-                autoComplete="postal-code"
-                inputMode="numeric"
-                maks={4}
-              />
-              <Tekstfelt
-                id="kasse-sted"
-                etikett="Poststed"
-                verdi={adresse.sted}
-                endre={settAdressefelt('sted')}
-                feil={feil['levering.sted']}
-                autoComplete="address-level2"
-                maks={60}
-              />
-            </div>
-          )}
-        </section>
-
-        {/* 4 Kunde */}
-        <section className={styles.steg} aria-labelledby="steg-kunde">
-          <h2 id="steg-kunde" className={styles.stegtittel}>
-            <span>04</span> Dine opplysninger
-          </h2>
-          <fieldset className={styles.kundetype}>
-            <legend className="felt-etikett">Jeg leier som</legend>
-            {(['privat', 'bedrift'] as const).map((t) => (
-              <label key={t} className={styles.kundetypeValg}>
-                <input
-                  type="radio"
-                  name={`${kundetypeId}-kundetype`}
-                  value={t}
-                  checked={liste.kundetype === t}
-                  onChange={() => leieliste.settKundetype(t)}
-                />
-                <span>{t === 'privat' ? 'Privatperson' : 'Bedrift'}</span>
-              </label>
-            ))}
-          </fieldset>
-          <div className={styles.felter}>
-            {bedrift && (
-              <>
-                <Tekstfelt
-                  id="kasse-firma"
-                  etikett="Firmanavn"
-                  verdi={kunde.firma}
-                  endre={settKundefelt('firma')}
-                  feil={feil['kunde.firma']}
-                  autoComplete="organization"
-                />
-                <Tekstfelt
-                  id="kasse-orgnr"
-                  etikett="Org.nr."
-                  verdi={kunde.orgnr}
-                  endre={settKundefelt('orgnr')}
-                  feil={feil['kunde.orgnr']}
-                  inputMode="numeric"
-                  maks={11}
-                />
-              </>
+              {steg.tittel}
+            </h2>
+            {vist === 'bekreft' && (
+              <p className="dempet">
+                Sjekk at alt stemmer før du {valgtVei === 'betaling' ? 'betaler' : 'sender'}.
+              </p>
             )}
-            <Tekstfelt
-              id="kasse-navn"
-              etikett={bedrift ? 'Kontaktperson' : 'Fullt navn'}
-              verdi={kunde.navn}
-              endre={settKundefelt('navn')}
-              feil={feil['kunde.navn']}
-              autoComplete="name"
-              maks={100}
-            />
-            <Tekstfelt
-              id="kasse-telefon"
-              etikett="Mobil"
-              type="tel"
-              verdi={kunde.telefon}
-              endre={settKundefelt('telefon')}
-              feil={feil['kunde.telefon']}
-              autoComplete="tel-national"
-              inputMode="tel"
-              maks={16}
-            />
-            <Tekstfelt
-              id="kasse-epost"
-              etikett="E-post"
-              type="email"
-              verdi={kunde.epost}
-              endre={settKundefelt('epost')}
-              feil={feil['kunde.epost']}
-              autoComplete="email"
-              valgfri={valgtVei === 'foresporsel'}
-              hjelp={valgtVei === 'betaling' ? 'Kvitteringen og bekreftelsen sendes hit.' : undefined}
-              maks={200}
-              className={styles.helBredde}
-            />
           </div>
-        </section>
 
-        {/* 5 Betal eller spør */}
-        <section className={styles.steg} aria-labelledby="steg-videre">
-          <h2 id="steg-videre" className={styles.stegtittel}>
-            <span>05</span> Betal nå eller send forespørsel
-          </h2>
-          <fieldset className={styles.valgkort}>
-            <legend className="skjult">Hvordan vil du gå videre?</legend>
-            <label className={styles.valg} data-av={!kanBetale || undefined}>
-              <input
-                type="radio"
-                name="vei"
-                value="betaling"
-                checked={valgtVei === 'betaling'}
-                onChange={() => settVei('betaling')}
-                disabled={!kanBetale}
-              />
-              <span className={styles.valgTekst}>
-                <strong>Betal nå</strong>
-                <span>
-                  Med Vipps eller kort. Beløpet reserveres, og trekkes først når vi har bekreftet leien.
-                </span>
-              </span>
-            </label>
-            <label className={styles.valg}>
-              <input
-                type="radio"
-                name="vei"
-                value="foresporsel"
-                checked={valgtVei === 'foresporsel'}
-                onChange={() => settVei('foresporsel')}
-              />
-              <span className={styles.valgTekst}>
-                <strong>Send forespørsel</strong>
-                <span>Ikke bindende. Vi svarer {firma.svartid} med pris og ledig dato.</span>
-              </span>
-            </label>
-          </fieldset>
-          {etterAvtale.length > 0 && (
-            <p className="hjelpetekst">
-              {etterAvtale.map((r) => r.maskin.navn).join(', ')} leies ut etter avtale, så listen sendes som
-              forespørsel.
-            </p>
-          )}
-          {etterAvtale.length === 0 && !betalingApen && (
-            <p className="hjelpetekst">Betaling på nett er ikke åpnet ennå. Send listen som forespørsel.</p>
+          <div ref={meldingerRef} tabIndex={-1} className={styles.meldinger}>
+            {avbrutt && toppfeil?.steg !== vist && (
+              <p className={styles.info} role="status">
+                Betalingen ble avbrutt, og ingenting er trukket. Leielisten ligger her fortsatt.
+                {vist !== 'bekreft' &&
+                  harFeil(feilISteg(alleFeil, vist, meldingPaa)) &&
+                  ' Opplysningene dine lagres ikke, så de må fylles inn på nytt.'}
+              </p>
+            )}
+            {toppfeil?.steg === vist && (
+              <p className={styles.toppfeil} role="alert">
+                {toppfeil.tekst}
+              </p>
+            )}
+          </div>
+
+          {vist === 'utstyr' && <Utstyrsliste rader={rader} beregning={beregning} visPris={visPris} />}
+
+          {vist === 'periode' && (
+            <>
+              <Periodevelger feil={{ fra: feil.fra, til: feil.til }} visDogn />
+              <p className="hjelpetekst">
+                Alt i listen leies for samme periode. Trenger du ulike datoer, skriv det i en forespørsel.
+                {valgtVei === 'foresporsel' && ' Vet du ikke datoene ennå, kan du gå videre uten.'}
+              </p>
+            </>
           )}
 
-          {valgtVei === 'foresporsel' ? (
-            <Tekstomraade
-              id="kasse-melding"
-              etikett="Melding"
-              verdi={melding}
-              endre={settMelding}
-              feil={feil.melding}
-              valgfri
-              hjelp="F.eks. hvor jobben er, om dere trenger fører, eller andre datoer."
+          {vist === 'levering' && (
+            <Leveringsvalg
+              valgt={valgtLevering}
+              settLevering={settLevering}
+              maaLeveres={maaLeveres}
+              adresse={adresse}
+              settAdressefelt={settAdressefelt}
+              feil={feil}
+              visPris={visPris}
             />
-          ) : (
-            <div className={styles.samtykker}>
-              <label className="avkrysning">
-                <input
-                  id="kasse-vilkar"
-                  type="checkbox"
-                  checked={godtar}
-                  onChange={(e) => settGodtar(e.target.checked)}
-                  aria-invalid={feil.godtarVilkar ? true : undefined}
-                  aria-describedby={feil.godtarVilkar ? 'kasse-vilkar-feil' : undefined}
-                />
-                <span>
-                  Jeg har lest og godtar{' '}
-                  <Link href="/vilkar" target="_blank">
-                    leievilkårene
-                  </Link>
-                  .
-                </span>
-              </label>
-              {feil.godtarVilkar && (
-                <p id="kasse-vilkar-feil" className="feilmelding">
-                  {feil.godtarVilkar}
-                </p>
-              )}
-              {angreKreves && (
-                <>
-                  <label className="avkrysning">
-                    <input
-                      id="kasse-angrerett"
-                      type="checkbox"
-                      checked={angreAnmodning}
-                      onChange={(e) => settAngreAnmodning(e.target.checked)}
-                      aria-invalid={feil.startForAngrefrist ? true : undefined}
-                      aria-describedby={feil.startForAngrefrist ? 'kasse-angrerett-feil' : undefined}
-                    />
-                    <span>
-                      Jeg ber om at leien starter før angrefristen på 14 dager er ute. Jeg vet at angreretten faller
-                      bort når leieperioden er over, og at jeg betaler for dagene jeg har brukt hvis jeg angrer
-                      underveis.{' '}
-                      <Link href="/vilkar#angrerett" target="_blank">
-                        Les om angrerett
-                      </Link>
-                    </span>
-                  </label>
-                  {feil.startForAngrefrist && (
-                    <p id="kasse-angrerett-feil" className="feilmelding">
-                      {feil.startForAngrefrist}
-                    </p>
-                  )}
-                </>
-              )}
-            </div>
-          )}
-        </section>
-      </div>
-
-      {/* Sammendrag */}
-      <aside className={styles.sammendrag} aria-labelledby="sammendrag-tittel">
-        <div className={styles.sammendragInnhold}>
-          <h2 id="sammendrag-tittel" className={styles.sammendragTittel}>
-            Sammendrag
-          </h2>
-          {liste.fra && liste.til ? (
-            <p className={styles.periode}>
-              <span className="mono">{formaterPeriode(liste.fra, liste.til)}</span>
-              {beregning && <span className="dempet"> · {beregning.dogn} døgn</span>}
-            </p>
-          ) : (
-            <p className={`${styles.periode} dempet`}>Velg periode for å se totalpris.</p>
           )}
 
-          <dl className={styles.poster}>
-            {rader.map(({ linje, maskin }) => {
-              const sum = beregning?.linjer.find((l) => l.slug === maskin.slug)?.sum
-              return (
-                <div key={maskin.slug}>
-                  <dt>
-                    {linje.antall > 1 && <span className="mono">{linje.antall} × </span>}
-                    {maskin.navn}
-                  </dt>
-                  <dd className="mono">{sum !== undefined ? visPris(sum) : '–'}</dd>
-                </div>
-              )
-            })}
-            <div>
-              <dt>{valgtLevering === 'levering' ? 'Levering og henting' : 'Henting'}</dt>
-              <dd className="mono">
-                {valgtLevering === 'levering' ? visPris(firma.levering.prisInklMva) : '0,-'}
-              </dd>
-            </div>
-          </dl>
-
-          {beregning && (
-            <dl className={styles.total}>
-              {bedrift ? (
-                <>
-                  <div>
-                    <dt>Sum eks. mva</dt>
-                    <dd className="mono">{kronerFraOre(beregning.totalEksOre)}</dd>
-                  </div>
-                  <div>
-                    <dt>Mva 25 %</dt>
-                    <dd className="mono">{kronerFraOre(beregning.mvaOre)}</dd>
-                  </div>
-                </>
-              ) : null}
-              <div className={styles.totalsum}>
-                <dt>{valgtVei === 'betaling' ? 'Å betale' : 'Veiledende pris'}</dt>
-                <dd>{kronerFraOre(beregning.totalInklOre)}</dd>
-              </div>
-              {!bedrift && (
-                <div className={styles.herav}>
-                  <dt>Herav mva</dt>
-                  <dd className="mono">{kronerFraOre(beregning.mvaOre)}</dd>
-                </div>
-              )}
-            </dl>
+          {vist === 'opplysninger' && (
+            <Kundeopplysninger
+              kundetype={liste.kundetype}
+              kunde={kunde}
+              settKundefelt={settKundefelt}
+              vei={valgtVei}
+              visMelding={meldingPaa === 'opplysninger'}
+              melding={melding}
+              settMelding={settMelding}
+              feil={feil}
+            />
           )}
 
-          <div className={styles.handling}>
-            {valgtVei === 'betaling' ? (
-              <>
-                <button
-                  type="submit"
-                  value="vipps"
-                  className="knapp knapp--vipps knapp--bred"
-                  disabled={vipps === 'av' || !!sender}
-                >
-                  {sender === 'vipps' ? 'Sender deg til Vipps …' : 'Betal med Vipps'}
+          {vist === 'bekreft' && (
+            <>
+              <Oversikt
+                rader={rader}
+                beregning={beregning}
+                fra={liste.fra}
+                til={liste.til}
+                levering={valgtLevering}
+                adresse={adresse}
+                kunde={kunde}
+                bedrift={bedrift}
+                melding={meldingPaa === 'opplysninger' ? melding.trim() || null : null}
+                visPris={visPris}
+                endre={gaaTil}
+              />
+              <Betalingsvalg
+                vei={valgtVei}
+                settVei={settVei}
+                kanBetale={kanBetale}
+                etterAvtale={etterAvtale}
+                betalingApen={betalingApen}
+                visMelding={meldingPaa === 'bekreft'}
+                melding={melding}
+                settMelding={settMelding}
+                godtar={godtar}
+                settGodtar={settGodtar}
+                angreKreves={angreKreves}
+                angreAnmodning={angreAnmodning}
+                settAngreAnmodning={settAngreAnmodning}
+                feil={feil}
+              />
+              <Totalboks
+                beregning={beregning}
+                vei={valgtVei}
+                bedrift={bedrift}
+                levering={valgtLevering}
+                testmodus={testmodus}
+              />
+            </>
+          )}
+
+          {vist !== 'bekreft' && <Sumlinje beregning={beregning} bedrift={bedrift} />}
+
+          <div className={styles.navigasjon}>
+            {forrige && (
+              <button type="button" className={`pil-lenke ${styles.tilbake}`} onClick={() => gaaTil(forrige.id)}>
+                <Pil retning="venstre" />
+                Tilbake
+              </button>
+            )}
+            <div className={styles.handlinger}>
+              {neste ? (
+                <button type="submit" className="knapp">
+                  Neste: {neste.navn}
                   <Pil />
                 </button>
-                <button type="submit" value="kort" className="knapp knapp--bred" disabled={kort === 'av' || !!sender}>
-                  {sender === 'kort' ? 'Sender deg til betaling …' : 'Betal med kort'}
-                  <Pil />
-                </button>
-                <p className={styles.handlingTekst}>
-                  Beløpet reserveres nå og trekkes når vi har bekreftet leien. Kan vi ikke levere, frigjøres hele
-                  beløpet.
-                </p>
-                {testmodus && (
-                  <p className={styles.test}>
-                    <strong>Testmodus.</strong> Betalingen simuleres — ingen penger trekkes.
-                  </p>
-                )}
-              </>
-            ) : (
-              <>
-                <button type="submit" value="foresporsel" className="knapp knapp--bred" disabled={!!sender}>
+              ) : valgtVei === 'betaling' ? (
+                <>
+                  <button
+                    type="submit"
+                    value="vipps"
+                    className="knapp knapp--vipps"
+                    disabled={vipps === 'av' || !!sender}
+                  >
+                    {sender === 'vipps' ? 'Sender deg til Vipps …' : 'Betal med Vipps'}
+                    <Pil />
+                  </button>
+                  <button type="submit" value="kort" className="knapp" disabled={kort === 'av' || !!sender}>
+                    {sender === 'kort' ? 'Sender deg til betaling …' : 'Betal med kort'}
+                    <Pil />
+                  </button>
+                </>
+              ) : (
+                <button type="submit" value="foresporsel" className="knapp" disabled={!!sender}>
                   {sender === 'foresporsel' ? 'Sender …' : 'Send forespørsel'}
                   <Pil />
                 </button>
-                <p className={styles.handlingTekst}>Forespørselen er ikke bindende. Du betaler ingenting nå.</p>
-              </>
-            )}
+              )}
+            </div>
           </div>
-        </div>
-      </aside>
-    </form>
-  )
-}
-
-function ForesporselSendt({ referanse, test, telefon }: { referanse: string; test: boolean; telefon: string }) {
-  const ref = useRef<HTMLHeadingElement>(null)
-  useEffect(() => ref.current?.focus(), [])
-  return (
-    <div className={styles.kvittering}>
-      <p className="etikett">Referanse {referanse}</p>
-      <h2 ref={ref} tabIndex={-1} className="tittel">
-        Forespørselen er sendt.
-      </h2>
-      <p className="ingress">
-        Takk! Vi ringer deg på {formaterMobil(normaliserTelefon(telefon))} {firma.svartid} med pris og ledig dato.
-        Du har ikke bestilt noe ennå.
-      </p>
-      {test && (
-        <p className={styles.test}>
-          <strong>Testmodus.</strong> E-posten ble skrevet til serverloggen i stedet for å bli sendt.
-        </p>
-      )}
-      <div className={styles.tomKnapper}>
-        <Link href="/maskiner" className="knapp">
-          Se mer utstyr <Pil />
-        </Link>
-        <Link href="/" className="knapp knapp--omriss">
-          Til forsiden
-        </Link>
+        </section>
       </div>
-    </div>
+
+      <Sammendrag
+        rader={rader}
+        fra={liste.fra}
+        til={liste.til}
+        beregning={beregning}
+        levering={valgtLevering}
+        vei={valgtVei}
+        bedrift={bedrift}
+        visPris={visPris}
+      />
+    </form>
   )
 }

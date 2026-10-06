@@ -1,10 +1,10 @@
 /* Anker Solutions — designsystem.
-   Svart og hvitt, hårfine linjer og én skrift: Hanken Grotesk, valgt fordi
-   den ligger nærmest skriften på nbim.no (NorgesBank, som ikke kan lisensieres).
-   Overskrifter i 500 med stram sperring, brødtekst i 400, ingresser i 300 —
-   samme rolige skala som der. Fast rutenett med etikett til venstre og
-   innhold til høyre, runde knapper, ingen skygger og ingen gradienter.
-   Den eneste fargen er Vipps-knappen og feilmeldinger. */
+   Svart og hvitt. Overskrifter i Archivo, bred og tung, så de står som
+   blokker. Brødtekst i Hanken Grotesk (nærmest skriften på nbim.no):
+   400 i tekst, 300 i ingresser. Seksjonene er nummerert og skilles med
+   svarte bølgestreker — samme motiv som den levende bakgrunnen øverst på
+   forsiden. Runde knapper, ingen skygger, ingen gradienter. Den eneste
+   fargen er Vipps-knappen og feilmeldinger. */
 
 :root {
   --hvit: #ffffff;
@@ -19,11 +19,12 @@
   --vipps-hover: #eb4d17;
 
   --skrift: var(--font-hanken), 'Helvetica Neue', Arial, sans-serif;
+  --overskrift-skrift: var(--font-archivo), 'Arial Black', Arial, sans-serif;
   /* Etiketter, koder og tall bruker samme skrift, med tabelltall. */
   --mono: var(--skrift);
 
-  --bredde: 1440px;
-  --marg: clamp(16px, 3.2vw, 40px);
+  --bredde: 1600px;
+  --marg: clamp(16px, 3.6vw, 56px);
   /* Fast høyde: toppen endrer seg aldri mens man scroller. */
   --header-hoyde: 96px;
 
@@ -144,31 +145,50 @@ button {
 
 /* ---------- Typografi ---------- */
 
+/* Blokkete overskrifter: Archivo, tung og bred. Lange sammensatte ord
+   («Personvernerklæring») får bryte i stedet for å sprenge mobilskjermen. */
+.display,
+.tittel,
+.overskrift,
+.underoverskrift {
+  font-family: var(--overskrift-skrift);
+  font-weight: 800;
+  font-stretch: 112%;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .display,
+  .tittel,
+  .overskrift {
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+}
+
 .display {
-  font-size: clamp(3rem, 7.4vw, 7.25rem);
-  line-height: 0.95;
-  font-weight: 500;
-  letter-spacing: -0.035em;
+  font-size: clamp(3rem, 7.4vw, 7.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
 }
 
 .tittel {
-  font-size: clamp(2.75rem, 5vw, 4.75rem);
-  line-height: 1.02;
-  font-weight: 500;
-  letter-spacing: -0.035em;
+  font-size: clamp(2.5rem, 5.4vw, 5.25rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
 }
 
 .overskrift {
-  font-size: clamp(1.75rem, 3vw, 2.75rem);
-  line-height: 1.05;
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.75rem, 3.4vw, 3.25rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
 }
 
 .underoverskrift {
   font-size: 1.375rem;
-  line-height: 1.2;
-  font-weight: 500;
+  line-height: 1.15;
+  font-weight: 700;
+  font-stretch: 100%;
   letter-spacing: -0.01em;
 }
 
@@ -253,28 +273,46 @@ button {
   color: var(--dempet);
 }
 
-/* Fast struktur for seksjoner: etikett i en smal venstrekolonne, innhold
-   til høyre. Hårfin linje over hver seksjon. */
+/* Seksjoner: nummerert etikett («01 | Utvalg») over en blokkete overskrift,
+   og innholdet i full bredde under. Nummeret teller seg selv per side. */
+main {
+  counter-reset: blokk;
+}
+
 .blokk {
   display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
-  gap: 24px clamp(24px, 3vw, 48px);
-  padding-block: clamp(48px, 7vw, 104px);
-  border-top: 1px solid var(--linje);
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(20px, 2.4vw, 32px);
+  padding-block: clamp(56px, 7vw, 112px);
+  counter-increment: blokk;
 }
 
 .blokk-etikett {
+  display: flex;
+  align-items: center;
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--dempet);
-  padding-top: 0.6em;
+}
+
+.blokk-etikett::before {
+  content: counter(blokk, decimal-leading-zero);
+  margin-right: 14px;
+  padding-right: 14px;
+  border-right: 1px solid var(--linje);
+  color: var(--svart);
+  font-family: var(--overskrift-skrift);
+  font-size: 0.9375rem;
+  font-weight: 800;
+  font-stretch: 112%;
+  letter-spacing: 0;
 }
 
 .blokk-innhold {
   display: grid;
-  gap: clamp(28px, 3vw, 44px);
+  gap: clamp(28px, 3vw, 48px);
   min-width: 0;
 }
 
@@ -286,10 +324,17 @@ button {
   flex-wrap: wrap;
 }
 
-@media (max-width: 860px) {
-  .blokk {
-    grid-template-columns: minmax(0, 1fr);
-  }
+/* Svart bånd i full bredde. Fargene arves nedover, så alt som bruker
+   --dempet og --linje blir lyst uten egne regler. */
+.mork {
+  --dempet: #a8a8a2; /* 8,2:1 mot svart */
+  --linje: #3a3a36;
+  background: var(--svart);
+  color: var(--hvit);
+}
+
+.mork .blokk-etikett::before {
+  color: var(--hvit);
 }
 
 /* ---------- Knapper ---------- */

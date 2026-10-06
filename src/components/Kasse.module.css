@@ -1,3 +1,5 @@
+/* Kassen: ett steg om gangen i venstre kolonne, sammendraget til høyre. */
+
 .kasse {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
@@ -5,10 +7,144 @@
   align-items: start;
 }
 
-.skjema {
+.kolonne {
   display: grid;
-  gap: 0;
+  gap: clamp(32px, 4vw, 48px);
   min-width: 0;
+}
+
+/* ---------- Fremdrift ---------- */
+
+/* Like brede steg når det er plass, men aldri smalere enn navnet. */
+.fremdriftListe {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(min-content, 1fr));
+  gap: 14px;
+}
+
+.fremdriftSteg {
+  position: relative;
+  font-size: 0.9375rem;
+  line-height: 1.3;
+  white-space: nowrap;
+  color: var(--dempet);
+}
+
+/* Streken over hvert steg fylles etter hvert som kunden kommer videre. */
+.fremdriftSteg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--linje);
+  transition: background-color var(--rolig);
+}
+
+.fremdriftSteg[data-tilstand='naa']::before,
+.fremdriftSteg[data-tilstand='ferdig']::before {
+  background: var(--svart);
+}
+
+.fremdriftSteg[data-tilstand='naa'] {
+  color: var(--svart);
+  font-weight: 500;
+}
+
+.fremdriftSteg > button,
+.fremdriftSteg > span {
+  display: block;
+  width: 100%;
+  padding: 14px 0 6px;
+}
+
+.fremdriftSteg > button {
+  border: 0;
+  background: none;
+  color: var(--svart);
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  transition: text-decoration-color var(--rask);
+}
+
+.fremdriftSteg > button:hover {
+  text-decoration-color: currentColor;
+}
+
+.fremdriftNr {
+  margin-right: 8px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--dempet);
+}
+
+/* Mobil: «Steg 2 av 5 · Periode» og en tynn linje. */
+.fremdriftKompakt {
+  display: none;
+  gap: 12px;
+}
+
+.fremdriftKompakt p {
+  font-size: 0.9375rem;
+  color: var(--dempet);
+}
+
+.fremdriftKompakt strong {
+  color: var(--svart);
+  font-weight: 500;
+}
+
+.fremdriftLinje {
+  display: block;
+  height: 2px;
+  background: var(--linje);
+}
+
+.fremdriftLinje > span {
+  display: block;
+  height: 100%;
+  background: var(--svart);
+  transform-origin: left;
+  transition: transform var(--rolig);
+}
+
+/* ---------- Steget ---------- */
+
+@keyframes stegInn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.steg {
+  display: grid;
+  gap: 28px;
+  min-width: 0;
+  animation: stegInn 420ms cubic-bezier(0.2, 0, 0, 1) both;
+}
+
+.stegHode {
+  display: grid;
+  gap: 10px;
+}
+
+/* Overskriften får fokus ved stegbytte, men er ikke noe man klikker på. */
+.stegtittel:focus {
+  outline: none;
+}
+
+.meldinger:empty {
+  display: none;
 }
 
 .meldinger:focus {
@@ -17,7 +153,6 @@
 
 .info,
 .toppfeil {
-  margin-bottom: 24px;
   padding: 14px 18px;
   border-radius: 6px;
   font-weight: 500;
@@ -32,27 +167,60 @@
   color: var(--feil);
 }
 
-.steg {
-  display: grid;
-  gap: 20px;
-  padding: 36px 0 44px;
+/* Tilbake til venstre, neste steg til høyre. */
+.navigasjon {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 32px;
+  margin-top: 8px;
+  padding-top: 28px;
   border-top: 1px solid var(--linje);
 }
 
-.stegtittel {
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  font-size: 1.5rem;
-  font-weight: 500;
-  letter-spacing: -0.02em;
+.tilbake {
+  padding: 0 0 4px;
+  border: 0;
+  background: none;
 }
 
-.stegtittel span {
-  font-size: 0.875rem;
-  font-weight: 400;
-  letter-spacing: 0;
-  color: var(--dempet);
+/* Større trykkflate enn teksten, uten å flytte streken under. */
+.tilbake::before {
+  content: '';
+  position: absolute;
+  inset: -12px -10px;
+}
+
+.handlinger {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.handlinger > button {
+  min-width: 220px;
+}
+
+/* Kort sum over knappene når sammendraget ikke står ved siden av. */
+.sumlinje {
+  display: none;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--svart);
+  font-size: 0.9375rem;
+}
+
+.sumlinje strong {
+  font-family: var(--overskrift-skrift);
+  font-size: 1.375rem;
+  font-weight: 800;
+  font-stretch: 112%;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 
 /* ---------- Utstyr ---------- */
@@ -67,7 +235,7 @@
 }
 
 .linje:first-child {
-  border-top: 1px solid var(--linje);
+  border-top: 1px solid var(--svart);
 }
 
 .linjeBilde {
@@ -179,7 +347,7 @@
 }
 
 .valg:first-of-type {
-  border-top: 1px solid var(--linje);
+  border-top: 1px solid var(--svart);
 }
 
 .valg[data-av] {
@@ -316,9 +484,144 @@
   outline-offset: 2px;
 }
 
+/* ---------- Bekreft ---------- */
+
+.oversikt {
+  margin: 0;
+  border-top: 1px solid var(--svart);
+}
+
+.oversiktRad {
+  display: grid;
+  grid-template-columns: minmax(0, 200px) minmax(0, 1fr) auto;
+  gap: 6px 24px;
+  align-items: baseline;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--linje);
+}
+
+.oversiktRad > dt {
+  font-size: 0.875rem;
+  color: var(--dempet);
+}
+
+.oversiktRad > dd {
+  margin: 0;
+}
+
+.oversiktVerdi {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  font-size: 0.9375rem;
+}
+
+.oversiktPoster {
+  display: grid;
+  gap: 2px;
+}
+
+.oversiktPoster li,
+.oversiktPost {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.oversiktPoster li > :last-child,
+.oversiktPost > :last-child {
+  white-space: nowrap;
+}
+
+.oversiktMelding {
+  margin-top: 6px;
+  color: var(--dempet);
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.endre {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 0.875rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.endre:hover {
+  text-decoration-thickness: 2px;
+}
+
+.betaling {
+  display: grid;
+  gap: 16px;
+}
+
+.delTittel {
+  float: none;
+  margin-bottom: 14px;
+  padding: 0;
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
 .samtykker {
   display: grid;
   gap: 16px;
+}
+
+/* Totalen står rett over knappen, uten strek imellom. */
+.totalboks {
+  display: grid;
+  gap: 10px;
+  padding-top: 18px;
+  border-top: 1px solid var(--svart);
+}
+
+.totalboks + .navigasjon {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.totalboksSum {
+  margin: 0;
+}
+
+.totalboksSum > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.totalboksSum dt {
+  font-weight: 500;
+}
+
+.totalboksSum dd {
+  margin: 0;
+  font-family: var(--overskrift-skrift);
+  font-size: 2.25rem;
+  font-weight: 800;
+  font-stretch: 112%;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.handlingTekst {
+  font-size: 0.8125rem;
+  color: var(--dempet);
+}
+
+.test {
+  padding: 10px 14px;
+  border-radius: 6px;
+  background: var(--flate);
+  font-size: 0.8125rem;
 }
 
 /* ---------- Sammendrag ---------- */
@@ -337,8 +640,9 @@
 }
 
 .sammendragTittel {
+  font-family: var(--overskrift-skrift);
   font-size: 1.375rem;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: -0.01em;
 }
 
@@ -381,8 +685,10 @@
 }
 
 .totalsum dd {
+  font-family: var(--overskrift-skrift);
   font-size: 2.25rem;
-  font-weight: 600;
+  font-weight: 800;
+  font-stretch: 112%;
   letter-spacing: -0.03em;
   line-height: 1;
 }
@@ -391,23 +697,6 @@
   padding-top: 0 !important;
   color: var(--dempet);
   font-size: 0.8125rem !important;
-}
-
-.handling {
-  display: grid;
-  gap: 10px;
-}
-
-.handlingTekst {
-  font-size: 0.8125rem;
-  color: var(--dempet);
-}
-
-.test {
-  padding: 10px 14px;
-  border-radius: 6px;
-  background: var(--hvit);
-  font-size: 0.8125rem;
 }
 
 /* ---------- Tom liste og kvittering ---------- */
@@ -448,25 +737,63 @@
     width: 44px;
     height: 44px;
   }
-  .fjern {
+  .fjern,
+  .endre {
     min-height: 44px;
     padding: 0 8px;
   }
   .kundetypeValg span {
     padding: 12px 0;
   }
+  .fremdriftSteg > button,
+  .fremdriftSteg > span {
+    min-height: 44px;
+  }
 }
 
+/* Sammendraget får ikke plass ved siden av: en kort sum over knappene. */
 @media (max-width: 1080px) {
   .kasse {
     grid-template-columns: minmax(0, 1fr);
   }
   .sammendrag {
-    position: static;
+    display: none;
+  }
+  .sumlinje {
+    display: flex;
+  }
+  .sumlinje + .navigasjon {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
   }
 }
 
 @media (max-width: 640px) {
+  .fremdriftListe {
+    display: none;
+  }
+  .fremdriftKompakt {
+    display: grid;
+  }
+  .steg {
+    gap: 24px;
+  }
+  .navigasjon {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .handlinger {
+    display: grid;
+    margin-left: 0;
+  }
+  .handlinger > button {
+    width: 100%;
+    min-width: 0;
+  }
+  .tilbake {
+    align-self: center;
+  }
   .linje {
     grid-template-columns: 64px minmax(0, 1fr) auto;
     grid-template-areas:
@@ -507,7 +834,14 @@
   .valgPris {
     grid-column: 2;
   }
-  .sammendragInnhold {
-    padding: 20px;
+  .oversiktRad {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .oversiktVerdi {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .totalboksSum dd {
+    font-size: 1.875rem;
   }
 }

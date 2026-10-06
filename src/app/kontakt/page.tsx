@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
+import { Bolgeskille } from '@/components/Bolgeskille'
 import { KontaktSkjema } from '@/components/KontaktSkjema'
 import { MvaTekst, Pris } from '@/components/Pris'
+import { Sidehode } from '@/components/Sidehode'
 import { firma } from '@/data/firma'
 import { finnMaskin } from '@/data/maskiner'
 import styles from './kontakt.module.css'
@@ -15,17 +17,16 @@ export default async function Kontaktside({ searchParams }: PageProps<'/kontakt'
   const maskin = typeof slug === 'string' ? finnMaskin(slug) : undefined
 
   return (
-    <div className={`ramme ${styles.side}`}>
-      <header className="sidehode">
-        <p className="etikett">Kontakt</p>
-        <h1 className="tittel">Spør oss om leie</h1>
+    <>
+      <Sidehode etikett="Kontakt" tittel="Spør oss" form={12}>
         <p className="ingress">
-          Store maskiner, fører, lang leie eller levering lenger unna — fortell hva jobben er, så får du pris og
-          ledig dato. Forespørselen er ikke bindende.
+          Lurer du på noe om utstyr, fører, lang leie eller levering lenger unna? Skriv hva jobben er, så svarer vi{' '}
+          {firma.svartid}. Vil du leie, legger du utstyret i leielisten og går gjennom kassen.
         </p>
-      </header>
+      </Sidehode>
+      <Bolgeskille form={6} />
 
-      <div className={styles.rutenett}>
+      <div className={`ramme ${styles.side} ${styles.rutenett}`}>
         <KontaktSkjema maskin={maskin ? { slug: maskin.slug, navn: maskin.navn, kode: maskin.kode } : null} />
 
         <aside className={styles.info} aria-label="Kontaktinformasjon">
@@ -64,6 +65,6 @@ export default async function Kontaktside({ searchParams }: PageProps<'/kontakt'
           </div>
         </aside>
       </div>
-    </div>
+    </>
   )
 }

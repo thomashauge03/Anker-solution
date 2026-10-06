@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Bolgeskille } from './Bolgeskille'
 import styles from './Dokument.module.css'
 
 export type Avsnitt = { id: string; tittel: string; innhold: ReactNode }
@@ -20,16 +21,19 @@ export function Dokument({
   avsnitt: Avsnitt[]
 }) {
   return (
-    <div className={`ramme ${styles.dokument}`}>
-      <header className={`sidehode ${styles.hode}`}>
-        <p className="etikett">{etikett}</p>
-        <h1 className="tittel">{tittel}</h1>
-        <div className="ingress">{ingress}</div>
-        <p className="etikett dempet">Sist oppdatert {oppdatert}</p>
-        {merknad && <div className="utkast">{merknad}</div>}
-      </header>
+    <>
+      <div className="ramme">
+        <header className={`sidehode ${styles.hode}`}>
+          <p className="etikett">{etikett}</p>
+          <h1 className="tittel">{tittel}</h1>
+          <div className="ingress">{ingress}</div>
+          <p className="etikett dempet">Sist oppdatert {oppdatert}</p>
+          {merknad && <div className="utkast">{merknad}</div>}
+        </header>
+      </div>
+      <Bolgeskille form={7} />
 
-      <div className={styles.rutenett}>
+      <div className={`ramme ${styles.dokument} ${styles.rutenett}`}>
         <nav aria-label="Innhold" className={styles.innhold}>
           <p className="etikett">Innhold</p>
           <ol role="list">
@@ -56,6 +60,6 @@ export function Dokument({
           ))}
         </div>
       </div>
-    </div>
+    </>
   )
 }
