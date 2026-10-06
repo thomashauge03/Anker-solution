@@ -1,0 +1,70 @@
+.side {
+  padding-top: clamp(32px, 5vw, 64px);
+  padding-bottom: clamp(56px, 8vw, 112px);
+}
+
+.hode {
+  display: grid;
+  gap: 20px;
+  padding-bottom: clamp(28px, 4vw, 48px);
+}
+
+.rutenett {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 1fr);
+  gap: clamp(28px, 5vw, 80px);
+  align-items: start;
+}
+
+.info {
+  display: grid;
+  border-top: 1px solid var(--svart);
+}
+
+.blokk {
+  display: grid;
+  gap: 8px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--linje);
+}
+
+.blokk address {
+  font-style: normal;
+}
+
+.telefon {
+  font-size: clamp(2rem, 3.4vw, 2.75rem);
+  font-weight: 800;
+  font-variation-settings: 'wdth' 114;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.telefon:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+.tider {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  max-width: 280px;
+}
+
+.tider div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.tider dd {
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .rutenett {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

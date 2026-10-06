@@ -1,0 +1,161 @@
+.indeks li {
+  border-bottom: 1px solid var(--svart);
+}
+
+.rad {
+  --hull: var(--hvit);
+  position: relative;
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) minmax(0, 0.9fr) 120px 140px 40px;
+  grid-template-areas: 'nr navn kort antall fra pil';
+  align-items: center;
+  gap: 0 24px;
+  min-height: 112px;
+  padding: 20px 8px;
+  text-decoration: none;
+  overflow: hidden;
+  transition:
+    background-color var(--rolig),
+    color var(--rolig);
+}
+
+.nr {
+  grid-area: nr;
+  align-self: start;
+  padding-top: 10px;
+  font-family: var(--mono);
+  font-size: 0.875rem;
+}
+
+.navn {
+  grid-area: navn;
+  font-size: clamp(1.75rem, 3.6vw, 3.25rem);
+  line-height: 0.95;
+  font-weight: 800;
+  font-variation-settings: 'wdth' 116;
+  letter-spacing: -0.02em;
+}
+
+.kort {
+  grid-area: kort;
+  font-size: 0.9375rem;
+  color: var(--dempet);
+  max-width: 34ch;
+  transition: color var(--rolig);
+}
+
+.antall,
+.fra {
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.antall {
+  grid-area: antall;
+}
+
+.fra {
+  grid-area: fra;
+  text-align: right;
+}
+
+.pil {
+  grid-area: pil;
+  justify-self: end;
+  transition: transform var(--rolig);
+}
+
+/* Piktogrammet glir inn fra høyre ved hover, bak tekstkolonnene. */
+.figur {
+  position: absolute;
+  right: 400px;
+  top: 50%;
+  width: 150px;
+  color: var(--hvit);
+  opacity: 0;
+  transform: translate(40px, -50%);
+  transition:
+    opacity var(--rolig),
+    transform var(--rolig);
+  pointer-events: none;
+}
+
+.figur svg {
+  width: 100%;
+  height: auto;
+}
+
+.rad:hover,
+.rad:focus-visible {
+  --hull: var(--svart);
+  background: var(--svart);
+  color: var(--hvit);
+}
+
+.rad:focus-visible {
+  outline: 2px solid var(--svart);
+  outline-offset: 2px;
+}
+
+.rad:hover .kort,
+.rad:focus-visible .kort {
+  color: rgb(255 255 255 / 0);
+}
+
+.rad:hover .figur,
+.rad:focus-visible .figur {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+.rad:hover .pil,
+.rad:focus-visible .pil {
+  transform: translateX(4px);
+}
+
+@media (max-width: 1100px) {
+  .rad {
+    grid-template-columns: 48px minmax(0, 1fr) 120px 32px;
+    grid-template-areas:
+      'nr navn fra pil'
+      'nr kort antall pil';
+    gap: 8px 16px;
+  }
+  .antall {
+    text-align: right;
+    color: var(--dempet);
+  }
+  .figur {
+    display: none;
+  }
+  .rad:hover .kort,
+  .rad:focus-visible .kort {
+    color: rgb(255 255 255 / 0.75);
+  }
+  .rad:hover .antall {
+    color: inherit;
+  }
+}
+
+@media (max-width: 560px) {
+  .rad {
+    grid-template-columns: 32px minmax(0, 1fr) 24px;
+    grid-template-areas:
+      'nr navn pil'
+      'nr kort pil'
+      'nr fra pil';
+    min-height: 0;
+    padding: 18px 0;
+  }
+  .antall {
+    display: none;
+  }
+  .fra {
+    text-align: left;
+  }
+  .nr {
+    padding-top: 4px;
+    font-size: 0.75rem;
+  }
+}

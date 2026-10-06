@@ -1,0 +1,72 @@
+.valg {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--svart);
+  min-width: 0;
+}
+
+.alternativ {
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+
+.alternativ input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.alternativ span {
+  display: grid;
+  place-items: center;
+  height: 34px;
+  padding: 0 12px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition:
+    background-color var(--rask),
+    color var(--rask);
+}
+
+.alternativ input:checked + span {
+  background: var(--svart);
+  color: var(--hvit);
+}
+
+.alternativ input:not(:checked):hover + span {
+  background: var(--flate);
+}
+
+.alternativ input:focus-visible + span {
+  outline: 2px solid var(--svart);
+  outline-offset: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+/* På svart bakgrunn (mobilmeny) */
+.mork {
+  border-color: var(--hvit);
+}
+
+.mork .alternativ input:checked + span {
+  background: var(--hvit);
+  color: var(--svart);
+}
+
+.mork .alternativ input:not(:checked):hover + span {
+  background: rgb(255 255 255 / 0.12);
+}
+
+.mork .alternativ input:focus-visible + span {
+  outline-color: var(--hvit);
+}

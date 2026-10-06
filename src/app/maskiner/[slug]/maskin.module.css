@@ -1,0 +1,225 @@
+.smuler {
+  padding-block: 20px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.smuler ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.smuler li + li::before {
+  content: '/';
+  margin-right: 6px;
+  color: var(--dempet);
+}
+
+.smuler a {
+  text-decoration: none;
+}
+
+.smuler a:hover {
+  text-decoration: underline;
+}
+
+.topp {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+  padding-bottom: clamp(48px, 6vw, 88px);
+}
+
+.bildekolonne {
+  position: sticky;
+  top: calc(var(--header-hoyde) + 24px);
+}
+
+.bilde {
+  --hull: var(--flate);
+  display: grid;
+  gap: 0;
+  margin: 0;
+  background: var(--flate);
+  border: 1px solid var(--svart);
+}
+
+.bildeTopp {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+}
+
+.bilde svg {
+  width: 100%;
+  height: auto;
+  padding: 6% 12% 4%;
+}
+
+.bildetekst {
+  padding: 14px 18px;
+  border-top: 1px solid var(--svart);
+  background: var(--hvit);
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+}
+
+.infokolonne {
+  display: grid;
+  gap: 28px;
+}
+
+.innledning {
+  display: grid;
+  gap: 16px;
+  justify-items: start;
+}
+
+.navn {
+  font-size: clamp(2.25rem, 4.2vw, 4rem);
+}
+
+.beskrivelse {
+  font-size: 1.125rem;
+  max-width: 46ch;
+}
+
+.priser {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 0;
+  border-top: 1px solid var(--svart);
+  border-bottom: 1px solid var(--svart);
+}
+
+.priser > div {
+  display: grid;
+  gap: 6px;
+  padding: 16px 0;
+}
+
+.priser > div + div {
+  padding-left: 20px;
+  border-left: 1px solid var(--svart);
+}
+
+.priser dd {
+  margin: 0;
+  font-size: clamp(1.75rem, 2.6vw, 2.25rem);
+  font-weight: 800;
+  font-variation-settings: 'wdth' 112;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.fra {
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.prismerknad {
+  margin-top: 10px;
+  font-size: 0.875rem;
+  color: var(--dempet);
+}
+
+/* ---------- Detaljer ---------- */
+
+.detaljer {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 64px);
+  padding-top: clamp(40px, 5vw, 64px);
+  border-top: 1px solid var(--svart);
+}
+
+.detaljtittel {
+  padding-bottom: 12px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--svart);
+  font-size: 1.25rem;
+  font-weight: 750;
+  font-variation-settings: 'wdth' 110;
+}
+
+.spesifikasjoner {
+  margin: 0;
+}
+
+.spesifikasjoner > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--linje);
+}
+
+.spesifikasjoner dd {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+.tillegg {
+  display: grid;
+  gap: 40px;
+  align-content: start;
+}
+
+.liste li {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--linje);
+  font-size: 0.9375rem;
+}
+
+.liste li::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  margin-top: 7px;
+  background: var(--svart);
+}
+
+.merknader li::before {
+  content: '!';
+  width: 14px;
+  height: 14px;
+  margin-top: 3px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--svart);
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+}
+
+/* div.-prefikset vinner over .rutenett fra Maskinkort uansett lasterekkefølge. */
+div.relaterte {
+  border-top: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 960px) {
+  .topp,
+  .detaljer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .bildekolonne {
+    position: static;
+  }
+}
+
+@media (max-width: 860px) {
+  div.relaterte {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -1,0 +1,337 @@
+/* ---------- Hero ---------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  grid-template-areas:
+    'tekst tegning'
+    'sok sok';
+  gap: 40px clamp(32px, 4vw, 64px);
+  align-items: end;
+  padding-top: clamp(32px, 5vw, 64px);
+  padding-bottom: clamp(32px, 4vw, 48px);
+}
+
+.heroTekst {
+  grid-area: tekst;
+  display: grid;
+  gap: 28px;
+  align-self: stretch;
+  align-content: space-between;
+}
+
+.heroEtikett {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.heroEtikett::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: var(--svart);
+}
+
+.heroTittel {
+  font-size: clamp(2.75rem, 4.6vw, 4.75rem);
+  line-height: 0.92;
+  font-weight: 820;
+  font-variation-settings: 'wdth' 114;
+  letter-spacing: -0.03em;
+  margin-top: auto;
+}
+
+.heroTegning {
+  grid-area: tegning;
+  min-width: 0;
+}
+
+.heroSok {
+  grid-area: sok;
+  padding-top: 32px;
+  border-top: 1px solid var(--svart);
+}
+
+@media (max-width: 960px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'tekst'
+      'sok'
+      'tegning';
+    gap: 32px;
+  }
+  .heroSok {
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+
+/* ---------- Fakta ---------- */
+
+.fakta {
+  border-top: 1px solid var(--svart);
+  border-bottom: 1px solid var(--svart);
+}
+
+.faktaRad {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-block: 0;
+}
+
+.faktaRad > div {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 24px 24px 28px;
+  border-left: 1px solid var(--svart);
+}
+
+.faktaRad > div:first-child {
+  border-left: 0;
+  padding-left: 0;
+}
+
+.faktaRad dd {
+  margin: 0;
+  font-size: 0.9375rem;
+  max-width: 30ch;
+}
+
+@media (max-width: 900px) {
+  .faktaRad {
+    grid-template-columns: 1fr 1fr;
+  }
+  .faktaRad > div:nth-child(3) {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .faktaRad > div:nth-child(n + 3) {
+    border-top: 1px solid var(--svart);
+  }
+}
+
+@media (max-width: 480px) {
+  .faktaRad {
+    grid-template-columns: 1fr;
+  }
+  .faktaRad > div {
+    border-left: 0;
+    padding: 18px 0;
+  }
+  .faktaRad > div + div {
+    border-top: 1px solid var(--svart);
+  }
+}
+
+/* ---------- To måter ---------- */
+
+.toVeier {
+  background: var(--flate);
+  border-block: 1px solid var(--svart);
+  padding-block: clamp(56px, 8vw, 112px);
+}
+
+.toVeierTittel {
+  padding-bottom: 20px;
+}
+
+.veier {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--svart);
+  background: var(--hvit);
+}
+
+.vei {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 20px;
+  padding: clamp(24px, 4vw, 48px);
+}
+
+.vei + .vei {
+  border-left: 1px solid var(--svart);
+}
+
+.veiTittel {
+  font-size: clamp(2.125rem, 3.7vw, 3.5rem);
+  line-height: 0.95;
+  font-weight: 800;
+  font-variation-settings: 'wdth' 114;
+  letter-spacing: -0.02em;
+}
+
+.veiIngress {
+  font-size: 1.125rem;
+  max-width: 38ch;
+}
+
+.punkter {
+  display: grid;
+  gap: 0;
+  width: 100%;
+  margin-bottom: 8px;
+  border-top: 1px solid var(--linje);
+}
+
+.punkter li {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 8px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--linje);
+  font-size: 0.9375rem;
+}
+
+.punkter li::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  margin-top: 7px;
+  background: var(--svart);
+}
+
+@media (max-width: 860px) {
+  .veier {
+    grid-template-columns: 1fr;
+  }
+  .vei + .vei {
+    border-left: 0;
+    border-top: 1px solid var(--svart);
+  }
+}
+
+/* ---------- Ofte leid ---------- */
+
+div.ofteLeid {
+  border-top: 0;
+}
+
+/* ---------- Slik leier du ---------- */
+
+.slik {
+  padding-bottom: clamp(56px, 8vw, 112px);
+}
+
+.steg {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.steg li {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 24px 24px 8px 0;
+}
+
+.steg li + li {
+  padding-left: 24px;
+  border-left: 1px solid var(--linje);
+}
+
+.stegNr {
+  font-family: var(--mono);
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin-bottom: 12px;
+}
+
+.steg p {
+  font-size: 0.9375rem;
+  color: var(--dempet);
+  max-width: 32ch;
+}
+
+@media (max-width: 900px) {
+  .steg {
+    grid-template-columns: 1fr 1fr;
+  }
+  .steg li:nth-child(3) {
+    padding-left: 0;
+    border-left: 0;
+  }
+  .steg li:nth-child(n + 3) {
+    border-top: 1px solid var(--linje);
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .steg {
+    grid-template-columns: 1fr;
+  }
+  .steg li,
+  .steg li + li {
+    grid-template-columns: 64px 1fr;
+    padding: 20px 0;
+    border-left: 0;
+    margin: 0;
+  }
+  .steg li + li {
+    border-top: 1px solid var(--linje);
+  }
+  .stegNr {
+    grid-row: span 2;
+    font-size: 1.75rem;
+  }
+}
+
+/* ---------- Avslutning ---------- */
+
+.cta {
+  background: var(--svart);
+  color: var(--hvit);
+  padding-block: clamp(56px, 8vw, 104px);
+}
+
+.ctaRad {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 32px 64px;
+  align-items: end;
+}
+
+.ctaTekst {
+  display: grid;
+  gap: 24px;
+}
+
+.ctaTekst p {
+  font-size: 1.125rem;
+  max-width: 40ch;
+  color: rgb(255 255 255 / 0.82);
+}
+
+.ctaKnapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ctaRing {
+  --knapp-bg: transparent;
+  --knapp-fg: var(--hvit);
+  border-color: var(--hvit);
+}
+
+.ctaRing:hover {
+  --knapp-bg: var(--hvit);
+  --knapp-fg: var(--svart);
+}
+
+.cta a:focus-visible {
+  outline-color: var(--hvit);
+}
+
+@media (max-width: 860px) {
+  .ctaRad {
+    grid-template-columns: 1fr;
+  }
+}

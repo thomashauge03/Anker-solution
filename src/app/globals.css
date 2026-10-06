@@ -1,0 +1,568 @@
+/* Anker Solutions — designsystem.
+   Svart og hvitt, hårfine linjer og tall i monospace: et teknisk datablad
+   heller enn en mal. Ingen avrundede hjørner, ingen skygger, ingen
+   gradienter. Den eneste fargen er Vipps-knappen og feilmeldinger. */
+
+:root {
+  --hvit: #ffffff;
+  --svart: #0b0b0b;
+  --flate: #f3f3f0;        /* bakgrunn bak piktogrammer */
+  --flate-mork: #e9e9e5;
+  --linje: #dcdcd7;        /* svake skillelinjer */
+  --rutenett: #ecece8;     /* rutepapir bak tegningen */
+  --hull: var(--flate);    /* «hull» i piktogrammene: vinduer, navkapsler */
+  --dempet: #63635e;       /* sekundærtekst: 5,9:1 mot hvitt */
+  --feil: #b42318;
+  --vipps: #ff5b24;
+  --vipps-hover: #eb4d17;
+
+  --skrift: var(--font-archivo), 'Helvetica Neue', Arial, sans-serif;
+  --mono: var(--font-mono), ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --bredde: 1440px;
+  --marg: clamp(16px, 3.2vw, 40px);
+  --header-hoyde: 72px;
+
+  --rask: 140ms cubic-bezier(0.2, 0, 0, 1);
+  --rolig: 420ms cubic-bezier(0.2, 0, 0, 1);
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-hoyde) + 16px);
+}
+
+body {
+  margin: 0;
+  background: var(--hvit);
+  color: var(--svart);
+  font-family: var(--skrift);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  font-variation-settings: 'wdth' 100;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+dl,
+dd,
+figure {
+  margin: 0;
+}
+
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--svart);
+  color: var(--hvit);
+}
+
+/* Tastaturfokus synes alltid; mus gir ingen ring. */
+:focus-visible {
+  outline: 2px solid var(--svart);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Typografi ---------- */
+
+.display {
+  font-size: clamp(3rem, 7.4vw, 7.25rem);
+  line-height: 0.9;
+  font-weight: 800;
+  font-variation-settings: 'wdth' 118;
+  letter-spacing: -0.025em;
+}
+
+.tittel {
+  font-size: clamp(2.375rem, 5vw, 4.5rem);
+  line-height: 0.95;
+  font-weight: 800;
+  font-variation-settings: 'wdth' 116;
+  letter-spacing: -0.02em;
+}
+
+.overskrift {
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  line-height: 1;
+  font-weight: 750;
+  font-variation-settings: 'wdth' 112;
+  letter-spacing: -0.015em;
+}
+
+.underoverskrift {
+  font-size: 1.375rem;
+  line-height: 1.15;
+  font-weight: 700;
+  font-variation-settings: 'wdth' 108;
+  letter-spacing: -0.005em;
+}
+
+.ingress {
+  font-size: clamp(1.125rem, 1.5vw, 1.3125rem);
+  line-height: 1.5;
+  max-width: 40ch;
+}
+
+.etikett {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mono {
+  font-family: var(--mono);
+  font-feature-settings: 'zero' 0;
+}
+
+.dempet {
+  color: var(--dempet);
+}
+
+.tall {
+  font-variant-numeric: tabular-nums;
+}
+
+.skjult {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.hopp-til-innhold {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  padding: 12px 16px;
+  background: var(--svart);
+  color: var(--hvit);
+  font-weight: 600;
+  transform: translateY(-200%);
+}
+
+.hopp-til-innhold:focus {
+  transform: none;
+  outline: 2px solid var(--hvit);
+  outline-offset: -4px;
+}
+
+/* ---------- Oppsett ---------- */
+
+.ramme {
+  width: 100%;
+  max-width: var(--bredde);
+  margin-inline: auto;
+  padding-inline: var(--marg);
+}
+
+.strek {
+  border: 0;
+  border-top: 1px solid var(--svart);
+  margin: 0;
+}
+
+.seksjon {
+  padding-block: clamp(56px, 8vw, 112px);
+}
+
+.seksjonshode {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--svart);
+}
+
+/* ---------- Knapper ---------- */
+
+.knapp {
+  --knapp-bg: var(--svart);
+  --knapp-fg: var(--hvit);
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 52px;
+  padding: 0 20px;
+  border: 1px solid var(--svart);
+  border-radius: 0;
+  background: var(--knapp-bg);
+  color: var(--knapp-fg);
+  font-size: 0.9375rem;
+  font-weight: 650;
+  font-variation-settings: 'wdth' 106;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--rask),
+    color var(--rask),
+    border-color var(--rask);
+}
+
+.knapp svg {
+  flex: none;
+  transition: transform var(--rask);
+}
+
+.knapp:hover {
+  --knapp-bg: var(--hvit);
+  --knapp-fg: var(--svart);
+}
+
+.knapp:hover svg {
+  transform: translateX(3px);
+}
+
+.knapp:active {
+  transform: translateY(1px);
+}
+
+.knapp[disabled],
+.knapp[aria-disabled='true'] {
+  --knapp-bg: var(--flate-mork);
+  --knapp-fg: #6f6f6a;
+  border-color: var(--flate-mork);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.knapp[disabled] svg {
+  transform: none;
+}
+
+.knapp--omriss {
+  --knapp-bg: transparent;
+  --knapp-fg: var(--svart);
+}
+
+.knapp--omriss:hover {
+  --knapp-bg: var(--svart);
+  --knapp-fg: var(--hvit);
+}
+
+.knapp--lys {
+  --knapp-bg: var(--hvit);
+  --knapp-fg: var(--svart);
+  border-color: var(--hvit);
+}
+
+.knapp--lys:hover {
+  --knapp-bg: transparent;
+  --knapp-fg: var(--hvit);
+}
+
+.knapp--vipps {
+  --knapp-bg: var(--vipps);
+  --knapp-fg: var(--svart);
+  border-color: var(--vipps);
+}
+
+.knapp--vipps:hover {
+  --knapp-bg: var(--vipps-hover);
+  --knapp-fg: var(--svart);
+  border-color: var(--vipps-hover);
+}
+
+.knapp--bred {
+  width: 100%;
+}
+
+/* Tekstlenke med pil */
+.pil-lenke {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+}
+
+.pil-lenke svg {
+  transition: transform var(--rask);
+}
+
+.pil-lenke:hover svg {
+  transform: translateX(3px);
+}
+
+/* ---------- Skjema ---------- */
+
+.felt {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.felt > label,
+.felt > .felt-etikett {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.inndata {
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 14px;
+  border: 1px solid var(--svart);
+  border-radius: 0;
+  background: var(--hvit);
+  font-size: 1rem;
+  line-height: 1.3;
+  appearance: none;
+  transition: box-shadow var(--rask);
+}
+
+.inndata:hover {
+  box-shadow: inset 0 0 0 1px var(--svart);
+}
+
+.inndata:focus-visible {
+  outline: 2px solid var(--svart);
+  outline-offset: 2px;
+}
+
+.inndata[aria-invalid='true'] {
+  border-color: var(--feil);
+  box-shadow: inset 0 0 0 1px var(--feil);
+}
+
+textarea.inndata {
+  min-height: 128px;
+  resize: vertical;
+}
+
+input[type='date'].inndata {
+  font-family: var(--mono);
+  font-size: 0.9375rem;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+select.inndata {
+  padding-right: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%230b0b0b' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+
+.feilmelding {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  color: var(--feil);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.feilmelding::before {
+  content: '!';
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  background: var(--feil);
+  color: var(--hvit);
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  transform: translateY(2px);
+}
+
+.hjelpetekst {
+  font-size: 0.875rem;
+  color: var(--dempet);
+}
+
+/* Avkrysning og radioknapper, firkantet som resten */
+.avkrysning {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 12px;
+  align-items: start;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.avkrysning input {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  border: 1px solid var(--svart);
+  border-radius: 0;
+  background: var(--hvit);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.avkrysning input::after {
+  content: '';
+  width: 12px;
+  height: 7px;
+  border-left: 2px solid var(--hvit);
+  border-bottom: 2px solid var(--hvit);
+  transform: translateY(-2px) rotate(-45deg);
+  opacity: 0;
+}
+
+.avkrysning input:checked {
+  background: var(--svart);
+}
+
+.avkrysning input:checked::after {
+  opacity: 1;
+}
+
+.avkrysning input[aria-invalid='true'] {
+  border-color: var(--feil);
+  box-shadow: inset 0 0 0 1px var(--feil);
+}
+
+/* Skjult felt for roboter. Mennesker og skjermlesere ser det ikke. */
+.honningkrukke {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* ---------- Brødsmuler og merkelapper ---------- */
+
+.merkelapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 7px;
+  border: 1px solid currentColor;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.merkelapp--fylt {
+  background: var(--svart);
+  color: var(--hvit);
+  border-color: var(--svart);
+}
+
+/* ---------- Utkast-merknad på juridiske sider ---------- */
+
+.utkast {
+  border: 1px dashed var(--svart);
+  padding: 14px 16px;
+  font-size: 0.9375rem;
+  background: var(--flate);
+}
+
+/* ---------- Innlasting ---------- */
+
+@keyframes opp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.inn {
+  animation: opp 700ms cubic-bezier(0.2, 0, 0, 1) both;
+  animation-delay: var(--forsinkelse, 0ms);
+}

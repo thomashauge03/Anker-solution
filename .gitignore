@@ -1,0 +1,31 @@
+# Avhengigheter
+/node_modules
+
+# Bygg
+/.next/
+/out/
+/build
+*.tsbuildinfo
+next-env.d.ts
+
+# Hemmeligheter: aldri i repoet. Nøkkelnavnene står i .env.example.
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.key
+*.jks
+*.keystore
+secrets.json
+*-credentials.json
+
+# Vercel
+.vercel
+
+# Diverse
+.DS_Store
+Thumbs.db
+npm-debug.log*
+*.log
+.claude/

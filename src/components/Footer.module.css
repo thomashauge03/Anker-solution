@@ -1,0 +1,103 @@
+.footer {
+  background: var(--svart);
+  color: var(--hvit);
+}
+
+.footer > .rutenett {
+  padding-top: clamp(40px, 5vw, 64px);
+  border-top: 1px solid rgb(255 255 255 / 0.22);
+}
+
+.footer a {
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+
+.footer a:focus-visible {
+  outline-color: var(--hvit);
+}
+
+.rutenett {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 40px 32px;
+  padding-bottom: clamp(40px, 5vw, 64px);
+}
+
+.rutenett h2 {
+  margin-bottom: 16px;
+  color: rgb(255 255 255 / 0.62);
+}
+
+.merke {
+  display: grid;
+  align-content: start;
+  gap: 20px;
+}
+
+.slagord {
+  max-width: 28ch;
+  color: rgb(255 255 255 / 0.78);
+}
+
+.adresse {
+  font-style: normal;
+  margin-bottom: 16px;
+}
+
+.tider {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+.tider div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 240px;
+  border-bottom: 1px solid rgb(255 255 255 / 0.16);
+  padding-bottom: 4px;
+}
+
+.tider dd {
+  margin: 0;
+}
+
+.liste {
+  display: grid;
+  gap: 8px;
+}
+
+.bunn {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px 24px;
+  flex-wrap: wrap;
+  padding-block: 20px 28px;
+  border-top: 1px solid rgb(255 255 255 / 0.22);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: rgb(255 255 255 / 0.72);
+}
+
+@media (max-width: 960px) {
+  .rutenett {
+    grid-template-columns: 1fr 1fr;
+  }
+  .merke {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 560px) {
+  .rutenett {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,500 @@
+.kasse {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 400px);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+}
+
+.skjema {
+  display: grid;
+  gap: 0;
+  min-width: 0;
+}
+
+.meldinger:focus {
+  outline: none;
+}
+
+.info,
+.toppfeil {
+  margin-bottom: 24px;
+  padding: 14px 16px;
+  font-weight: 550;
+}
+
+.info {
+  border: 1px solid var(--svart);
+  background: var(--flate);
+}
+
+.toppfeil {
+  border: 2px solid var(--feil);
+  color: var(--feil);
+}
+
+.steg {
+  display: grid;
+  gap: 18px;
+  padding: 28px 0 36px;
+  border-top: 1px solid var(--svart);
+}
+
+.stegtittel {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  font-size: 1.375rem;
+  font-weight: 750;
+  font-variation-settings: 'wdth' 110;
+  letter-spacing: -0.005em;
+}
+
+.stegtittel span {
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* ---------- Utstyr ---------- */
+
+.linjer {
+  border-top: 1px solid var(--linje);
+}
+
+.linje {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr) auto 110px auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--linje);
+}
+
+.linjeBilde {
+  --hull: var(--flate);
+  padding: 8px 10px 4px;
+  background: var(--flate);
+}
+
+.linjeTekst {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.linjeNavn {
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.linjeNavn:hover {
+  text-decoration: underline;
+}
+
+.linjeMerknad {
+  font-size: 0.8125rem;
+  color: var(--dempet);
+}
+
+.linjeAntall {
+  display: inline-grid;
+  grid-template-columns: 36px 40px 36px;
+  height: 36px;
+  border: 1px solid var(--svart);
+}
+
+.linjeAntall button {
+  border: 0;
+  background: var(--hvit);
+  font-size: 1.0625rem;
+  line-height: 1;
+}
+
+.linjeAntall button:hover:not(:disabled) {
+  background: var(--svart);
+  color: var(--hvit);
+}
+
+.linjeAntall button:disabled {
+  color: #b5b5b0;
+  cursor: not-allowed;
+}
+
+.linjeAntall output {
+  display: grid;
+  place-items: center;
+  border-inline: 1px solid var(--svart);
+  font-family: var(--mono);
+  font-size: 0.875rem;
+}
+
+.linjeSum {
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 0.9375rem;
+  white-space: nowrap;
+}
+
+.fjern {
+  padding: 6px 0;
+  border: 0;
+  background: none;
+  font-size: 0.8125rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.fjern:hover {
+  text-decoration-thickness: 2px;
+}
+
+.merUtstyr {
+  justify-self: start;
+}
+
+/* ---------- Valgkort (radio) ---------- */
+
+.valgkort {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.valg {
+  position: relative;
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: start;
+  padding: 16px;
+  border: 1px solid var(--svart);
+  cursor: pointer;
+  transition: background-color var(--rask);
+}
+
+.valg + .valg {
+  margin-top: -1px;
+}
+
+.valg:hover {
+  background: var(--flate);
+}
+
+.valg:has(input:checked) {
+  box-shadow: inset 0 0 0 1px var(--svart);
+  background: var(--flate);
+}
+
+.valg[data-av] {
+  cursor: not-allowed;
+  color: #77776f;
+  background: var(--hvit);
+}
+
+.valg input {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  border: 1px solid var(--svart);
+  border-radius: 50%;
+  background: var(--hvit);
+  display: grid;
+  place-items: center;
+  cursor: inherit;
+}
+
+.valg input::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--svart);
+  transform: scale(0);
+  transition: transform var(--rask);
+}
+
+.valg input:checked::after {
+  transform: scale(1);
+}
+
+.valg input:disabled {
+  border-color: #b5b5b0;
+}
+
+.valgTekst {
+  display: grid;
+  gap: 2px;
+}
+
+.valgTekst strong {
+  font-weight: 650;
+}
+
+.valgTekst span {
+  font-size: 0.9375rem;
+  color: var(--dempet);
+}
+
+.valgPris {
+  font-family: var(--mono);
+  font-size: 0.9375rem;
+  white-space: nowrap;
+}
+
+/* ---------- Felter ---------- */
+
+.adresse,
+.felter {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.adresse {
+  grid-template-columns: 140px minmax(0, 1fr);
+}
+
+.helBredde {
+  grid-column: 1 / -1;
+}
+
+.kundetype {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.kundetype legend {
+  float: left;
+  margin-right: 16px;
+}
+
+.kundetypeValg {
+  position: relative;
+}
+
+.kundetypeValg input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.kundetypeValg span {
+  display: grid;
+  place-items: center;
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--svart);
+  font-size: 0.9375rem;
+  font-weight: 550;
+}
+
+.kundetypeValg + .kundetypeValg span {
+  border-left: 0;
+}
+
+.kundetypeValg input:checked + span {
+  background: var(--svart);
+  color: var(--hvit);
+}
+
+.kundetypeValg input:focus-visible + span {
+  outline: 2px solid var(--svart);
+  outline-offset: 2px;
+}
+
+.samtykker {
+  display: grid;
+  gap: 14px;
+}
+
+/* ---------- Sammendrag ---------- */
+
+.sammendrag {
+  position: sticky;
+  top: calc(var(--header-hoyde) + 24px);
+}
+
+.sammendragInnhold {
+  display: grid;
+  gap: 18px;
+  padding: 24px;
+  border: 1px solid var(--svart);
+  background: var(--hvit);
+}
+
+.sammendragTittel {
+  font-size: 1.25rem;
+  font-weight: 750;
+  font-variation-settings: 'wdth' 110;
+}
+
+.periode {
+  margin-top: -8px;
+  font-size: 0.9375rem;
+}
+
+.poster,
+.total {
+  margin: 0;
+}
+
+.poster > div,
+.total > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 0;
+  font-size: 0.9375rem;
+}
+
+.poster {
+  border-top: 1px solid var(--svart);
+}
+
+.poster > div {
+  border-bottom: 1px solid var(--linje);
+}
+
+.poster dd,
+.total dd {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.totalsum {
+  align-items: baseline;
+  padding-top: 14px !important;
+  border-top: 1px solid var(--svart);
+}
+
+.totalsum dt {
+  font-weight: 650;
+}
+
+.totalsum dd {
+  font-size: 2rem;
+  font-weight: 800;
+  font-variation-settings: 'wdth' 112;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.herav {
+  padding-top: 0 !important;
+  color: var(--dempet);
+  font-size: 0.8125rem !important;
+}
+
+.handling {
+  display: grid;
+  gap: 10px;
+}
+
+.handlingTekst {
+  font-size: 0.8125rem;
+  color: var(--dempet);
+}
+
+.test {
+  padding: 10px 12px;
+  border: 1px dashed var(--svart);
+  background: var(--flate);
+  font-size: 0.8125rem;
+}
+
+.henter {
+  min-height: 240px;
+  padding-top: 24px;
+  border-top: 1px solid var(--svart);
+}
+
+/* ---------- Tom liste og kvittering ---------- */
+
+.tom,
+.kvittering {
+  display: grid;
+  gap: 16px;
+  justify-items: start;
+  max-width: 720px;
+  padding: clamp(28px, 4vw, 48px);
+  border: 1px solid var(--svart);
+}
+
+.kvittering h2:focus {
+  outline: none;
+}
+
+.tomKnapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+@media (max-width: 1080px) {
+  .kasse {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sammendrag {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .linje {
+    grid-template-columns: 64px minmax(0, 1fr) auto;
+    grid-template-areas:
+      'bilde tekst tekst'
+      'bilde antall sum'
+      'bilde fjern fjern';
+    gap: 8px 12px;
+  }
+  .linjeBilde {
+    grid-area: bilde;
+    align-self: start;
+  }
+  .linjeTekst {
+    grid-area: tekst;
+  }
+  .linjeAntall {
+    grid-area: antall;
+    justify-self: start;
+  }
+  .linjeSum {
+    grid-area: sum;
+  }
+  .fjern {
+    grid-area: fjern;
+    justify-self: start;
+    padding: 0;
+  }
+  .felter,
+  .adresse {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .adresse {
+    grid-template-columns: 110px minmax(0, 1fr);
+  }
+  .valg {
+    grid-template-columns: 22px minmax(0, 1fr);
+  }
+  .valgPris {
+    grid-column: 2;
+  }
+  .sammendragInnhold {
+    padding: 18px;
+  }
+}

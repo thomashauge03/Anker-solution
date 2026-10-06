@@ -1,0 +1,54 @@
+.topplinje {
+  background: var(--svart);
+  color: var(--hvit);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+.rad {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 34px;
+}
+
+.rad p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.prikk {
+  width: 6px;
+  height: 6px;
+  background: var(--hvit);
+}
+
+.kontakt {
+  gap: 24px !important;
+}
+
+.kontakt a {
+  text-decoration: none;
+}
+
+.kontakt a:hover {
+  text-decoration: underline;
+}
+
+.kontakt a:focus-visible {
+  outline-color: var(--hvit);
+}
+
+@media (max-width: 720px) {
+  .epost {
+    display: none;
+  }
+  .rad p:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

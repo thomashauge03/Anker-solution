@@ -1,0 +1,131 @@
+.dokument {
+  padding-top: clamp(32px, 5vw, 64px);
+  padding-bottom: clamp(56px, 8vw, 112px);
+}
+
+.hode {
+  display: grid;
+  gap: 18px;
+  max-width: 860px;
+  padding-bottom: clamp(32px, 4vw, 56px);
+}
+
+.rutenett {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 80px);
+  align-items: start;
+  border-top: 1px solid var(--svart);
+  padding-top: 32px;
+}
+
+.innhold {
+  position: sticky;
+  top: calc(var(--header-hoyde) + 24px);
+  display: grid;
+  gap: 12px;
+}
+
+.innhold li a {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--linje);
+  font-size: 0.9375rem;
+  text-decoration: none;
+}
+
+.innhold li a:hover {
+  text-decoration: underline;
+}
+
+.innhold li a span {
+  font-size: 0.75rem;
+  padding-top: 3px;
+  color: var(--dempet);
+}
+
+.tekst {
+  max-width: 72ch;
+}
+
+.avsnitt {
+  padding-bottom: 40px;
+}
+
+.avsnitt + .avsnitt {
+  padding-top: 32px;
+  border-top: 1px solid var(--linje);
+}
+
+.avsnitt h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 16px;
+  font-size: 1.5rem;
+  font-weight: 750;
+  font-variation-settings: 'wdth' 110;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.avsnitt h2 span {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.avsnitt h3 {
+  margin: 24px 0 8px;
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.avsnitt p + p,
+.avsnitt p + ul,
+.avsnitt ul + p,
+.avsnitt dl + p,
+.avsnitt p + dl {
+  margin-top: 12px;
+}
+
+.avsnitt ul {
+  padding-left: 1.2em;
+}
+
+.avsnitt li + li {
+  margin-top: 6px;
+}
+
+.avsnitt dl {
+  margin: 0;
+}
+
+.avsnitt dl > div {
+  display: grid;
+  grid-template-columns: minmax(140px, 0.6fr) 1fr;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--linje);
+}
+
+.avsnitt dd {
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .rutenett {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .innhold {
+    position: static;
+  }
+}
+
+@media (max-width: 560px) {
+  .avsnitt dl > div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}

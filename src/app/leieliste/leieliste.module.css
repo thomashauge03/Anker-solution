@@ -1,0 +1,10 @@
+.side {
+  padding-top: clamp(32px, 5vw, 56px);
+  padding-bottom: clamp(56px, 8vw, 112px);
+}
+
+.hode {
+  display: grid;
+  gap: 12px;
+  margin-bottom: clamp(24px, 3vw, 40px);
+}

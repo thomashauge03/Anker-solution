@@ -1,0 +1,154 @@
+.boks {
+  display: grid;
+  gap: 20px;
+  padding: 24px;
+  border: 1px solid var(--svart);
+}
+
+.tittel {
+  font-size: 1.25rem;
+  font-weight: 750;
+  font-variation-settings: 'wdth' 110;
+}
+
+.mengde {
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 8px 16px;
+}
+
+.mengde > :first-child {
+  grid-column: 1 / -1;
+}
+
+.stepper {
+  display: inline-grid;
+  grid-template-columns: 44px 52px 44px;
+  height: 44px;
+  border: 1px solid var(--svart);
+}
+
+.stepper button {
+  border: 0;
+  background: var(--hvit);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.stepper button:hover:not(:disabled) {
+  background: var(--svart);
+  color: var(--hvit);
+}
+
+.stepper button:disabled {
+  color: #b5b5b0;
+  cursor: not-allowed;
+}
+
+.stepper output {
+  display: grid;
+  place-items: center;
+  border-inline: 1px solid var(--svart);
+  font-family: var(--mono);
+  font-size: 1rem;
+}
+
+.sum {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 72px;
+  padding: 16px 0;
+  border-block: 1px solid var(--svart);
+}
+
+.forklaring {
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  color: var(--dempet);
+}
+
+.belop {
+  display: grid;
+  justify-items: end;
+  font-size: 2rem;
+  font-weight: 800;
+  font-variation-settings: 'wdth' 112;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.fra {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.mva {
+  margin-top: 6px;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--dempet);
+}
+
+.merknad {
+  padding: 12px 14px;
+  background: var(--flate);
+  font-size: 0.9375rem;
+}
+
+.knapper {
+  display: grid;
+  gap: 10px;
+}
+
+.kvittering {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--svart);
+  font-weight: 600;
+  animation: opp 300ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.kvittering p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hake {
+  width: 16px;
+  height: 16px;
+  background: var(--svart);
+  position: relative;
+}
+
+.hake::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  width: 8px;
+  height: 4px;
+  border-left: 2px solid var(--hvit);
+  border-bottom: 2px solid var(--hvit);
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 480px) {
+  .boks {
+    padding: 18px;
+  }
+  .belop {
+    font-size: 1.625rem;
+  }
+}
