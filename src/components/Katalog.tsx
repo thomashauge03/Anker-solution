@@ -26,6 +26,7 @@ function sokbarTekst(m: Maskin): string {
 }
 
 const indeks = new Map(maskiner.map((m) => [m.slug, sokbarTekst(m)]))
+const rekkefolge = new Map(kategorier.map((k, i) => [k.id, i]))
 
 /** Alle ord må finnes et sted i maskinens tekst. */
 function treffer(m: Maskin, ord: string[]): boolean {
@@ -52,19 +53,12 @@ export function Katalog({ startKategori, startSok }: { startKategori: string | n
   const treff = useMemo(() => {
     const filtrert = maskiner.filter((m) => (!kategori || m.kategori === kategori) && treffer(m, ord))
     const sortert = [...filtrert]
+    if (sortering === 'standard') sortert.sort((a, b) => (rekkefolge.get(a.kategori) ?? 0) - (rekkefolge.get(b.kategori) ?? 0))
     if (sortering === 'pris-lav') sortert.sort((a, b) => a.dognpris - b.dognpris)
     if (sortering === 'pris-hoy') sortert.sort((a, b) => b.dognpris - a.dognpris)
     if (sortering === 'navn') sortert.sort((a, b) => a.navn.localeCompare(b.navn, 'nb'))
     return sortert
   }, [kategori, ord, sortering])
-
-  // Uten søk og egen sortering vises utvalget gruppert som i en katalog.
-  const grupper =
-    sortering === 'standard' && ord.length === 0
-      ? kategorier
-          .map((k) => ({ kategori: k, maskiner: treff.filter((m) => m.kategori === k.id) }))
-          .filter((g) => g.maskiner.length > 0)
-      : null
 
   function velgKategori(id: KategoriId | null) {
     settKategori(id)
@@ -80,124 +74,95 @@ export function Katalog({ startKategori, startSok }: { startKategori: string | n
 
   return (
     <div className={`ramme ${styles.katalog}`}>
-      <aside className={styles.side} aria-label="Filtrer utvalget">
-        <div>
-          <h2 className={`etikett ${styles.sidetittel}`}>Kategori</h2>
-          <ul role="list" className={styles.kategorier}>
-            <li>
-              <button type="button" aria-pressed={kategori === null} onClick={() => velgKategori(null)}>
-                <span className={styles.knappNr}>00</span>
-                <span className={styles.knappNavn}>Alt utstyr</span>
-                <span className={styles.knappAntall}>{maskiner.length}</span>
+      <nav className={styles.faner} aria-label="Kategori">
+        <ul role="list">
+          <li>
+            <button type="button" aria-pressed={kategori === null} onClick={() => velgKategori(null)}>
+              Alt <sup>{maskiner.length}</sup>
+            </button>
+          </li>
+          {kategorier.map((k) => (
+            <li key={k.id}>
+              <button type="button" aria-pressed={kategori === k.id} onClick={() => velgKategori(k.id)}>
+                {k.navn} <sup>{antallI(k.id)}</sup>
               </button>
             </li>
-            {kategorier.map((k) => (
-              <li key={k.id}>
-                <button type="button" aria-pressed={kategori === k.id} onClick={() => velgKategori(k.id)}>
-                  <span className={styles.knappNr}>{k.nr}</span>
-                  <span className={styles.knappNavn}>{k.navn}</span>
-                  <span className={styles.knappAntall}>{antallI(k.id)}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+          ))}
+        </ul>
+      </nav>
 
-        <div className={styles.prisvalg}>
-          <p className="etikett">Vis priser for</p>
+      <div className={styles.verktoy}>
+        <div className={styles.sok}>
+          <label htmlFor="katalog-sok" className="skjult">
+            Søk i utvalget
+          </label>
+          <svg viewBox="0 0 16 16" className={styles.sokeikon} aria-hidden="true" focusable="false">
+            <circle cx="6.5" cy="6.5" r="5" fill="none" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M10.5 10.5 15 15" stroke="currentColor" strokeWidth="1.5" />
+          </svg>
+          <input
+            id="katalog-sok"
+            type="search"
+            className="inndata"
+            placeholder="Søk i utvalget"
+            value={sok}
+            onChange={(e) => endreSok(e.target.value)}
+            autoComplete="off"
+          />
+        </div>
+        <div className={styles.valg}>
+          <label htmlFor="katalog-sortering" className="skjult">
+            Sorter
+          </label>
+          <select
+            id="katalog-sortering"
+            className={`inndata ${styles.sortering}`}
+            value={sortering}
+            onChange={(e) => settSortering(e.target.value as Sortering)}
+          >
+            {sorteringer.map((s) => (
+              <option key={s.verdi} value={s.verdi}>
+                {s.tekst}
+              </option>
+            ))}
+          </select>
           <Prisvalg />
         </div>
-
-        <div className={styles.hjelp}>
-          <p>Finner du ikke det du leter etter?</p>
-          <Link href="/kontakt" className="pil-lenke">
-            Send en forespørsel <Pil />
-          </Link>
-        </div>
-      </aside>
-
-      <div className={styles.hoved}>
-        <div className={styles.verktoy}>
-          <div className={styles.sok}>
-            <label htmlFor="katalog-sok" className="skjult">
-              Søk i utvalget
-            </label>
-            <svg viewBox="0 0 16 16" className={styles.sokeikon} aria-hidden="true" focusable="false">
-              <circle cx="6.5" cy="6.5" r="5" fill="none" stroke="currentColor" strokeWidth="1.5" />
-              <path d="M10.5 10.5 15 15" stroke="currentColor" strokeWidth="1.5" />
-            </svg>
-            <input
-              id="katalog-sok"
-              type="search"
-              className="inndata"
-              placeholder="Søk: graver, vibroplate, 230 V …"
-              value={sok}
-              onChange={(e) => endreSok(e.target.value)}
-              autoComplete="off"
-            />
-          </div>
-          <div className={styles.sortering}>
-            <label htmlFor="katalog-sortering" className="skjult">
-              Sorter
-            </label>
-            <select
-              id="katalog-sortering"
-              className="inndata"
-              value={sortering}
-              onChange={(e) => settSortering(e.target.value as Sortering)}
-            >
-              {sorteringer.map((s) => (
-                <option key={s.verdi} value={s.verdi}>
-                  {s.tekst}
-                </option>
-              ))}
-            </select>
-          </div>
-          <p className={styles.treff} aria-live="polite">
-            {treff.length} treff
-          </p>
-        </div>
-
-        {treff.length === 0 ? (
-          <div className={styles.tomt}>
-            <p className="underoverskrift">Ingen treff{sok.trim() ? ` på «${sok.trim()}»` : ''}.</p>
-            <p>Vi har ikke alt på nettsiden. Fortell hva jobben er, så finner vi riktig utstyr.</p>
-            <div className={styles.tomtKnapper}>
-              <Link href="/kontakt" className="knapp">
-                Send forespørsel <Pil />
-              </Link>
-              <button type="button" className="knapp knapp--omriss" onClick={() => { settSok(''); velgKategori(null) }}>
-                Vis alt utstyr
-              </button>
-            </div>
-          </div>
-        ) : grupper ? (
-          grupper.map((g) => (
-            <section key={g.kategori.id} className={styles.gruppe} aria-labelledby={`gruppe-${g.kategori.id}`}>
-              <h2 id={`gruppe-${g.kategori.id}`} className={styles.gruppetittel}>
-                <span className="mono">{g.kategori.nr}</span>
-                {g.kategori.navn}
-              </h2>
-              <div className={`${kortStil.rutenett} ${styles.rutenett}`}>
-                {g.maskiner.map((m) => (
-                  <Maskinkort key={m.slug} maskin={m} />
-                ))}
-              </div>
-            </section>
-          ))
-        ) : (
-          <section aria-labelledby="resultater">
-            <h2 id="resultater" className="skjult">
-              Resultater
-            </h2>
-            <div className={`${kortStil.rutenett} ${styles.rutenett}`}>
-              {treff.map((m) => (
-                <Maskinkort key={m.slug} maskin={m} />
-              ))}
-            </div>
-          </section>
-        )}
       </div>
+
+      <p className={styles.treff} aria-live="polite">
+        {treff.length} {treff.length === 1 ? 'maskin' : 'maskiner'}
+      </p>
+
+      {treff.length === 0 ? (
+        <div className={styles.tomt}>
+          <p className="overskrift">Ingen treff{sok.trim() ? ` på «${sok.trim()}»` : ''}.</p>
+          <p className="dempet">Vi har ikke alt på nettsiden. Fortell hva jobben er, så finner vi riktig utstyr.</p>
+          <div className={styles.tomtKnapper}>
+            <Link href="/kontakt" className="knapp">
+              Send forespørsel <Pil />
+            </Link>
+            <button
+              type="button"
+              className="pil-lenke"
+              onClick={() => {
+                settSok('')
+                velgKategori(null)
+              }}
+            >
+              Vis alt utstyr
+            </button>
+          </div>
+        </div>
+      ) : (
+        <section aria-label="Resultater">
+          <div className={kortStil.rutenett}>
+            {treff.map((m) => (
+              <Maskinkort key={m.slug} maskin={m} overskrift="h2" />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   )
 }

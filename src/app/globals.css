@@ -2,8 +2,9 @@
    Svart og hvitt, hårfine linjer og én skrift: Hanken Grotesk, valgt fordi
    den ligger nærmest skriften på nbim.no (NorgesBank, som ikke kan lisensieres).
    Overskrifter i 500 med stram sperring, brødtekst i 400, ingresser i 300 —
-   samme rolige skala som der. Ingen avrundede hjørner, ingen skygger, ingen
-   gradienter. Den eneste fargen er Vipps-knappen og feilmeldinger. */
+   samme rolige skala som der. Fast rutenett med etikett til venstre og
+   innhold til høyre, runde knapper, ingen skygger og ingen gradienter.
+   Den eneste fargen er Vipps-knappen og feilmeldinger. */
 
 :root {
   --hvit: #ffffff;
@@ -11,7 +12,6 @@
   --flate: #f3f3f0;        /* bakgrunn bak piktogrammer */
   --flate-mork: #e9e9e5;
   --linje: #dcdcd7;        /* svake skillelinjer */
-  --rutenett: #ecece8;     /* rutepapir bak tegningen */
   --hull: var(--flate);    /* «hull» i piktogrammene: vinduer, navkapsler */
   --dempet: #63635e;       /* sekundærtekst: 5,9:1 mot hvitt */
   --feil: #b42318;
@@ -24,12 +24,19 @@
 
   --bredde: 1440px;
   --marg: clamp(16px, 3.2vw, 40px);
-  --header-hoyde: 72px;
+  /* Fast høyde: toppen endrer seg aldri mens man scroller. */
+  --header-hoyde: 96px;
 
   --rask: 140ms cubic-bezier(0.2, 0, 0, 1);
   --rolig: 420ms cubic-bezier(0.2, 0, 0, 1);
 
   color-scheme: light;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --header-hoyde: 76px;
+  }
 }
 
 *,
@@ -145,10 +152,10 @@ button {
 }
 
 .tittel {
-  font-size: clamp(2.375rem, 5vw, 4.5rem);
-  line-height: 1;
+  font-size: clamp(2.75rem, 5vw, 4.75rem);
+  line-height: 1.02;
   font-weight: 500;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
 }
 
 .overskrift {
@@ -166,10 +173,10 @@ button {
 }
 
 .ingress {
-  font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
   font-weight: 300;
-  line-height: 1.45;
-  max-width: 40ch;
+  line-height: 1.5;
+  max-width: 46ch;
 }
 
 .etikett {
@@ -177,7 +184,7 @@ button {
   font-size: 0.75rem;
   font-weight: 500;
   line-height: 1.3;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
@@ -233,38 +240,78 @@ button {
   padding-inline: var(--marg);
 }
 
-.strek {
-  border: 0;
-  border-top: 1px solid var(--svart);
-  margin: 0;
+/* Toppen av hver underside: etikett, tittel og ingress med samme mål overalt. */
+.sidehode {
+  display: grid;
+  gap: 20px;
+  justify-items: start;
+  padding-top: clamp(40px, 6vw, 88px);
+  padding-bottom: clamp(32px, 4vw, 56px);
 }
 
-.seksjon {
-  padding-block: clamp(56px, 8vw, 112px);
+.sidehode .etikett {
+  color: var(--dempet);
 }
 
-.seksjonshode {
+/* Fast struktur for seksjoner: etikett i en smal venstrekolonne, innhold
+   til høyre. Hårfin linje over hver seksjon. */
+.blokk {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+  gap: 24px clamp(24px, 3vw, 48px);
+  padding-block: clamp(48px, 7vw, 104px);
+  border-top: 1px solid var(--linje);
+}
+
+.blokk-etikett {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dempet);
+  padding-top: 0.6em;
+}
+
+.blokk-innhold {
+  display: grid;
+  gap: clamp(28px, 3vw, 44px);
+  min-width: 0;
+}
+
+.blokk-hode {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 24px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--svart);
+  gap: 16px 32px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 860px) {
+  .blokk {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 /* ---------- Knapper ---------- */
 
+/* Avrundet knapp der motsatt farge feies inn fra venstre ved hover. */
 .knapp {
   --knapp-bg: var(--svart);
   --knapp-fg: var(--hvit);
+  --knapp-kant: var(--svart);
+  --knapp-fyll: var(--hvit);
+  --knapp-fyll-fg: var(--svart);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 14px;
   min-height: 52px;
-  padding: 0 20px;
-  border: 1px solid var(--svart);
-  border-radius: 0;
+  padding: 0 24px;
+  border: 1px solid var(--knapp-kant);
+  border-radius: 999px;
   background: var(--knapp-bg);
   color: var(--knapp-fg);
   font-size: 0.9375rem;
@@ -273,37 +320,57 @@ button {
   line-height: 1.2;
   text-decoration: none;
   white-space: nowrap;
-  transition:
-    background-color var(--rask),
-    color var(--rask),
-    border-color var(--rask);
+  transition: color 380ms cubic-bezier(0.2, 0.7, 0, 1);
+}
+
+.knapp::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--knapp-fyll);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 520ms cubic-bezier(0.2, 0.7, 0, 1);
 }
 
 .knapp svg {
   flex: none;
-  transition: transform var(--rask);
+  transition: transform 380ms cubic-bezier(0.2, 0.7, 0, 1);
 }
 
 .knapp:hover {
-  --knapp-bg: var(--hvit);
-  --knapp-fg: var(--svart);
+  color: var(--knapp-fyll-fg);
+}
+
+.knapp:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
 .knapp:hover svg {
-  transform: translateX(3px);
+  transform: translateX(4px);
 }
 
 .knapp:active {
-  transform: translateY(1px);
+  transform: scale(0.98);
 }
 
 .knapp[disabled],
 .knapp[aria-disabled='true'] {
   --knapp-bg: var(--flate-mork);
   --knapp-fg: #6f6f6a;
-  border-color: var(--flate-mork);
+  --knapp-kant: var(--flate-mork);
   cursor: not-allowed;
   transform: none;
+}
+
+.knapp[disabled]::before {
+  display: none;
+}
+
+.knapp[disabled]:hover {
+  color: var(--knapp-fg);
 }
 
 .knapp[disabled] svg {
@@ -313,57 +380,82 @@ button {
 .knapp--omriss {
   --knapp-bg: transparent;
   --knapp-fg: var(--svart);
-}
-
-.knapp--omriss:hover {
-  --knapp-bg: var(--svart);
-  --knapp-fg: var(--hvit);
+  --knapp-fyll: var(--svart);
+  --knapp-fyll-fg: var(--hvit);
 }
 
 .knapp--lys {
   --knapp-bg: var(--hvit);
   --knapp-fg: var(--svart);
-  border-color: var(--hvit);
-}
-
-.knapp--lys:hover {
-  --knapp-bg: transparent;
-  --knapp-fg: var(--hvit);
+  --knapp-kant: var(--hvit);
+  --knapp-fyll: var(--svart);
+  --knapp-fyll-fg: var(--hvit);
 }
 
 .knapp--vipps {
   --knapp-bg: var(--vipps);
   --knapp-fg: var(--svart);
-  border-color: var(--vipps);
-}
-
-.knapp--vipps:hover {
-  --knapp-bg: var(--vipps-hover);
-  --knapp-fg: var(--svart);
-  border-color: var(--vipps-hover);
+  --knapp-kant: var(--vipps);
+  --knapp-fyll: var(--svart);
+  --knapp-fyll-fg: var(--hvit);
 }
 
 .knapp--bred {
   width: 100%;
 }
 
-/* Tekstlenke med pil */
+/* Tekstlenke med pil og en strek som tegnes ved hover */
 .pil-lenke {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  padding-bottom: 4px;
   font-weight: 500;
   text-decoration: none;
-  border-bottom: 1px solid currentColor;
-  padding-bottom: 2px;
+}
+
+.pil-lenke::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform-origin: right;
+  transition: transform 520ms cubic-bezier(0.2, 0.7, 0, 1);
+}
+
+.pil-lenke:hover::after {
+  animation: strek-inn 700ms cubic-bezier(0.2, 0.7, 0, 1);
+}
+
+@keyframes strek-inn {
+  0% {
+    transform: scaleX(1);
+    transform-origin: right;
+  }
+  45% {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+  46% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
 }
 
 .pil-lenke svg {
-  transition: transform var(--rask);
+  transition: transform 380ms cubic-bezier(0.2, 0.7, 0, 1);
 }
 
 .pil-lenke:hover svg {
-  transform: translateX(3px);
+  transform: translateX(4px);
 }
 
 /* ---------- Skjema ---------- */
@@ -376,48 +468,60 @@ button {
 
 .felt > label,
 .felt > .felt-etikett {
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--dempet);
 }
 
+/* Bare en strek under feltet. Streken blir tykk når feltet er i bruk. */
 .inndata {
   width: 100%;
-  min-height: 52px;
-  padding: 12px 14px;
-  border: 1px solid var(--svart);
+  min-height: 48px;
+  padding: 10px 0;
+  border: 0;
+  border-bottom: 1px solid var(--svart);
   border-radius: 0;
-  background: var(--hvit);
-  font-size: 1rem;
+  background: transparent;
+  font-size: 1.0625rem;
   line-height: 1.3;
   appearance: none;
   transition: box-shadow var(--rask);
 }
 
-.inndata:hover {
-  box-shadow: inset 0 0 0 1px var(--svart);
+.inndata::placeholder {
+  color: #9a9a95;
+}
+
+.inndata:hover,
+.inndata:focus {
+  box-shadow: inset 0 -1px 0 var(--svart);
 }
 
 .inndata:focus-visible {
   outline: 2px solid var(--svart);
-  outline-offset: 2px;
+  outline-offset: 4px;
 }
 
 .inndata[aria-invalid='true'] {
   border-color: var(--feil);
-  box-shadow: inset 0 0 0 1px var(--feil);
+  box-shadow: inset 0 -1px 0 var(--feil);
 }
 
 textarea.inndata {
   min-height: 128px;
+  padding: 14px 16px;
+  border-bottom: 0;
+  background: var(--flate);
   resize: vertical;
 }
 
+textarea.inndata:hover,
+textarea.inndata:focus {
+  box-shadow: inset 0 -2px 0 var(--svart);
+}
+
 input[type='date'].inndata {
-  font-family: var(--mono);
-  font-size: 0.9375rem;
+  font-size: 1rem;
 }
 
 input[type='date']::-webkit-calendar-picker-indicator {
@@ -426,10 +530,11 @@ input[type='date']::-webkit-calendar-picker-indicator {
 }
 
 select.inndata {
-  padding-right: 40px;
+  padding-right: 28px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%230b0b0b' stroke-width='1.5'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 14px center;
+  background-position: right 4px center;
+  cursor: pointer;
 }
 
 .feilmelding {
@@ -523,9 +628,9 @@ select.inndata {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 3px 7px;
+  padding: 4px 10px;
   border: 1px solid currentColor;
-  font-family: var(--mono);
+  border-radius: 999px;
   font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -534,17 +639,11 @@ select.inndata {
   white-space: nowrap;
 }
 
-.merkelapp--fylt {
-  background: var(--svart);
-  color: var(--hvit);
-  border-color: var(--svart);
-}
-
 /* ---------- Utkast-merknad på juridiske sider ---------- */
 
 .utkast {
-  border: 1px dashed var(--svart);
-  padding: 14px 16px;
+  padding: 14px 18px;
+  border-radius: 6px;
   font-size: 0.9375rem;
   background: var(--flate);
 }
@@ -582,3 +681,4 @@ select.inndata {
   animation: opp 700ms cubic-bezier(0.2, 0, 0, 1) both;
   animation-delay: var(--forsinkelse, 0ms);
 }
+

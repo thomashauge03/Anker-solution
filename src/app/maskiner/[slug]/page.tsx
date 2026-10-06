@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Bestillingsboks } from '@/components/Bestillingsboks'
 import { Maskinkort } from '@/components/Maskinkort'
-import kortStil from '@/components/Maskinkort.module.css'
 import { Piktogram } from '@/components/Piktogram'
 import { MvaTekst, Pris } from '@/components/Pris'
 import { firma } from '@/data/firma'
@@ -55,18 +54,11 @@ export default async function Maskinside({ params }: PageProps<'/maskiner/[slug]
       <div className={`ramme ${styles.topp}`}>
         <div className={styles.bildekolonne}>
           <figure className={styles.bilde}>
-            <div className={styles.bildeTopp}>
-              <span className="etikett">{maskin.kode}</span>
-              <span className="etikett">{kategori?.navn}</span>
-            </div>
             <Piktogram id={maskin.piktogram} skala={maskin.skala} tittel={`Piktogram av ${maskin.navn.toLowerCase()}`} />
-            <figcaption className={styles.bildetekst}>
-              {maskin.nokkeltall[0]} · {maskin.nokkeltall[1]}
-            </figcaption>
           </figure>
           <dl className={styles.fakta}>
             <div>
-              <dt className="etikett">Henting</dt>
+              <dt>Henting</dt>
               <dd>
                 {maskin.kreverLevering
                   ? 'Leveres av oss'
@@ -74,7 +66,7 @@ export default async function Maskinside({ params }: PageProps<'/maskiner/[slug]
               </dd>
             </div>
             <div>
-              <dt className="etikett">Levering</dt>
+              <dt>Levering</dt>
               <dd>
                 {maskin.kunForesporsel ? (
                   'Pris etter avstand'
@@ -86,7 +78,7 @@ export default async function Maskinside({ params }: PageProps<'/maskiner/[slug]
               </dd>
             </div>
             <div>
-              <dt className="etikett">Til utleie</dt>
+              <dt>Til utleie</dt>
               <dd>{maskin.antall} stk.</dd>
             </div>
           </dl>
@@ -94,7 +86,7 @@ export default async function Maskinside({ params }: PageProps<'/maskiner/[slug]
 
         <div className={styles.infokolonne}>
           <div className={styles.innledning}>
-            {maskin.kunForesporsel && <p className="merkelapp merkelapp--fylt">Leies ut etter avtale</p>}
+            {maskin.kunForesporsel && <p className="merkelapp">Leies ut etter avtale</p>}
             <h1 className={`tittel ${styles.navn}`}>{maskin.navn}</h1>
             <p className={styles.beskrivelse}>{maskin.beskrivelse}</p>
           </div>
@@ -102,14 +94,14 @@ export default async function Maskinside({ params }: PageProps<'/maskiner/[slug]
           <div>
             <dl className={styles.priser}>
               <div>
-                <dt className="etikett">Døgn</dt>
+                <dt>Døgn</dt>
                 <dd>
                   {maskin.kunForesporsel && <span className={styles.fra}>fra </span>}
                   <Pris kr={maskin.dognpris} />
                 </dd>
               </div>
               <div>
-                <dt className="etikett">Uke</dt>
+                <dt>Uke</dt>
                 <dd>
                   {maskin.kunForesporsel && <span className={styles.fra}>fra </span>}
                   <Pris kr={maskin.ukepris} />
@@ -133,62 +125,66 @@ export default async function Maskinside({ params }: PageProps<'/maskiner/[slug]
         </div>
       </div>
 
-      <div className={`ramme ${styles.detaljer}`}>
-        <section aria-labelledby="spesifikasjoner">
-          <h2 id="spesifikasjoner" className={styles.detaljtittel}>
-            Spesifikasjoner
-          </h2>
-          <dl className={styles.spesifikasjoner}>
-            {maskin.spesifikasjoner.map(([navn, verdi]) => (
-              <div key={navn}>
-                <dt>{navn}</dt>
-                <dd className="mono">{verdi}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+      <div className="ramme blokk">
+        <p className="blokk-etikett">Detaljer</p>
+        <div className={`blokk-innhold ${styles.detaljer}`}>
+          <section aria-labelledby="spesifikasjoner">
+            <h2 id="spesifikasjoner" className={styles.detaljtittel}>
+              Spesifikasjoner
+            </h2>
+            <dl className={styles.spesifikasjoner}>
+              {maskin.spesifikasjoner.map(([navn, verdi]) => (
+                <div key={navn}>
+                  <dt>{navn}</dt>
+                  <dd className="mono">{verdi}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
 
-        {(maskin.inkludert || maskin.merknader) && (
-          <div className={styles.tillegg}>
-            {maskin.inkludert && (
-              <section aria-labelledby="inkludert">
-                <h2 id="inkludert" className={styles.detaljtittel}>
-                  Med i leien
-                </h2>
-                <ul role="list" className={styles.liste}>
-                  {maskin.inkludert.map((i) => (
-                    <li key={i}>{i}</li>
-                  ))}
-                </ul>
-              </section>
-            )}
-            {maskin.merknader && (
-              <section aria-labelledby="godt-a-vite">
-                <h2 id="godt-a-vite" className={styles.detaljtittel}>
-                  Godt å vite
-                </h2>
-                <ul role="list" className={`${styles.liste} ${styles.merknader}`}>
-                  {maskin.merknader.map((m) => (
-                    <li key={m}>{m}</li>
-                  ))}
-                </ul>
-              </section>
-            )}
-          </div>
-        )}
+          {(maskin.inkludert || maskin.merknader) && (
+            <div className={styles.tillegg}>
+              {maskin.inkludert && (
+                <section aria-labelledby="inkludert">
+                  <h2 id="inkludert" className={styles.detaljtittel}>
+                    Med i leien
+                  </h2>
+                  <ul role="list" className={styles.liste}>
+                    {maskin.inkludert.map((i) => (
+                      <li key={i}>{i}</li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+              {maskin.merknader && (
+                <section aria-labelledby="godt-a-vite">
+                  <h2 id="godt-a-vite" className={styles.detaljtittel}>
+                    Godt å vite
+                  </h2>
+                  <ul role="list" className={`${styles.liste} ${styles.merknader}`}>
+                    {maskin.merknader.map((m) => (
+                      <li key={m}>{m}</li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       {relaterte.length > 0 && (
-        <section className="ramme seksjon" aria-labelledby="passer-med">
-          <div className="seksjonshode">
+        <section className="ramme blokk" aria-labelledby="passer-med">
+          <p className="blokk-etikett">Mer utstyr</p>
+          <div className="blokk-innhold">
             <h2 id="passer-med" className="overskrift">
               Passer sammen med
             </h2>
-          </div>
-          <div className={`${kortStil.rutenett} ${styles.relaterte}`}>
-            {relaterte.map((m) => (
-              <Maskinkort key={m.slug} maskin={m} />
-            ))}
+            <div className={styles.relaterte}>
+              {relaterte.map((m) => (
+                <Maskinkort key={m.slug} maskin={m} radPaMobil />
+              ))}
+            </div>
           </div>
         </section>
       )}

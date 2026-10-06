@@ -4,7 +4,6 @@ import type { ReactNode } from 'react'
 import { Demobaand } from '@/components/Demobaand'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
-import { Topplinje } from '@/components/Topplinje'
 import { firma } from '@/data/firma'
 import { erDemo, nettstedBase } from '@/lib/miljo'
 import './globals.css'
@@ -47,7 +46,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           Hopp til innholdet
         </a>
         {erDemo && <Demobaand />}
-        <Topplinje />
         <Header />
         <main id="innhold">{children}</main>
         <Footer />

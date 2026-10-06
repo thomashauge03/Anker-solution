@@ -21,7 +21,7 @@ export function Dokument({
 }) {
   return (
     <div className={`ramme ${styles.dokument}`}>
-      <header className={styles.hode}>
+      <header className={`sidehode ${styles.hode}`}>
         <p className="etikett">{etikett}</p>
         <h1 className="tittel">{tittel}</h1>
         <div className="ingress">{ingress}</div>

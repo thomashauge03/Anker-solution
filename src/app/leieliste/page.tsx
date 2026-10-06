@@ -12,9 +12,10 @@ export default async function Leielisteside({ searchParams }: PageProps<'/leieli
   const { avbrutt } = await searchParams
   return (
     <div className={`ramme ${styles.side}`}>
-      <header className={styles.hode}>
+      <header className="sidehode">
+        <p className="etikett">Bestilling</p>
         <h1 className="tittel">Leieliste</h1>
-        <p className="dempet">Se over utstyret, velg periode, og betal eller send en forespørsel.</p>
+        <p className="ingress">Se over utstyret, velg periode, og betal eller send en forespørsel.</p>
       </header>
       <Kasse vipps={vippsModus()} kort={kortModus()} avbrutt={avbrutt === '1'} />
     </div>

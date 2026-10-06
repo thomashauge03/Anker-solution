@@ -7,11 +7,10 @@ import { firma } from '@/data/firma'
 import { antallILista, useLeieliste } from '@/lib/leieliste'
 import { Logo } from './Logo'
 import { Pil } from './Pil'
-import { Prisvalg } from './Prisvalg'
 import styles from './Header.module.css'
 
 const lenker = [
-  { href: '/maskiner', tekst: 'Maskiner og utstyr' },
+  { href: '/maskiner', tekst: 'Maskiner' },
   { href: '/#slik-leier-du', tekst: 'Slik leier du' },
   { href: '/kontakt', tekst: 'Kontakt' },
 ]
@@ -20,7 +19,7 @@ export function Header() {
   const sti = usePathname()
   const antall = antallILista(useLeieliste())
   const [apen, settApen] = useState(false)
-  // Menyen legges rett under toppen, enten topplinja over er synlig eller ikke.
+  // Menyen legges rett under toppen, enten båndet over er synlig eller ikke.
   const [menyTopp, settMenyTopp] = useState(0)
   const headerRef = useRef<HTMLElement>(null)
 
@@ -50,7 +49,7 @@ export function Header() {
     <header className={styles.header} ref={headerRef}>
       <div className={`ramme ${styles.rad}`}>
         <Link href="/" className={styles.logo} aria-label="Anker Solutions, til forsiden" onClick={() => settApen(false)}>
-          <Logo variant="liggende" dekorativ className={styles.logoBilde} />
+          <Logo variant="hel" dekorativ className={styles.logoBilde} />
         </Link>
 
         <nav aria-label="Hovedmeny" className={styles.nav}>
@@ -62,27 +61,30 @@ export function Header() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link
+                href="/leieliste"
+                className={styles.navlenke}
+                aria-current={sti === '/leieliste' ? 'page' : undefined}
+                aria-label={`Leieliste, ${antall} ${antall === 1 ? 'enhet' : 'enheter'}`}
+              >
+                <span aria-hidden="true">Leieliste</span>
+                <span className={styles.teller} aria-hidden="true" data-tom={antall === 0 || undefined}>
+                  {antall}
+                </span>
+              </Link>
+            </li>
           </ul>
         </nav>
 
-        <div className={styles.verktoy}>
-          <div className={styles.prisvalg}>
-            <Prisvalg />
-          </div>
+        <div className={styles.mobil}>
           <Link
             href="/leieliste"
-            className={styles.leieliste}
-            aria-current={sti === '/leieliste' ? 'page' : undefined}
+            className={styles.mobilListe}
             aria-label={`Leieliste, ${antall} ${antall === 1 ? 'enhet' : 'enheter'}`}
             onClick={() => settApen(false)}
           >
-            <span className={styles.leielisteTekst} aria-hidden="true">
-              Leieliste
-            </span>
-            <svg className={styles.leielisteIkon} viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-              <path d="M3 1.5h10v13H3zM5.5 5h5M5.5 8h5M5.5 11h3" fill="none" stroke="currentColor" strokeWidth="1.3" />
-            </svg>
-            <span className={styles.teller} aria-hidden="true">
+            <span className={styles.teller} aria-hidden="true" data-tom={antall === 0 || undefined}>
               {antall}
             </span>
           </Link>
@@ -94,7 +96,7 @@ export function Header() {
             onClick={vekslMeny}
           >
             <span className={styles.menystreker} data-apen={apen} aria-hidden="true" />
-            <span className={styles.menytekst}>{apen ? 'Lukk' : 'Meny'}</span>
+            <span className="skjult">{apen ? 'Lukk menyen' : 'Meny'}</span>
           </button>
         </div>
       </div>
@@ -102,24 +104,20 @@ export function Header() {
       <div id="mobilmeny" className={styles.mobilmeny} hidden={!apen} style={{ top: menyTopp }}>
         <nav aria-label="Meny">
           <ul role="list" className={styles.mobillenker}>
-            {[{ href: '/', tekst: 'Forside' }, ...lenker, { href: '/leieliste', tekst: 'Leieliste' }].map((l) => (
-              <li key={l.href}>
+            {[{ href: '/', tekst: 'Forside' }, ...lenker, { href: '/leieliste', tekst: 'Leieliste' }].map((l, i) => (
+              <li key={l.href} style={{ ['--i' as string]: i }}>
                 <Link href={l.href} onClick={() => settApen(false)} aria-current={sti === l.href ? 'page' : undefined}>
                   {l.tekst}
-                  <Pil storrelse={22} />
+                  <Pil storrelse={26} />
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
-        <div className={styles.mobilbunn}>
-          <p className="etikett">Vis priser for</p>
-          <Prisvalg variant="mork" />
-          <p className={styles.mobilkontakt}>
-            <a href={`tel:${firma.telefon}`}>Tlf. {firma.telefonVisning}</a>
-            <a href={`mailto:${firma.epost}`}>{firma.epost}</a>
-          </p>
-        </div>
+        <p className={styles.mobilkontakt}>
+          <a href={`tel:${firma.telefon}`}>Tlf. {firma.telefonVisning}</a>
+          <a href={`mailto:${firma.epost}`}>{firma.epost}</a>
+        </p>
       </div>
     </header>
   )

@@ -1,135 +1,122 @@
+/* Fast høyde og helt hvit bakgrunn: ingenting endrer seg mens man scroller. */
 .header {
   position: sticky;
   top: 0;
   z-index: 50;
   background: var(--hvit);
-  border-bottom: 1px solid var(--svart);
+  border-bottom: 1px solid var(--linje);
 }
 
 .rad {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 24px;
   height: var(--header-hoyde);
 }
 
 .logo {
+  display: block;
   color: inherit;
   text-decoration: none;
-  padding-block: 8px;
 }
 
-/* Liggende logo: viewBox 3280 × 720. */
+/* Hel logo: viewBox 1396 × 932, altså 3 : 2. */
 .logoBilde {
-  width: 191px;
-  height: 42px;
-}
-
-@media (max-width: 520px) {
-  .logoBilde {
-    width: 141px;
-    height: 31px;
-  }
-}
-
-.nav {
-  margin-left: clamp(16px, 3vw, 48px);
+  width: 108px;
+  height: 72px;
 }
 
 .nav ul {
   display: flex;
-  gap: clamp(18px, 2.4vw, 32px);
+  align-items: center;
+  gap: clamp(24px, 3vw, 44px);
 }
 
+/* Strek under lenken som tegnes inn fra venstre ved hover. */
 .navlenke {
-  display: block;
-  padding: 6px 0;
-  font-size: 0.9375rem;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  font-size: 1rem;
   font-weight: 400;
   text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color var(--rask);
 }
 
-.navlenke:hover {
-  border-bottom-color: currentColor;
+.navlenke::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 520ms cubic-bezier(0.2, 0.7, 0, 1);
 }
 
-.navlenke[aria-current='page'] {
-  border-bottom: 2px solid currentColor;
-}
-
-.verktoy {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-left: auto;
-}
-
-.leieliste {
-  display: inline-flex;
-  align-items: stretch;
-  height: 36px;
-  border: 1px solid var(--svart);
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-decoration: none;
-  transition:
-    background-color var(--rask),
-    color var(--rask);
-}
-
-.leielisteTekst {
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
+.navlenke:hover::after,
+.navlenke[aria-current='page']::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
 .teller {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--svart);
+  color: var(--hvit);
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: transform 420ms cubic-bezier(0.2, 0.7, 0, 1);
+}
+
+.teller[data-tom] {
+  background: transparent;
+  color: var(--svart);
+  box-shadow: inset 0 0 0 1px var(--svart);
+}
+
+.navlenke:hover .teller {
+  transform: rotate(-12deg) scale(1.1);
+}
+
+/* ---------- Mobil ---------- */
+
+.mobil {
+  display: none;
+  align-items: center;
+  gap: 4px;
+}
+
+.mobilListe {
   display: grid;
   place-items: center;
-  min-width: 34px;
-  padding: 0 6px;
-  background: var(--svart);
-  color: var(--hvit);
-  font-family: var(--mono);
-  font-size: 0.8125rem;
-  font-variant-numeric: tabular-nums;
-  transition:
-    background-color var(--rask),
-    color var(--rask);
-}
-
-.leieliste:hover,
-.leieliste[aria-current='page'] {
-  background: var(--svart);
-  color: var(--hvit);
-}
-
-.leieliste:hover .teller,
-.leieliste[aria-current='page'] .teller {
-  background: var(--hvit);
-  color: var(--svart);
+  width: 44px;
+  height: 44px;
+  text-decoration: none;
 }
 
 .menyknapp {
-  display: none;
-  align-items: center;
-  gap: 10px;
-  height: 36px;
-  padding: 0 12px;
-  border: 1px solid var(--svart);
-  background: var(--hvit);
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
 }
 
 .menystreker {
   position: relative;
-  width: 14px;
+  width: 22px;
   height: 8px;
   border-top: 1.5px solid currentColor;
   border-bottom: 1.5px solid currentColor;
@@ -153,135 +140,80 @@
 .mobilmeny {
   position: fixed;
   inset: var(--header-hoyde) 0 0;
-  border-top: 1px solid var(--svart);
   overflow-y: auto;
-  padding: 8px var(--marg) 40px;
+  padding: 16px var(--marg) 40px;
   background: var(--svart);
   color: var(--hvit);
-  animation: inn 220ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 .mobilmeny[hidden] {
   display: none;
 }
 
-@keyframes inn {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
+.mobillenker li {
+  border-bottom: 1px solid rgb(255 255 255 / 0.18);
+  animation: menylinje 520ms cubic-bezier(0.2, 0.7, 0, 1) both;
+  animation-delay: calc(var(--i) * 60ms);
 }
 
-.mobillenker li {
-  border-bottom: 1px solid rgb(255 255 255 / 0.22);
+@keyframes menylinje {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
 }
 
 .mobillenker a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 0;
-  font-size: 1.75rem;
+  padding: 20px 0;
+  font-size: 2.25rem;
   font-weight: 500;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.03em;
   text-decoration: none;
 }
 
 .mobillenker a[aria-current='page'] {
   text-decoration: underline;
   text-decoration-thickness: 2px;
-  text-underline-offset: 6px;
+  text-underline-offset: 8px;
 }
 
 .mobillenker a:focus-visible,
-.mobilbunn a:focus-visible {
+.mobilkontakt a:focus-visible {
   outline-color: var(--hvit);
-}
-
-.mobilbunn {
-  display: grid;
-  gap: 12px;
-  justify-items: start;
-  margin-top: 32px;
 }
 
 .mobilkontakt {
   display: grid;
-  gap: 6px;
-  margin-top: 20px;
-  font-family: var(--mono);
-  font-size: 0.875rem;
+  gap: 8px;
+  margin-top: 32px;
+  color: rgb(255 255 255 / 0.75);
 }
 
 .mobilkontakt a {
   text-decoration: none;
 }
 
-@media (max-width: 1080px) {
-  .prisvalg {
-    display: none;
-  }
-}
-
-@media (max-width: 900px) {
+@media (max-width: 760px) {
   .nav {
     display: none;
   }
-  .menyknapp {
-    display: inline-flex;
+  .mobil {
+    display: flex;
   }
 }
 
-.leielisteIkon {
-  display: none;
-  width: 16px;
-  height: 16px;
-  margin: auto 10px;
-}
-
-@media (max-width: 520px) {
-  .leielisteTekst {
-    display: none;
-  }
-  .leielisteIkon {
-    display: block;
-  }
-  .menyknapp {
-    width: 36px;
-    padding: 0;
-    justify-content: center;
-  }
-  .menytekst {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-  }
-  .rad {
-    gap: 12px;
-  }
-  .verktoy {
-    gap: 8px;
+@media (max-width: 760px) {
+  .logoBilde {
+    width: 84px;
+    height: 56px;
   }
 }
 
-@media (min-width: 901px) {
+@media (min-width: 761px) {
   .mobilmeny {
     display: none !important;
-  }
-}
-
-@media (pointer: coarse) {
-  .leieliste,
-  .menyknapp {
-    height: 44px;
-  }
-  .menyknapp {
-    min-width: 44px;
-  }
-  .teller {
-    min-width: 40px;
   }
 }

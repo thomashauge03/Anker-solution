@@ -14,11 +14,9 @@ import styles from './Periodevelger.module.css'
 export function Periodevelger({
   feil,
   visDogn = false,
-  kompakt = false,
 }: {
   feil?: { fra?: string; til?: string }
   visDogn?: boolean
-  kompakt?: boolean
 }) {
   const id = useId()
   const { fra, til } = useLeieliste()
@@ -47,7 +45,7 @@ export function Periodevelger({
   const dogn = fra && til ? antallDogn(fra, til) : null
 
   return (
-    <div className={`${styles.periode} ${kompakt ? styles.kompakt : ''}`}>
+    <div className={styles.periode}>
       <div className="felt">
         <label htmlFor={`${id}-fra`}>Hentes</label>
         <input

@@ -1,112 +1,76 @@
 .katalog {
-  display: grid;
-  grid-template-columns: 248px minmax(0, 1fr);
-  gap: 0 40px;
-  align-items: start;
-  padding-bottom: clamp(56px, 8vw, 112px);
+  padding-bottom: clamp(64px, 9vw, 128px);
 }
 
-/* ---------- Sidekolonne ---------- */
-
-.side {
-  position: sticky;
-  top: calc(var(--header-hoyde) + 24px);
-  display: grid;
-  gap: 32px;
-  min-width: 0;
+/* Kategorier som tekst. Den valgte får en strek under. */
+.faner ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px clamp(16px, 2.4vw, 32px);
 }
 
-/* Uten denne vokser kategoriraden på mobil i stedet for å scrolle. */
-.side > * {
-  min-width: 0;
-}
-
-.sidetittel {
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--svart);
-}
-
-.kategorier button {
-  display: grid;
-  grid-template-columns: 28px 1fr auto;
-  align-items: baseline;
-  gap: 8px;
-  width: 100%;
-  padding: 11px 8px 11px 0;
+.faner button {
+  position: relative;
+  padding: 10px 0;
   border: 0;
-  border-bottom: 1px solid var(--linje);
-  background: transparent;
-  text-align: left;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  transition:
-    background-color var(--rask),
-    color var(--rask),
-    padding var(--rask);
-}
-
-.kategorier button:hover {
-  padding-left: 6px;
-}
-
-.kategorier button[aria-pressed='true'] {
-  padding-left: 8px;
-  background: var(--svart);
-  color: var(--hvit);
-  border-bottom-color: var(--svart);
-}
-
-.knappNr,
-.knappAntall {
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  font-weight: 400;
-}
-
-.knappAntall {
+  background: none;
+  font-size: clamp(1rem, 1.3vw, 1.1875rem);
   color: var(--dempet);
+  transition: color 300ms;
 }
 
-.kategorier button[aria-pressed='true'] .knappAntall {
-  color: inherit;
+.faner button sup {
+  margin-left: 2px;
+  font-size: 0.6875rem;
+  vertical-align: super;
 }
 
-.prisvalg {
-  display: grid;
-  gap: 10px;
-  justify-items: start;
+.faner button::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 520ms cubic-bezier(0.2, 0.7, 0, 1);
 }
 
-.hjelp {
-  display: grid;
-  gap: 10px;
-  justify-items: start;
-  padding: 16px;
-  background: var(--flate);
-  font-size: 0.9375rem;
+.faner button:hover,
+.faner button[aria-pressed='true'] {
+  color: var(--svart);
 }
 
-/* ---------- Hovedkolonne ---------- */
+.faner button:hover::after,
+.faner button[aria-pressed='true']::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
 
 .verktoy {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 220px auto;
-  gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  padding-bottom: 24px;
+  justify-content: space-between;
+  gap: 16px 32px;
+  margin-top: clamp(20px, 2.4vw, 32px);
 }
 
 .sok {
   position: relative;
+  flex: 1 1 280px;
+  max-width: 480px;
 }
 
 .sok input {
-  padding-left: 42px;
+  padding-left: 28px;
 }
 
 .sokeikon {
   position: absolute;
-  left: 15px;
+  left: 0;
   top: 50%;
   width: 16px;
   height: 16px;
@@ -114,120 +78,64 @@
   pointer-events: none;
 }
 
-.treff {
-  min-width: 72px;
-  text-align: right;
-  font-family: var(--mono);
-  font-size: 0.8125rem;
-}
-
-.gruppe + .gruppe {
-  margin-top: 48px;
-}
-
-.gruppetittel {
+.valg {
   display: flex;
-  align-items: baseline;
-  gap: 16px;
-  padding-bottom: 12px;
-  font-size: 1.5rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  align-items: center;
+  gap: 28px;
 }
 
-.gruppetittel span {
-  font-size: 0.8125rem;
-  font-weight: 400;
-  letter-spacing: 0;
+.sortering {
+  width: auto;
+  min-width: 180px;
 }
 
-.katalog .rutenett {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+.treff {
+  margin: clamp(28px, 3.4vw, 48px) 0 20px;
+  font-size: 0.875rem;
+  color: var(--dempet);
 }
 
 .tomt {
   display: grid;
   gap: 16px;
   justify-items: start;
-  padding: 40px;
-  border: 1px solid var(--svart);
+  padding-block: 24px;
 }
 
 .tomtKnapper {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  align-items: center;
+  gap: 16px 28px;
   margin-top: 8px;
 }
 
-@media (max-width: 1100px) {
-  .katalog .rutenett {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+.tomtKnapper button {
+  border: 0;
+  background: none;
+  padding: 0 0 4px;
+  font-size: 1rem;
 }
 
-@media (max-width: 900px) {
-  .katalog {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .side {
-    position: static;
-    gap: 0;
-    margin-bottom: 20px;
-  }
-  .sidetittel,
-  .prisvalg,
-  .hjelp {
-    display: none;
-  }
-  .kategorier {
-    display: flex;
-    gap: 8px;
+@media (max-width: 760px) {
+  .faner {
     margin: 0 calc(var(--marg) * -1);
-    padding: 0 var(--marg) 4px;
+    padding: 0 var(--marg);
     overflow-x: auto;
     scrollbar-width: none;
   }
-  .kategorier::-webkit-scrollbar {
+  .faner::-webkit-scrollbar {
     display: none;
   }
-  .kategorier button {
-    display: flex;
-    gap: 8px;
-    width: auto;
-    padding: 9px 12px;
-    border: 1px solid var(--svart);
+  .faner ul {
+    flex-wrap: nowrap;
+    width: max-content;
+  }
+  .faner button {
     white-space: nowrap;
   }
-  .kategorier button:hover {
-    padding-left: 12px;
-  }
-  .kategorier button[aria-pressed='true'] {
-    padding-left: 12px;
-  }
-  .knappNr {
-    display: none;
-  }
-  .verktoy {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-  .sok {
-    grid-column: 1 / -1;
-  }
-  .sortering {
-    grid-column: 1 / 2;
-    grid-row: 2;
-  }
-  .treff {
-    grid-row: 2;
-  }
-}
-
-@media (max-width: 560px) {
-  .katalog .rutenett {
-    grid-template-columns: 1fr 1fr;
-  }
-  .tomt {
-    padding: 24px;
+  .valg {
+    width: 100%;
+    justify-content: space-between;
   }
 }

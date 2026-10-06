@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Katalog } from '@/components/Katalog'
 import { kategorier, maskiner } from '@/data/maskiner'
-import styles from './maskiner.module.css'
 
 export const metadata: Metadata = {
   title: 'Maskiner og utstyr',
@@ -16,14 +15,11 @@ export default async function Maskinside({ searchParams }: PageProps<'/maskiner'
 
   return (
     <>
-      <header className={`ramme ${styles.hode}`}>
-        <p className="etikett">
-          {maskiner.length} modeller · {kategorier.length} kategorier
-        </p>
-        <h1 className="tittel">Maskiner og utstyr</h1>
-        <p className={`ingress ${styles.ingress}`}>
-          Prisene gjelder per døgn. Leier du fire døgn eller mer, betaler du ukepris. Velg «Bedrift» for å se priser
-          eks.&nbsp;mva.
+      <header className="ramme sidehode">
+        <p className="etikett">Utvalg</p>
+        <h1 className="tittel">Maskiner</h1>
+        <p className="ingress">
+          {maskiner.length} maskiner og verktøy. Pris per døgn — fra fire døgn betaler du ukepris.
         </p>
       </header>
       {/* Nøkkelen gjør at en lenke til et annet filter starter katalogen på

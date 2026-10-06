@@ -16,7 +16,7 @@ export default async function Kontaktside({ searchParams }: PageProps<'/kontakt'
 
   return (
     <div className={`ramme ${styles.side}`}>
-      <header className={styles.hode}>
+      <header className="sidehode">
         <p className="etikett">Kontakt</p>
         <h1 className="tittel">Spør oss om leie</h1>
         <p className="ingress">

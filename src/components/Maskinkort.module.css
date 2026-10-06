@@ -1,55 +1,76 @@
 .kort {
   position: relative;
   display: grid;
-  grid-template-rows: auto auto 1fr auto;
-  background: var(--hvit);
-  border-right: 1px solid var(--svart);
-  border-bottom: 1px solid var(--svart);
-  transition: background-color var(--rask);
-}
-
-.topp {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  min-height: 44px;
-  padding: 12px 16px 0;
+  gap: 16px;
+  align-content: start;
 }
 
 .bilde {
   --hull: var(--flate);
-  margin: 12px 16px 0;
-  padding: 12% 10% 6%;
+  position: relative;
+  overflow: hidden;
+  padding: 18% 12% 10%;
+  border-radius: 6px;
   background: var(--flate);
   color: var(--svart);
   transition:
-    background-color var(--rolig),
-    color var(--rolig);
+    background-color 600ms cubic-bezier(0.2, 0.7, 0, 1),
+    color 600ms cubic-bezier(0.2, 0.7, 0, 1);
 }
 
 .bilde svg {
   width: 100%;
   height: auto;
-  transition: transform var(--rolig);
+  transition: transform 800ms cubic-bezier(0.2, 0.7, 0, 1);
+}
+
+.merke {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  padding: 4px 10px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pil {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--hvit);
+  color: var(--svart);
+  opacity: 0;
+  transform: translate(-8px, 8px) rotate(0deg);
+  transition:
+    opacity 400ms,
+    transform 600ms cubic-bezier(0.2, 0.7, 0, 1);
 }
 
 .tekst {
   display: grid;
-  align-content: start;
-  gap: 6px;
-  padding: 16px 16px 0;
+  gap: 4px;
 }
 
 .navn {
   font-size: 1.1875rem;
-  line-height: 1.15;
   font-weight: 500;
-  letter-spacing: -0.005em;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 .lenke {
   text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) no-repeat left bottom / 0% 1px;
+  transition: background-size 520ms cubic-bezier(0.2, 0.7, 0, 1);
 }
 
 /* Hele kortet er klikkbart, men lenketeksten er bare maskinnavnet. */
@@ -66,57 +87,25 @@
 
 .lenke:focus-visible::after {
   outline: 2px solid var(--svart);
-  outline-offset: -4px;
-}
-
-.nokkeltall {
-  font-family: var(--mono);
-  font-size: 0.8125rem;
-  color: var(--dempet);
-}
-
-.bunn {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 20px 16px 16px;
+  outline-offset: 4px;
+  border-radius: 6px;
 }
 
 .pris {
-  display: grid;
-  gap: 2px;
-}
-
-.belop {
-  font-size: 1.375rem;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.01em;
-  line-height: 1.1;
-}
-
-.fra {
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.enhet {
-  font-size: 0.8125rem;
+  font-size: 0.9375rem;
   color: var(--dempet);
 }
 
-.pil {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border: 1px solid var(--svart);
-  transition:
-    background-color var(--rask),
-    color var(--rask);
+.belop {
+  color: var(--svart);
+  font-weight: 600;
 }
 
+.enhet {
+  font-size: 0.875rem;
+}
+
+/* Hover: flaten blir svart, maskinen kjører litt fram, pilen dukker opp. */
 .kort:hover .bilde {
   --hull: var(--svart);
   background: var(--svart);
@@ -124,20 +113,23 @@
 }
 
 .kort:hover .bilde svg {
-  transform: translateX(4%);
+  transform: translateX(6%) scale(1.04);
 }
 
 .kort:hover .pil {
-  background: var(--svart);
-  color: var(--hvit);
+  opacity: 1;
+  transform: translate(0, 0) rotate(-45deg);
 }
 
-/* Rutenett av kort med delte linjer, som en tabell. */
+.kort:hover .lenke {
+  background-size: 100% 1px;
+}
+
+/* Rutenett uten rammer. */
 .rutenett {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  border-top: 1px solid var(--svart);
-  border-left: 1px solid var(--svart);
+  gap: clamp(32px, 4vw, 56px) clamp(16px, 2vw, 28px);
 }
 
 @media (max-width: 1180px) {
@@ -153,33 +145,33 @@
 }
 
 @media (max-width: 560px) {
-  .topp {
-    padding: 10px 10px 0;
-    min-height: 36px;
-  }
-  .bilde {
-    margin: 8px 10px 0;
-  }
-  .tekst {
-    padding: 12px 10px 0;
+  .rutenett {
+    gap: 28px 12px;
   }
   .navn {
     font-size: 1rem;
   }
-  .nokkeltall {
-    font-size: 0.75rem;
-  }
-  .bunn {
-    padding: 14px 10px 12px;
-  }
-  .belop {
-    font-size: 1.125rem;
+  .merke {
+    left: 8px;
+    top: 8px;
+    padding: 2px 6px;
+    font-size: 0.5625rem;
   }
   .pil {
     display: none;
   }
-  .topp :global(.merkelapp) {
-    font-size: 0.5625rem;
-    padding: 2px 4px;
+
+  .radPaMobil {
+    grid-template-columns: 104px minmax(0, 1fr);
+    align-items: center;
+    gap: 16px;
+    padding-block: 12px;
+    border-bottom: 1px solid var(--linje);
+  }
+  .radPaMobil .bilde {
+    padding: 14% 10% 8%;
+  }
+  .radPaMobil .merke {
+    display: none;
   }
 }

@@ -281,12 +281,15 @@ export function Piktogram({
   skala = 1,
   className,
   tittel,
+  bakke = true,
 }: {
   id: PiktogramId
   skala?: number
   className?: string
   /** Gis bare der piktogrammet bærer mening alene. Ellers er det pynt. */
   tittel?: string
+  /** Bakkelinja under figuren. Slås av der flere står på én felles linje. */
+  bakke?: boolean
 }) {
   const s = Math.max(0.5, Math.min(1, skala))
   return (
@@ -300,7 +303,7 @@ export function Piktogram({
       focusable="false"
     >
       <g transform={s === 1 ? undefined : `translate(60 72) scale(${s}) translate(-60 -72)`}>{figurer[id]}</g>
-      <path d="M2 72.5h116" stroke="currentColor" strokeWidth="1" />
+      {bakke && <path d="M2 72.5h116" stroke="currentColor" strokeWidth="1" />}
     </svg>
   )
 }

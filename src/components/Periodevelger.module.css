@@ -1,7 +1,7 @@
 .periode {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 16px 28px;
 }
 
 .dogn {
@@ -13,16 +13,8 @@
   display: none;
 }
 
-.kompakt {
-  gap: 0;
-}
-
-.kompakt :global(.inndata) {
-  border-right-width: 0;
-}
-
 @media (max-width: 380px) {
-  .periode:not(.kompakt) {
+  .periode {
     grid-template-columns: 1fr;
   }
 }

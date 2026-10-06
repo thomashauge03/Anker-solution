@@ -1,10 +1,11 @@
+/* Privat / Bedrift som to ord. Det valgte er svart med strek under. */
 .valg {
-  display: inline-grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 1fr;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
   margin: 0;
   padding: 0;
-  border: 1px solid var(--svart);
+  border: 0;
   min-width: 0;
 }
 
@@ -23,57 +24,67 @@
 }
 
 .alternativ span {
-  display: grid;
-  place-items: center;
-  height: 34px;
-  padding: 0 12px;
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  transition:
-    background-color var(--rask),
-    color var(--rask);
+  position: relative;
+  display: block;
+  padding: 8px 0;
+  font-size: 0.9375rem;
+  color: var(--dempet);
+  transition: color 300ms;
+}
+
+.alternativ span::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transition: transform 520ms cubic-bezier(0.2, 0.7, 0, 1);
 }
 
 .alternativ input:checked + span {
-  background: var(--svart);
-  color: var(--hvit);
+  color: var(--svart);
+}
+
+.alternativ input:checked + span::after {
+  transform: scaleX(1);
 }
 
 .alternativ input:not(:checked):hover + span {
-  background: var(--flate);
+  color: var(--svart);
 }
 
 .alternativ input:focus-visible + span {
   outline: 2px solid var(--svart);
   outline-offset: 2px;
-  position: relative;
-  z-index: 1;
 }
 
-@media (pointer: coarse) {
-  .alternativ span {
-    height: 44px;
-    padding: 0 16px;
-  }
+.alternativ + .alternativ::before {
+  content: '/';
+  position: absolute;
+  left: -10px;
+  top: 8px;
+  color: var(--linje);
 }
 
-/* På svart bakgrunn (mobilmeny) */
-.mork {
-  border-color: var(--hvit);
+/* På svart bakgrunn */
+.mork .alternativ span {
+  color: rgb(255 255 255 / 0.6);
 }
 
-.mork .alternativ input:checked + span {
-  background: var(--hvit);
-  color: var(--svart);
-}
-
+.mork .alternativ input:checked + span,
 .mork .alternativ input:not(:checked):hover + span {
-  background: rgb(255 255 255 / 0.12);
+  color: var(--hvit);
 }
 
 .mork .alternativ input:focus-visible + span {
   outline-color: var(--hvit);
+}
+
+@media (pointer: coarse) {
+  .alternativ span {
+    padding: 12px 0;
+  }
 }

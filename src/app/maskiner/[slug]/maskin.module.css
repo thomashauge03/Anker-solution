@@ -1,21 +1,19 @@
 .smuler {
-  padding-block: 20px;
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  padding-block: clamp(16px, 2vw, 28px);
+  font-size: 0.875rem;
+  color: var(--dempet);
 }
 
 .smuler ol {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
 }
 
 .smuler li + li::before {
   content: '/';
-  margin-right: 6px;
-  color: var(--dempet);
+  margin-right: 8px;
+  color: var(--linje);
 }
 
 .smuler a {
@@ -23,168 +21,127 @@
 }
 
 .smuler a:hover {
-  text-decoration: underline;
+  color: var(--svart);
 }
 
 .topp {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: clamp(28px, 4vw, 64px);
+  gap: clamp(32px, 5vw, 88px);
   align-items: start;
-  padding-bottom: clamp(48px, 6vw, 88px);
+  padding-bottom: clamp(48px, 7vw, 104px);
 }
 
 .bildekolonne {
   position: sticky;
   top: calc(var(--header-hoyde) + 24px);
+  display: grid;
+  gap: 24px;
+  animation: opp 900ms cubic-bezier(0.2, 0.7, 0, 1) both;
 }
 
 .bilde {
   --hull: var(--flate);
-  display: grid;
-  gap: 0;
   margin: 0;
+  padding: 12% 12% 8%;
+  border-radius: 6px;
   background: var(--flate);
-  border: 1px solid var(--svart);
-}
-
-.bildeTopp {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 16px 18px;
 }
 
 .bilde svg {
   width: 100%;
   height: auto;
-  padding: 6% 12% 4%;
 }
 
-.bildetekst {
-  padding: 14px 18px;
-  border-top: 1px solid var(--svart);
-  background: var(--hvit);
-  font-family: var(--mono);
-  font-size: 0.8125rem;
-}
-
+/* Tre korte fakta på én linje, uten rammer. */
 .fakta {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin: 0;
-  border: 1px solid var(--svart);
-  border-top: 0;
-}
-
-.fakta > div {
-  display: grid;
-  gap: 6px;
-  align-content: start;
-  padding: 14px 18px 16px;
-}
-
-.fakta > div + div {
-  border-left: 1px solid var(--svart);
-}
-
-.fakta dd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 40px;
   margin: 0;
   font-size: 0.9375rem;
 }
 
-@media (max-width: 480px) {
-  .fakta > div {
-    padding: 10px 10px 12px;
-  }
-  .fakta dt {
-    font-size: 0.625rem;
-  }
-  .fakta dd {
-    font-size: 0.8125rem;
-    line-height: 1.35;
-  }
-  .bilde svg {
-    padding: 2% 8% 2%;
-  }
+.fakta dt {
+  font-size: 0.8125rem;
+  color: var(--dempet);
+}
+
+.fakta dd {
+  margin: 2px 0 0;
 }
 
 .infokolonne {
   display: grid;
-  gap: 28px;
+  gap: 32px;
+  animation: opp 900ms cubic-bezier(0.2, 0.7, 0, 1) both;
+  animation-delay: 120ms;
 }
 
 .innledning {
   display: grid;
-  gap: 16px;
+  gap: 18px;
   justify-items: start;
 }
 
 .navn {
-  font-size: clamp(2.25rem, 4.2vw, 4rem);
+  font-size: clamp(2.5rem, 4.6vw, 4.5rem);
 }
 
 .beskrivelse {
   font-size: 1.125rem;
+  font-weight: 300;
   max-width: 46ch;
 }
 
 .priser {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  gap: clamp(32px, 5vw, 64px);
   margin: 0;
-  border-top: 1px solid var(--svart);
-  border-bottom: 1px solid var(--svart);
 }
 
 .priser > div {
   display: grid;
-  gap: 6px;
-  padding: 16px 0;
+  gap: 4px;
 }
 
-.priser > div + div {
-  padding-left: 20px;
-  border-left: 1px solid var(--svart);
+.priser dt {
+  font-size: 0.8125rem;
+  color: var(--dempet);
 }
 
 .priser dd {
   margin: 0;
-  font-size: clamp(1.75rem, 2.6vw, 2.25rem);
+  font-size: clamp(2rem, 3vw, 2.75rem);
   font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   line-height: 1;
 }
 
 .fra {
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0;
 }
 
 .prismerknad {
-  margin-top: 10px;
+  margin-top: 12px;
   font-size: 0.875rem;
   color: var(--dempet);
 }
 
 /* ---------- Detaljer ---------- */
 
-.detaljer {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: clamp(28px, 4vw, 64px);
-  padding-top: clamp(40px, 5vw, 64px);
-  border-top: 1px solid var(--svart);
+div.detaljer {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 48px clamp(32px, 4vw, 64px);
 }
 
 .detaljtittel {
-  padding-bottom: 12px;
-  margin-bottom: 4px;
-  border-bottom: 1px solid var(--svart);
-  font-size: 1.25rem;
+  margin-bottom: 8px;
+  font-size: 1.375rem;
   font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .spesifikasjoner {
@@ -195,60 +152,42 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 16px;
-  padding: 12px 0;
+  padding: 14px 0;
   border-bottom: 1px solid var(--linje);
+}
+
+.spesifikasjoner dt {
+  color: var(--dempet);
 }
 
 .spesifikasjoner dd {
   margin: 0;
-  font-size: 0.9375rem;
 }
 
 .tillegg {
   display: grid;
-  gap: 40px;
+  gap: 48px;
   align-content: start;
 }
 
 .liste li {
-  display: grid;
-  grid-template-columns: 20px 1fr;
-  padding: 12px 0;
+  padding: 14px 0;
   border-bottom: 1px solid var(--linje);
-  font-size: 0.9375rem;
 }
 
-.liste li::before {
-  content: '';
-  width: 8px;
-  height: 8px;
-  margin-top: 7px;
-  background: var(--svart);
+.merknader li {
+  color: var(--dempet);
 }
 
-.merknader li::before {
-  content: '!';
-  width: 14px;
-  height: 14px;
-  margin-top: 3px;
+.relaterte {
   display: grid;
-  place-items: center;
-  border: 1px solid var(--svart);
-  background: transparent;
-  font-family: var(--mono);
-  font-size: 0.625rem;
-  font-weight: 500;
-}
-
-/* div.-prefikset vinner over .rutenett fra Maskinkort uansett lasterekkefølge. */
-div.relaterte {
-  border-top: 0;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px clamp(16px, 2vw, 28px);
 }
 
 @media (max-width: 960px) {
   .topp,
-  .detaljer {
+  div.detaljer {
     grid-template-columns: minmax(0, 1fr);
   }
   .bildekolonne {
@@ -256,8 +195,11 @@ div.relaterte {
   }
 }
 
-@media (max-width: 860px) {
-  div.relaterte {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+/* På mobil blir kortene en liste, så ingen står alene på en rad. */
+@media (max-width: 560px) {
+  .relaterte {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--linje);
   }
 }

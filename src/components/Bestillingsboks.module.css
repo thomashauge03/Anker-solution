@@ -1,13 +1,12 @@
 .boks {
   display: grid;
-  gap: 20px;
-  padding: 24px;
-  border: 1px solid var(--svart);
+  gap: 24px;
 }
 
 .tittel {
-  font-size: 1.25rem;
+  font-size: 1.375rem;
   font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .mengde {
@@ -20,18 +19,25 @@
   grid-column: 1 / -1;
 }
 
+/* Antall: runde knapper og tallet mellom. */
 .stepper {
   display: inline-grid;
-  grid-template-columns: 44px 52px 44px;
+  grid-template-columns: 44px 48px 44px;
+  align-items: center;
   height: 44px;
-  border: 1px solid var(--svart);
 }
 
 .stepper button {
-  border: 0;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--svart);
+  border-radius: 50%;
   background: var(--hvit);
   font-size: 1.25rem;
   line-height: 1;
+  transition:
+    background-color 300ms,
+    color 300ms;
 }
 
 .stepper button:hover:not(:disabled) {
@@ -40,16 +46,14 @@
 }
 
 .stepper button:disabled {
+  border-color: var(--linje);
   color: #b5b5b0;
   cursor: not-allowed;
 }
 
 .stepper output {
-  display: grid;
-  place-items: center;
-  border-inline: 1px solid var(--svart);
-  font-family: var(--mono);
-  font-size: 1rem;
+  text-align: center;
+  font-size: 1.0625rem;
 }
 
 .sum {
@@ -58,31 +62,29 @@
   justify-content: space-between;
   gap: 16px;
   min-height: 72px;
-  padding: 16px 0;
-  border-block: 1px solid var(--svart);
+  padding-top: 20px;
+  border-top: 1px solid var(--linje);
 }
 
 .forklaring {
   margin-top: 4px;
-  font-family: var(--mono);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   color: var(--dempet);
 }
 
 .belop {
   display: grid;
   justify-items: end;
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   line-height: 1;
   white-space: nowrap;
 }
 
 .fra {
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0;
 }
 
@@ -95,14 +97,13 @@
 }
 
 .merknad {
-  padding: 12px 14px;
-  background: var(--flate);
   font-size: 0.9375rem;
+  color: var(--dempet);
 }
 
 .knapper {
   display: grid;
-  gap: 10px;
+  gap: 12px;
 }
 
 .kvittering {
@@ -111,10 +112,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px 16px;
-  padding: 12px 14px;
-  border: 1px solid var(--svart);
   font-weight: 500;
-  animation: opp 300ms cubic-bezier(0.2, 0, 0, 1);
+  animation: opp 400ms cubic-bezier(0.2, 0.7, 0, 1);
 }
 
 .kvittering p {
@@ -124,17 +123,18 @@
 }
 
 .hake {
-  width: 16px;
-  height: 16px;
-  background: var(--svart);
   position: relative;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--svart);
 }
 
 .hake::after {
   content: '';
   position: absolute;
-  left: 4px;
-  top: 4px;
+  left: 6px;
+  top: 6px;
   width: 8px;
   height: 4px;
   border-left: 2px solid var(--hvit);
@@ -143,10 +143,7 @@
 }
 
 @media (max-width: 480px) {
-  .boks {
-    padding: 18px;
-  }
   .belop {
-    font-size: 1.625rem;
+    font-size: 1.75rem;
   }
 }

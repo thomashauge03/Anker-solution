@@ -1,7 +1,7 @@
 .kasse {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 400px);
-  gap: clamp(28px, 4vw, 64px);
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+  gap: clamp(32px, 5vw, 88px);
   align-items: start;
 }
 
@@ -18,12 +18,12 @@
 .info,
 .toppfeil {
   margin-bottom: 24px;
-  padding: 14px 16px;
+  padding: 14px 18px;
+  border-radius: 6px;
   font-weight: 500;
 }
 
 .info {
-  border: 1px solid var(--svart);
   background: var(--flate);
 }
 
@@ -34,32 +34,28 @@
 
 .steg {
   display: grid;
-  gap: 18px;
-  padding: 28px 0 36px;
-  border-top: 1px solid var(--svart);
+  gap: 20px;
+  padding: 36px 0 44px;
+  border-top: 1px solid var(--linje);
 }
 
 .stegtittel {
   display: flex;
   align-items: baseline;
   gap: 14px;
-  font-size: 1.375rem;
+  font-size: 1.5rem;
   font-weight: 500;
-  letter-spacing: -0.005em;
+  letter-spacing: -0.02em;
 }
 
 .stegtittel span {
-  font-family: var(--mono);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 400;
   letter-spacing: 0;
+  color: var(--dempet);
 }
 
 /* ---------- Utstyr ---------- */
-
-.linjer {
-  border-top: 1px solid var(--linje);
-}
 
 .linje {
   display: grid;
@@ -70,9 +66,14 @@
   border-bottom: 1px solid var(--linje);
 }
 
+.linje:first-child {
+  border-top: 1px solid var(--linje);
+}
+
 .linjeBilde {
   --hull: var(--flate);
-  padding: 8px 10px 4px;
+  padding: 10px 12px 6px;
+  border-radius: 4px;
   background: var(--flate);
 }
 
@@ -98,16 +99,22 @@
 
 .linjeAntall {
   display: inline-grid;
-  grid-template-columns: 36px 40px 36px;
+  grid-template-columns: 36px 36px 36px;
+  align-items: center;
   height: 36px;
-  border: 1px solid var(--svart);
 }
 
 .linjeAntall button {
-  border: 0;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--svart);
+  border-radius: 50%;
   background: var(--hvit);
   font-size: 1.0625rem;
   line-height: 1;
+  transition:
+    background-color 300ms,
+    color 300ms;
 }
 
 .linjeAntall button:hover:not(:disabled) {
@@ -116,22 +123,19 @@
 }
 
 .linjeAntall button:disabled {
+  border-color: var(--linje);
   color: #b5b5b0;
   cursor: not-allowed;
 }
 
 .linjeAntall output {
-  display: grid;
-  place-items: center;
-  border-inline: 1px solid var(--svart);
-  font-family: var(--mono);
-  font-size: 0.875rem;
+  text-align: center;
+  font-size: 0.9375rem;
 }
 
 .linjeSum {
   text-align: right;
-  font-family: var(--mono);
-  font-size: 0.9375rem;
+  font-weight: 500;
   white-space: nowrap;
 }
 
@@ -140,19 +144,20 @@
   border: 0;
   background: none;
   font-size: 0.8125rem;
+  color: var(--dempet);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
 .fjern:hover {
-  text-decoration-thickness: 2px;
+  color: var(--svart);
 }
 
 .merUtstyr {
   justify-self: start;
 }
 
-/* ---------- Valgkort (radio) ---------- */
+/* ---------- Valg (radio) ---------- */
 
 .valgkort {
   display: grid;
@@ -164,41 +169,29 @@
 }
 
 .valg {
-  position: relative;
   display: grid;
   grid-template-columns: 22px minmax(0, 1fr) auto;
-  gap: 14px;
+  gap: 16px;
   align-items: start;
-  padding: 16px;
-  border: 1px solid var(--svart);
+  padding: 18px 0;
+  border-bottom: 1px solid var(--linje);
   cursor: pointer;
-  transition: background-color var(--rask);
 }
 
-.valg + .valg {
-  margin-top: -1px;
-}
-
-.valg:hover {
-  background: var(--flate);
-}
-
-.valg:has(input:checked) {
-  box-shadow: inset 0 0 0 1px var(--svart);
-  background: var(--flate);
+.valg:first-of-type {
+  border-top: 1px solid var(--linje);
 }
 
 .valg[data-av] {
   cursor: not-allowed;
-  color: #77776f;
-  background: var(--hvit);
+  color: #8a8a84;
 }
 
 .valg input {
   appearance: none;
   width: 22px;
   height: 22px;
-  margin: 0;
+  margin: 1px 0 0;
   border: 1px solid var(--svart);
   border-radius: 50%;
   background: var(--hvit);
@@ -214,7 +207,7 @@
   border-radius: 50%;
   background: var(--svart);
   transform: scale(0);
-  transition: transform var(--rask);
+  transition: transform 300ms cubic-bezier(0.2, 0.7, 0, 1);
 }
 
 .valg input:checked::after {
@@ -222,7 +215,7 @@
 }
 
 .valg input:disabled {
-  border-color: #b5b5b0;
+  border-color: #c4c4be;
 }
 
 .valgTekst {
@@ -240,8 +233,6 @@
 }
 
 .valgPris {
-  font-family: var(--mono);
-  font-size: 0.9375rem;
   white-space: nowrap;
 }
 
@@ -251,7 +242,7 @@
 .felter {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 24px 28px;
 }
 
 .adresse {
@@ -262,11 +253,12 @@
   grid-column: 1 / -1;
 }
 
+/* Privat / Bedrift som to ord, som prisvalget. */
 .kundetype {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px 0;
+  gap: 8px 18px;
   margin: 0;
   padding: 0;
   border: 0;
@@ -274,7 +266,8 @@
 
 .kundetype legend {
   float: left;
-  margin-right: 16px;
+  margin-right: 8px;
+  color: var(--dempet);
 }
 
 .kundetypeValg {
@@ -290,22 +283,32 @@
 }
 
 .kundetypeValg span {
-  display: grid;
-  place-items: center;
-  height: 40px;
-  padding: 0 16px;
-  border: 1px solid var(--svart);
-  font-size: 0.9375rem;
-  font-weight: 500;
+  position: relative;
+  display: block;
+  padding: 8px 0;
+  color: var(--dempet);
+  transition: color 300ms;
 }
 
-.kundetypeValg + .kundetypeValg span {
-  border-left: 0;
+.kundetypeValg span::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transition: transform 520ms cubic-bezier(0.2, 0.7, 0, 1);
 }
 
 .kundetypeValg input:checked + span {
-  background: var(--svart);
-  color: var(--hvit);
+  color: var(--svart);
+  font-weight: 500;
+}
+
+.kundetypeValg input:checked + span::after {
+  transform: scaleX(1);
 }
 
 .kundetypeValg input:focus-visible + span {
@@ -315,7 +318,7 @@
 
 .samtykker {
   display: grid;
-  gap: 14px;
+  gap: 16px;
 }
 
 /* ---------- Sammendrag ---------- */
@@ -327,19 +330,20 @@
 
 .sammendragInnhold {
   display: grid;
-  gap: 18px;
-  padding: 24px;
-  border: 1px solid var(--svart);
-  background: var(--hvit);
+  gap: 20px;
+  padding: 28px;
+  border-radius: 8px;
+  background: var(--flate);
 }
 
 .sammendragTittel {
-  font-size: 1.25rem;
+  font-size: 1.375rem;
   font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .periode {
-  margin-top: -8px;
+  margin-top: -10px;
   font-size: 0.9375rem;
 }
 
@@ -357,10 +361,6 @@
   font-size: 0.9375rem;
 }
 
-.poster {
-  border-top: 1px solid var(--svart);
-}
-
 .poster > div {
   border-bottom: 1px solid var(--linje);
 }
@@ -374,7 +374,6 @@
 .totalsum {
   align-items: baseline;
   padding-top: 14px !important;
-  border-top: 1px solid var(--svart);
 }
 
 .totalsum dt {
@@ -382,10 +381,9 @@
 }
 
 .totalsum dd {
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   line-height: 1;
 }
 
@@ -406,19 +404,19 @@
 }
 
 .test {
-  padding: 10px 12px;
-  border: 1px dashed var(--svart);
-  background: var(--flate);
+  padding: 10px 14px;
+  border-radius: 6px;
+  background: var(--hvit);
   font-size: 0.8125rem;
 }
+
+/* ---------- Tom liste og kvittering ---------- */
 
 .henter {
   min-height: 240px;
   padding-top: 24px;
-  border-top: 1px solid var(--svart);
+  color: var(--dempet);
 }
-
-/* ---------- Tom liste og kvittering ---------- */
 
 .tom,
 .kvittering {
@@ -426,8 +424,7 @@
   gap: 16px;
   justify-items: start;
   max-width: 720px;
-  padding: clamp(28px, 4vw, 48px);
-  border: 1px solid var(--svart);
+  padding-block: 24px;
 }
 
 .kvittering h2:focus {
@@ -437,13 +434,18 @@
 .tomKnapper {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  align-items: center;
+  gap: 16px 28px;
   margin-top: 8px;
 }
 
 @media (pointer: coarse) {
   .linjeAntall {
-    grid-template-columns: 44px 44px 44px;
+    grid-template-columns: 44px 40px 44px;
+    height: 44px;
+  }
+  .linjeAntall button {
+    width: 44px;
     height: 44px;
   }
   .fjern {
@@ -451,7 +453,7 @@
     padding: 0 8px;
   }
   .kundetypeValg span {
-    height: 44px;
+    padding: 12px 0;
   }
 }
 
@@ -506,6 +508,6 @@
     grid-column: 2;
   }
   .sammendragInnhold {
-    padding: 18px;
+    padding: 20px;
   }
 }
