@@ -2,7 +2,7 @@ import 'server-only'
 import { stripeNokkel } from '../oppsett'
 import { Betalingsfeil, type Betalingsleverandor, type Betalingsstatus, type NyBetaling } from './typer'
 
-// Kortbetaling med Stripe Checkout, uten SDK — bare to kall.
+// Kortbetaling med Stripe Checkout, uten SDK: bare to kall.
 // Dokumentasjon: https://docs.stripe.com/api/checkout/sessions
 //
 // capture_method=manual gjør at beløpet bare RESERVERES på kortet. Det

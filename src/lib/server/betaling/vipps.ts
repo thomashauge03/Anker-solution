@@ -6,7 +6,7 @@ import { Betalingsfeil, type Betalingsleverandor, type Betalingsstatus, type NyB
 // Dokumentasjon: https://developer.vippsmobilepay.com/docs/APIs/epayment-api/
 //
 // Betalingen blir RESERVERT når kunden godkjenner i Vipps-appen. Beløpet
-// trekkes først når Anker Solutions «capturer» den — i dag fra
+// trekkes først når Anker Solutions «capturer» den, i dag fra
 // portal.vippsmobilepay.com etter at leien er bekreftet.
 //
 // Feltnavnene under er Vipps sine og beholder engelsk skrivemåte.

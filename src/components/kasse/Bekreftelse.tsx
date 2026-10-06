@@ -90,7 +90,7 @@ export function Oversikt({
         {fra && til ? (
           <>
             <p>
-              {formaterLangDato(fra)} – {formaterLangDato(til)}
+              {formaterLangDato(fra)} til {formaterLangDato(til)}
             </p>
             <p className="dempet">{flertall(antallDogn(fra, til), 'døgn', 'døgn')}</p>
           </>
@@ -102,7 +102,7 @@ export function Oversikt({
       <Del tittel="Henting eller levering" steg="levering" endreTekst="henting eller levering" endre={endre}>
         <p className={styles.oversiktPost}>
           <span>{levering === 'levering' ? 'Levering og henting' : 'Jeg henter selv'}</span>
-          <span className="mono">{levering === 'levering' ? visPris(firma.levering.prisInklMva) : '0,-'}</span>
+          <span className="mono">{visPris(levering === 'levering' ? firma.levering.prisInklMva : 0)}</span>
         </p>
         <p className="dempet">
           {levering === 'levering'
@@ -309,7 +309,7 @@ export function Totalboks({
       </p>
       {testmodus && (
         <p className={styles.test}>
-          <strong>Testmodus.</strong> Betalingen simuleres — ingen penger trekkes.
+          <strong>Testmodus.</strong> Betalingen simuleres, og ingen penger trekkes.
         </p>
       )}
     </div>

@@ -68,11 +68,11 @@ export function formaterLangDato(iso: string): string {
   return langDato.format(new Date(tilUtc(iso)))
 }
 
-/** «14.–16. okt.» innen samme måned, ellers «30. okt.–2. nov.» */
+/** «14. til 16. okt.» innen samme måned, ellers «30. okt. til 2. nov.» */
 export function formaterPeriode(fra: string, til: string): string {
   if (fra === til) return formaterDato(fra)
   if (fra.slice(0, 7) === til.slice(0, 7)) {
-    return `${dagOgMaaned.format(new Date(tilUtc(fra)))}–${formaterDato(til)}`
+    return `${dagOgMaaned.format(new Date(tilUtc(fra)))} til ${formaterDato(til)}`
   }
-  return `${formaterDato(fra)}–${formaterDato(til)}`
+  return `${formaterDato(fra)} til ${formaterDato(til)}`
 }

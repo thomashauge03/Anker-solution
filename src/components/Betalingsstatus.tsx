@@ -81,7 +81,7 @@ export function Betalingsstatus() {
 
   useEffect(() => {
     // React kjører effekter to ganger i utvikling. Kallet sender e-post,
-    // så det skal bare gå én gang — og ikke i det hele tatt når kvitteringen
+    // så det skal bare gå én gang, og ikke i det hele tatt når kvitteringen
     // allerede er lagret i økta.
     if (kalt.current || svar) return
     kalt.current = true
@@ -148,7 +148,7 @@ export function Betalingsstatus() {
       <p className="etikett">Bestilling {ref || 'ukjent'}</p>
       <h1 className="tittel">Vi finner ikke betalingen.</h1>
       <p className="ingress">
-        {svar.feil ?? 'Lenken kan være for gammel.'} Har du betalt, er bestillingen ikke borte — ring oss på{' '}
+        {svar.feil ?? 'Lenken kan være for gammel.'} Har du betalt, er bestillingen ikke borte. Ring oss på{' '}
         <a href={`tel:${firma.telefon}`}>{firma.telefonVisning}</a>, så sjekker vi.
       </p>
       <div className={styles.knapper}>

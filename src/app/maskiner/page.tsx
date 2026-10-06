@@ -19,7 +19,7 @@ export default async function Maskinside({ searchParams }: PageProps<'/maskiner'
     <>
       <Sidehode etikett="Utvalg" tittel="Maskiner" form={11}>
         <p className="ingress">
-          {maskiner.length} maskiner og verktøy. Pris per døgn — fra fire døgn betaler du ukepris.
+          {maskiner.length} maskiner og verktøy. Pris per døgn, og fra fire døgn betaler du ukepris.
         </p>
       </Sidehode>
       <Bolgeskille form={3} />

@@ -130,7 +130,7 @@ export function betalingsskjema(idag: string = iDagINorge()) {
     })
 }
 
-/** Forespørsel — med utstyr fra leielisten, eller bare en melding. */
+/** Forespørsel: med utstyr fra leielisten, eller bare en melding. */
 export function foresporselsskjema(idag: string = iDagINorge()) {
   return z
     .object({

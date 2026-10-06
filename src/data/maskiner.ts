@@ -1,4 +1,4 @@
-// Utvalget. Priser er hele kroner INKL. mva — eks. mva regnes ut i
+// Utvalget. Priser er hele kroner INKL. mva. Eks. mva regnes ut i
 // src/lib/pris.ts. Ukepris gjelder for hele uker; for resten av dagene
 // betaler kunden døgnpris, men aldri mer enn én ukepris.
 //
@@ -83,7 +83,7 @@ export const kategorier: Kategori[] = [
     id: 'lastere-og-dumpere',
     nr: '02',
     navn: 'Lastere og dumpere',
-    kort: 'Flytt masse, grus og paller — fra smale passasjer til åpne tomter.',
+    kort: 'Flytt masse, grus og paller, fra smale passasjer til åpne tomter.',
     piktogram: 'laster',
   },
   {
@@ -145,7 +145,7 @@ export const maskiner: Maskin[] = [
     spesifikasjoner: [
       ['Driftsvekt', '1 050 kg'],
       ['Gravedybde', '1,8 m'],
-      ['Bredde', '72–98 cm'],
+      ['Bredde', '72 til 98 cm'],
       ['Høyde', '2,2 m'],
       ['Drivstoff', 'Diesel'],
     ],
@@ -162,7 +162,7 @@ export const maskiner: Maskin[] = [
     skala: 0.88,
     kort: 'Allrounder til drenering, fundament og grøfter.',
     beskrivelse:
-      'Allrounderen i parken. Stor nok til drenering, fundament og grøfter for vann og avløp — liten nok til å fraktes på maskinhenger.',
+      'Allrounderen i parken. Stor nok til drenering, fundament og grøfter for vann og avløp, men liten nok til å fraktes på maskinhenger.',
     dognpris: 1590,
     ukepris: 6360,
     antall: 3,
@@ -171,14 +171,14 @@ export const maskiner: Maskin[] = [
       ['Driftsvekt', '1 720 kg'],
       ['Gravedybde', '2,3 m'],
       ['Rekkevidde', '3,9 m'],
-      ['Bredde', '99–130 cm'],
+      ['Bredde', '99 til 130 cm'],
       ['Høyde', '2,4 m'],
       ['Drivstoff', 'Diesel'],
     ],
     inkludert: ['Tre skuffer: 30 cm, 60 cm og planeringsskuff', 'Hurtigfeste', 'Full tank ved utlevering'],
     merknader: [
       'Fraktes på maskinhenger 3 500 kg, som krever førerkort BE.',
-      'Bilen må være registrert for å trekke vekten — sjekk vognkortet.',
+      'Bilen må være registrert for å trekke vekten. Sjekk vognkortet.',
     ],
     relaterte: ['maskinhenger-3500', 'vibroplate-400', 'beltedumper-500'],
     ofteLeid: true,
@@ -429,7 +429,7 @@ export const maskiner: Maskin[] = [
     skala: 1,
     kort: 'Til grøfter og trange steder rundt rør og grunnmur.',
     beskrivelse:
-      'Vibrostamper — på folkemunne hoppetusse. Komprimerer i grøfter, rundt kummer og inntil grunnmur, der vibroplaten ikke kommer til.',
+      'Vibrostamper, på folkemunne hoppetusse. Komprimerer i grøfter, rundt kummer og inntil grunnmur, der vibroplaten ikke kommer til.',
     dognpris: 550,
     ukepris: 2200,
     antall: 2,
@@ -596,7 +596,7 @@ export const maskiner: Maskin[] = [
     skala: 1,
     kort: 'Piggemaskin til riving av betong, mur og flis.',
     beskrivelse:
-      'Tung meiselhammer — piggemaskin — til riving av betong, mur og fliser. Leveres med spiss- og flatmeisel.',
+      'Tung meiselhammer, også kalt piggemaskin, til riving av betong, mur og fliser. Leveres med spiss- og flatmeisel.',
     dognpris: 690,
     ukepris: 2760,
     antall: 2,

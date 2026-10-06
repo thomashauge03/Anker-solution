@@ -22,10 +22,11 @@ export const firma = {
   telefonVisning: '400 00 000',
   epost: 'post@ankersolutions.no',
 
+  // `apner` brukes der vi skriver «fra kl. 07».
   apningstider: [
-    { dager: 'Mandag–fredag', kort: 'Man–fre', tid: '07–16' },
-    { dager: 'Lørdag', kort: 'Lør', tid: '09–13' },
-    { dager: 'Søndag', kort: 'Søn', tid: 'Stengt' },
+    { dager: 'Mandag til fredag', kort: 'Hverdager', tid: '07 til 16', apner: '07' },
+    { dager: 'Lørdag', kort: 'Lørdag', tid: '09 til 13', apner: '09' },
+    { dager: 'Søndag', kort: 'Søndag', tid: 'Stengt', apner: null },
   ],
 
   // Fast pris for levering og henting innenfor radiusen. Lenger unna

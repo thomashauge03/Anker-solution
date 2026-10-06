@@ -15,7 +15,7 @@ const sorteringer: { verdi: Sortering; tekst: string }[] = [
   { verdi: 'standard', tekst: 'Etter kategori' },
   { verdi: 'pris-lav', tekst: 'Pris, lav til høy' },
   { verdi: 'pris-hoy', tekst: 'Pris, høy til lav' },
-  { verdi: 'navn', tekst: 'Navn, A–Å' },
+  { verdi: 'navn', tekst: 'Navn, A til Å' },
 ]
 
 const smaa = (s: string) => s.toLocaleLowerCase('nb-NO')

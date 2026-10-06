@@ -10,7 +10,7 @@ const env = process.env
 /**
  * Testmodus simulerer betaling og skriver e-post til loggen i stedet for å
  * sende den. Den er alltid på lokalt, og kan slås på i produksjon med
- * TESTMODUS=på — f.eks. for å vise siden til Anker Solutions før avtalene
+ * TESTMODUS=på, f.eks. for å vise siden til Anker Solutions før avtalene
  * med Vipps og Stripe er på plass. Uten nøkler og uten testmodus er
  * betaling av, og kunden kan bare sende forespørsel.
  */

@@ -63,7 +63,7 @@ export default async function Maskinside({ params }: PageProps<'/maskiner/[slug]
               <dd>
                 {maskin.kreverLevering
                   ? 'Leveres av oss'
-                  : `Fra kl. ${firma.apningstider[0].tid.split('–')[0]}, ${firma.adresse.gate}`}
+                  : `Fra kl. ${firma.apningstider[0].apner}, ${firma.adresse.gate}`}
               </dd>
             </div>
             <div>

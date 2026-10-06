@@ -7,7 +7,7 @@ export type Utsending = 'sendt' | 'test' | 'ikke-satt-opp' | 'feilet'
 /**
  * Sender ren tekst-e-post med Resend. Uten nøkkel skrives e-posten til
  * terminalen lokalt. I produksjon logges aldri innholdet, bare at den ikke
- * gikk — loggene skal ikke inneholde persondata.
+ * gikk. Loggene skal ikke inneholde persondata.
  */
 export async function sendEpost(e: { til: string; emne: string; tekst: string; svarTil?: string }): Promise<Utsending> {
   const o = epostOppsett()

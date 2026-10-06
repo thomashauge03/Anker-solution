@@ -42,7 +42,7 @@ test('dagens dato regnes i norsk tid', () => {
 })
 
 test('periode skrives kort', () => {
-  assert.equal(formaterPeriode('2026-10-14', '2026-10-16'), '14.–16. okt.')
-  assert.equal(formaterPeriode('2026-10-30', '2026-11-02'), '30. okt.–2. nov.')
+  assert.equal(formaterPeriode('2026-10-14', '2026-10-16'), '14. til 16. okt.')
+  assert.equal(formaterPeriode('2026-10-30', '2026-11-02'), '30. okt. til 2. nov.')
   assert.equal(formaterPeriode('2026-10-14', '2026-10-14'), '14. okt.')
 })

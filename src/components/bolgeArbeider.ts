@@ -1,5 +1,5 @@
 // Egen tråd for den levende bakgrunnen. All tegning skjer her, så
-// hovedtråden — scrolling og klikk — aldri venter på animasjonen.
+// hovedtråden (scrolling og klikk) aldri venter på animasjonen.
 import { Bolgeanimasjon, type Lerretsmaal } from './bolgetegning'
 
 export type Arbeidermelding =

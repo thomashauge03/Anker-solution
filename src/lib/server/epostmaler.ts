@@ -114,7 +114,7 @@ export function bestillingTilFirma(
   }
 
   const tekst = [
-    `${testmerke}Ny bestilling ${referanse} — venter på betaling med ${metode}`,
+    `${testmerke}Ny bestilling ${referanse}: venter på betaling med ${metode}`,
     STREK,
     kundeblokk(d.kunde),
     '',
@@ -143,7 +143,7 @@ export function bestillingKvittering(
 ): { emne: string; tekst: string } {
   const metode = d.metode === 'vipps' ? 'Vipps' : 'kortet ditt'
   const tekst = [
-    test ? '[TEST — ingen penger er reservert]\n' : '',
+    test ? '[TEST: ingen penger er reservert]\n' : '',
     `Hei ${d.kunde.navn.split(' ')[0]},`,
     '',
     `takk for bestillingen. ${kronerFraOre(b.totalInklOre)} er reservert på ${metode}.`,

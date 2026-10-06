@@ -3,7 +3,7 @@ import { bolgeknippe } from '@/lib/bolger'
 const ANTALL = 18
 
 /**
- * Et stillestående bånd av bølgestreker — samme motiv som den levende
+ * Et stillestående bånd av bølgestreker, samme motiv som den levende
  * bakgrunnen på forsiden. Ren SVG fra serveren. Strekene midt i båndet er
  * mørkest, de ytterste blekest.
  */

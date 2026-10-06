@@ -136,7 +136,7 @@ const avsnitt: Avsnitt[] = [
         </p>
         <h3>Slik bruker du angreretten</h3>
         <p>
-          Gi oss beskjed før fristen går ut — på e-post til <a href={`mailto:${firma.epost}`}>{firma.epost}</a>, på
+          Gi oss beskjed før fristen går ut: på e-post til <a href={`mailto:${firma.epost}`}>{firma.epost}</a>, på
           telefon {firma.telefonVisning}, eller med skjemaet under. Du trenger ikke oppgi noen grunn. Vi betaler
           tilbake det du har betalt senest 14 dager etter at vi fikk beskjed, til samme betalingsmåte.
         </p>
@@ -230,7 +230,7 @@ export default function Vilkarside() {
       oppdatert="6. oktober 2026"
       merknad={
         <p>
-          <strong>Utkast.</strong> Vilkårene er et forslag og må gjennomgås av {firma.navn} før siden tas i bruk —
+          <strong>Utkast.</strong> Vilkårene er et forslag og må gjennomgås av {firma.navn} før siden tas i bruk,
           særlig avbestilling, tillegg og ansvar ved skade.
         </p>
       }

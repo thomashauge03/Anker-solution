@@ -42,7 +42,7 @@ export function Leveringsvalg({
             <strong>Jeg henter selv</strong>
             <span>{adresseLinje}</span>
           </span>
-          <span className={styles.valgPris}>0,-</span>
+          <span className={styles.valgPris}>{visPris(0)}</span>
         </label>
         <label className={styles.valg}>
           <input

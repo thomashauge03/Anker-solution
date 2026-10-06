@@ -37,7 +37,7 @@ export async function POST(req: Request) {
   const utsending = await sendEpost({ til: firmaInnboks(), ...tilFirma, svarTil: d.kunde.epost })
 
   // Uten database finnes forespørselen bare i e-posten. Gikk den ikke,
-  // må kunden få vite det — ellers forsvinner den i stillhet.
+  // må kunden få vite det. Ellers forsvinner den i stillhet.
   if (utsending === 'feilet' || utsending === 'ikke-satt-opp') {
     return svar(
       { feil: `Vi fikk ikke sendt forespørselen. Ring oss på ${firma.telefonVisning}, eller prøv igjen om litt.` },

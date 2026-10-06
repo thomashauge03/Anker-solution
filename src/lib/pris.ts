@@ -9,7 +9,7 @@ export type Prisgrunnlag = { dognpris: number; ukepris: number }
 
 /**
  * Leie for én enhet i hele kroner inkl. mva. Hele uker koster ukepris.
- * Resten av dagene koster døgnpris, men aldri mer enn en ukepris — så fra
+ * Resten av dagene koster døgnpris, men aldri mer enn en ukepris, så fra
  * fire døgn betaler kunden ukepris.
  */
 export function leiepris(p: Prisgrunnlag, dogn: number): number {
@@ -59,8 +59,8 @@ export type Beregning = {
 type Oppslag = (slug: string) => (Prisgrunnlag & { kode: string; navn: string }) | undefined
 
 /**
- * Regner ut hele bestillingen. Kaster hvis en maskin ikke finnes — kalleren
- * skal ha validert slugene først.
+ * Regner ut hele bestillingen. Kaster hvis en maskin ikke finnes, så
+ * kalleren skal ha validert slugene først.
  */
 export function beregnBestilling(
   inn: { linjer: Bestillingslinje[]; fra: string; til: string; levering: Leveringsvalg },

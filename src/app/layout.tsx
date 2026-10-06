@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   // En demo med plassholdere skal ikke dukke opp i søk under firmaets navn.
   robots: erDemo ? { index: false, follow: false } : undefined,
   title: {
-    default: `${firma.navn} — utleie av maskiner og verktøy`,
+    default: `${firma.navn}: utleie av maskiner og verktøy`,
     template: `%s · ${firma.navn}`,
   },
   description:

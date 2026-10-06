@@ -51,13 +51,15 @@ export function Sammendrag({
                   {linje.antall > 1 && <span className="mono">{linje.antall} × </span>}
                   {maskin.navn}
                 </dt>
-                <dd className="mono">{sum !== undefined ? visPris(sum) : '–'}</dd>
+                <dd className="mono">
+                  {sum !== undefined ? visPris(sum) : `${visPris(maskin.dognpris * linje.antall)} / døgn`}
+                </dd>
               </div>
             )
           })}
           <div>
             <dt>{levering === 'levering' ? 'Levering og henting' : 'Henting'}</dt>
-            <dd className="mono">{levering === 'levering' ? visPris(firma.levering.prisInklMva) : '0,-'}</dd>
+            <dd className="mono">{visPris(levering === 'levering' ? firma.levering.prisInklMva : 0)}</dd>
           </div>
         </dl>
 

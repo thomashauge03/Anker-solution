@@ -60,7 +60,7 @@ function iEgenTraad(flate: HTMLElement, maal: Lerretsmaal, vedFeil: () => void):
 /**
  * Levende bakgrunn: et bånd av svarte bølgestreker som beveger seg sakte.
  * Står stille når den er utenfor skjermen, når fanen er skjult, når
- * brukeren har bedt om mindre bevegelse — og når noen trykker på pause.
+ * brukeren har bedt om mindre bevegelse, og når noen trykker på pause.
  */
 export function HeroBolger() {
   const flateRef = useRef<HTMLDivElement>(null)

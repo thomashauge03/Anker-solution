@@ -10,6 +10,12 @@ type Lerret = HTMLCanvasElement | OffscreenCanvas
 const STARTTID = 14
 /** Hvor fort båndet beveger seg. 1 er svært rolig. */
 const FART = 1.5
+/**
+ * Nye bilder per sekund. Bevegelsen er så langsom at 30 ser like jevnt ut
+ * som skjermens egen takt, og på en 165 Hz-skjerm er det over fem ganger
+ * mindre arbeid for skjermkortet, så scrollingen ikke hakker.
+ */
+const BILDER_PER_SEKUND = 30
 
 /** Tegner ett bilde av båndet ved tiden `tid` (sekunder). */
 export function tegnBolgefelt(ctx: Tegneflate, { bredde: B, hoyde: H, dpr }: Lerretsmaal, tid: number) {
@@ -67,6 +73,7 @@ export class Bolgeanimasjon {
   private maal: Lerretsmaal
   private tid = STARTTID
   private forrige = 0
+  private sistTegnet = 0
   private ramme: number | undefined
   private kjorer = false
 
@@ -89,6 +96,7 @@ export class Bolgeanimasjon {
     this.kjorer = ja
     if (ja) {
       this.forrige = 0
+      this.sistTegnet = 0
       this.ramme = nesteBilde(this.steg)
     } else if (this.ramme !== undefined) {
       avbrytBilde(this.ramme)
@@ -98,12 +106,15 @@ export class Bolgeanimasjon {
 
   private steg = (naa: number) => {
     if (!this.kjorer) return
+    this.ramme = nesteBilde(this.steg)
+    // Hopp over bilder til det er tid for et nytt.
+    if (this.sistTegnet && naa - this.sistTegnet < 1000 / BILDER_PER_SEKUND - 2) return
+    this.sistTegnet = naa
     // Et langt opphold (treg maskin, fane i bakgrunnen) bremser bevegelsen
     // i stedet for å få båndet til å hoppe.
-    const dt = this.forrige ? Math.min((naa - this.forrige) / 1000, 0.05) : 0
+    const dt = this.forrige ? Math.min((naa - this.forrige) / 1000, 0.1) : 0
     this.forrige = naa
     this.tid += dt
     tegnBolgefelt(this.ctx, this.maal, this.tid)
-    this.ramme = nesteBilde(this.steg)
   }
 }

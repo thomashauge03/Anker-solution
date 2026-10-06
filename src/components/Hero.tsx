@@ -19,7 +19,7 @@ export function Hero() {
               Lei maskiner og utstyr
             </h1>
             <p className="ingress">
-              Fra gravemaskin til motorsag. Per døgn eller uke — betal med Vipps eller kort, eller send en
+              Fra gravemaskin til motorsag, per døgn eller uke. Betal med Vipps eller kort, eller send en
               forespørsel om store maskiner, fører og levering.
             </p>
             <div className={styles.knapper}>

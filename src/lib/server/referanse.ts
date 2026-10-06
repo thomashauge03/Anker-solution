@@ -2,7 +2,7 @@ import 'server-only'
 import { randomInt } from 'node:crypto'
 
 // Uten tegn som er lette å forveksle (0/O, 1/I/L), så referansen kan leses
-// opp i telefonen. Vipps krever 8–50 tegn av typen [a-zA-Z0-9-].
+// opp i telefonen. Vipps krever 8 til 50 tegn av typen [a-zA-Z0-9-].
 const TEGN = '23456789ABCDEFGHJKMNPQRSTUVWXYZ'
 
 export const REFERANSE = /^ANK-[2-9A-HJKMNP-Z]{6}$/

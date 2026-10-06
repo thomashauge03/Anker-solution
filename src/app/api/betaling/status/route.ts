@@ -13,7 +13,7 @@ import { REFERANSE } from '@/lib/server/referanse'
 import { lesJson, svar } from '@/lib/server/sjekk'
 
 // Kalles fra kvitteringssiden når kunden kommer tilbake. POST fordi kallet
-// sender e-post og sletter cookien — det skal ikke skje ved en forhåndsvisning.
+// sender e-post og sletter cookien. Det skal ikke skje ved en forhåndsvisning.
 
 export async function POST(req: Request) {
   if (!innenforGrense(`status:${klientIp(req)}`, 30, 10 * 60_000)) {

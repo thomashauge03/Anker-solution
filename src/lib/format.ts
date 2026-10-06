@@ -1,10 +1,13 @@
 const heltall = new Intl.NumberFormat('nb-NO', { maximumFractionDigits: 0 })
 const desimal = new Intl.NumberFormat('nb-NO', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
-/** «1 590,-» for hele kroner, «1 272,50» ellers. */
+/**
+ * «1 590 kr» for hele kroner, «1 272,50 kr» ellers. Hardt mellomrom foran
+ * «kr», så beløpet aldri deles over to linjer.
+ */
 export function kroner(belop: number): string {
-  if (Number.isInteger(belop)) return `${heltall.format(belop)},-`
-  return desimal.format(belop)
+  const tall = Number.isInteger(belop) ? heltall.format(belop) : desimal.format(belop)
+  return `${tall} kr`
 }
 
 export function kronerFraOre(ore: number): string {
